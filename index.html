@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xhoffraix Trip - Oct 15–23, 2026</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        header {
+            background: #2c5282;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            padding: 1rem;
+            background: #f7fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn.active {
+            background: #2c5282;
+            color: white;
+            border-color: #2c5282;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 180px);
+        }
+        
+        #map {
+            width: 100%;
+            height: 40vh;
+            min-height: 300px;
+        }
+        
+        .list-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        
+        .activity-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .activity-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .activity-card.hidden {
+            display: none;
+        }
+        
+        .activity-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #2c5282;
+            margin-bottom: 0.5rem;
+        }
+        
+        .activity-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #718096;
+            margin-bottom: 0.5rem;
+        }
+        
+        .activity-meta span {
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .activity-notes {
+            font-size: 0.9rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+        
+        .activity-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #2c5282;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .activity-link:hover {
+            text-decoration: underline;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #edf2f7;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-badge.family {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+        
+        .category-badge.ww2 {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+            
+            #map {
+                width: 50%;
+                height: calc(100vh - 180px);
+            }
+            
+            .list-container {
+                width: 50%;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .leaflet-popup-content {
+            margin: 0.75rem;
+        }
+        
+        .popup-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #2c5282;
+        }
+        
+        .popup-meta {
+            font-size: 0.85rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Xhoffraix Trip</h1>
+        <p>October 15–23, 2026</p>
+    </header>
+    
+    <div class="controls">
+        <input type="text" class="search-box" placeholder="Search activities..." id="searchBox">
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="family">Family</button>
+            <button class="filter-btn" data-filter="ww2">World War II</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div id="map"></div>
+        <div class="list-container" id="activityList"></div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const activities = [
+            {
+                id: 1,
+                name: "Plopsaland Ardennes (Plopsa Coo)",
+                category: "family",
+                lat: 50.3951064,
+                lng: 5.8730660,
+                distance: "About 30 min, 24 km",
+                price: "Dated tickets from €20 if 1 m or taller; €16 for 85–99 cm and for 70+; under 85 cm free. Family tickets €95/€120/€149/€169 for 3–6 people",
+                hours: "Closed 15 and 16 Oct 2026; open 17–23 Oct 10:30–17:00",
+                notes: "Includes chairlift and Coo waterfall setting. Smurfs Halloween 17 Oct–8 Nov 2026. Parking sold separately, amount not published.",
+                url: "https://www.plopsa.com/en/plopsaland-ardennes"
+            },
+            {
+                id: 2,
+                name: "Château de Reinhardstein",
+                category: "family",
+                lat: 50.4525740,
+                lng: 6.1023549,
+                distance: "About 11 min, 6.8 km",
+                price: "Adults €12, children/students/65+ €10, under 6 free",
+                hours: "Closed 15 and 16 Oct; open 17–23 Oct",
+                notes: "Guided visit. Tours in French and Dutch; English handouts, not an English tour.",
+                url: "https://www.reinhardstein.net/fr/visite"
+            },
+            {
+                id: 3,
+                name: "High Fens: Signal de Botrange, Fagne de la Poleûr, Maison du Parc",
+                category: "family",
+                lat: 50.5015831,
+                lng: 6.0925502,
+                distance: "About 10 min (Signal de Botrange); Maison du Parc about 11 min",
+                price: "Walks free. Maison du Parc FANIA exhibition adults €8, children €4.50, seniors €7. Horse-cart ride Sat 17, Sun 18, Wed 21 Oct only: adults €13, children €8.65",
+                hours: "Open every day 15–23 Oct. Maison du Parc: Mon–Fri 9:00–17:00, weekends and holidays 10:00–17:00",
+                notes: "Walks, visitor centre, nature exhibition.",
+                url: "https://botrange.be/bienvenue-chez-nous/horaires-et-contact/"
+            },
+            {
+                id: 4,
+                name: "Les Canaillous",
+                category: "family",
+                lat: 50.4252528,
+                lng: 6.0168438,
+                distance: "About 11 min",
+                price: "€5 first child, €4 each further child, afternoon",
+                hours: "13:30–18:30. Closed Thu 15 and Fri 16; open Sat 17 and Sun 18; open daily Mon 19–Fri 23 during school holiday",
+                notes: "Covered play centre, Malmedy Expo. Ages 1–12.",
+                url: "https://www.malmedy-tourisme.be/fr/que-faire/les-canaillous-plaine-de-jeux-couverte/"
+            },
+            {
+                id: 5,
+                name: "Abbaye de Stavelot",
+                category: "family",
+                lat: 50.3931316,
+                lng: 5.9317305,
+                distance: "About 19 min",
+                price: "All-in €11; ages 6–18 and 65+ €9.50; ages 0–5 free",
+                hours: "Open 15–23 Oct, 10:00–18:00",
+                notes: "Includes the Spa-Francorchamps circuit museum.",
+                url: "https://abbayedestavelot.be/visiter/individuel-famille/"
+            },
+            {
+                id: 6,
+                name: "Domaine de Bérinzenne and Musée de la Forêt et des Eaux",
+                category: "family",
+                lat: 50.4591714,
+                lng: 5.8837219,
+                distance: "About 23 min",
+                price: "Woods free. Museum: under 3 free, ages 3–5 €2, 6+ €4, adults €7, 60+ €5",
+                hours: "Museum open Thu 15; closed Fri 16 and Sat 17; open Sun 18 through Thu 22; closed Fri 23",
+                notes: "Boardwalks are not for pushchairs.",
+                url: "https://www.berinzenne.be/musee"
+            },
+            {
+                id: 7,
+                name: "Grottes de Remouchamps",
+                category: "family",
+                lat: 50.4802072,
+                lng: 5.7121091,
+                distance: "About 36 min",
+                price: "Ages 3–11 €14, 12–17 €17, adults €20, 60+ €16",
+                hours: "Open every day of the stay; hours depend on season (on 3 Oct the page said 9:30–17:00)",
+                notes: "Guided cave walk with boat.",
+                url: "https://lesgrottes.be/les-grottes/"
+            },
+            {
+                id: 8,
+                name: "Lac de Robertville",
+                category: "family",
+                lat: 50.4525484,
+                lng: 6.1094969,
+                distance: "About 10 min",
+                price: "Free",
+                hours: "Open",
+                notes: "Free lakeside walk. Beach, boats, and swimming are May–September only, so not this trip.",
+                url: "https://www.waimes.be/tourisme/signal-de-botrange/sites-attractions/le-lac-de-robertville"
+            },
+            {
+                id: 9,
+                name: "Ferme Libert",
+                category: "family",
+                lat: 50.4459511,
+                lng: 6.0334909,
+                distance: "About 8 min",
+                price: "No admission price published",
+                hours: "Hours not published",
+                notes: "Short walk to see deer and wild boar, Bevercé.",
+                url: "https://www.malmedy-tourisme.be/fr/que-faire/ferme-libert-parc-animalier/"
+            },
+            {
+                id: 10,
+                name: "Wesertalsperre / barrage de la Vesdre",
+                category: "family",
+                lat: 50.6204094,
+                lng: 6.0912836,
+                distance: "About 37 min",
+                price: "No entry fee published",
+                hours: "In October the centre can close on Mondays in bad weather, so Monday 19 is the weather-risk day",
+                notes: "Dam wall, forest trail, playground, Eupen.",
+                url: "https://www.ostbelgien.eu/fr/fiche/leisurecenters/barrage-de-la-vesdre"
+            },
+            {
+                id: 11,
+                name: "Monschau old town",
+                category: "family",
+                lat: 50.5576768,
+                lng: 6.2399241,
+                distance: "About 32 min",
+                price: "Free",
+                hours: "Open",
+                notes: "Free walk through the half-timbered lanes, Germany. Castle interior has no regular public hours.",
+                url: "https://www.monschau.de/tourismus/sehenswuerdigkeiten/"
+            },
+            {
+                id: 12,
+                name: "Railbike des Hautes Fagnes",
+                category: "family",
+                lat: 50.5182147,
+                lng: 6.2062840,
+                distance: "About 20 min",
+                price: "€46 per railbike, about 2 hours",
+                hours: "Public departures Saturday and Sunday only. For this stay: Sat 17 and Sun 18, at 11:00, 13:30, and 15:45",
+                notes: "Leykaul.",
+                url: "https://www.railbike.be/fr/railbike.html"
+            },
+            {
+                id: 13,
+                name: "Xhoffraix family walk (MDY04)",
+                category: "family",
+                distance: "In Xhoffraix",
+                price: "Free",
+                hours: "Open",
+                notes: "Easy 3.4 km loop.",
+                url: "https://www.malmedy-tourisme.be/fr/a-pied/mdy04-xhoffraix-en-famille/"
+            },
+            {
+                id: 14,
+                name: "Parc des Tanneries playground",
+                category: "family",
+                distance: "About 10 min",
+                price: "Free",
+                hours: "Open 9:00–19:00 in this season",
+                notes: "Malmedy. Adults and children over 11 are not allowed to use the equipment."
+            },
+            {
+                id: 15,
+                name: "Malmedy Battle Tour",
+                category: "ww2",
+                distance: "A few minutes from Xhoffraix",
+                price: "Free",
+                hours: "Open",
+                notes: "Free self-guided walk of 22 photo panels in the town centre.",
+                url: "https://www.malmedy-tourisme.be/en/que-faire/malmedy-battle-tour-december-44/"
+            },
+            {
+                id: 16,
+                name: "Malmedy Massacre Memorial, Baugnez",
+                category: "ww2",
+                distance: "About 16 min",
+                price: "Free",
+                hours: "Open",
+                notes: "Outdoor memorial only. The Baugnez 44 museum closed permanently on 9 January 2023 and is not visitable.",
+                url: "https://www.baugnez44.be/en/museum.html"
+            },
+            {
+                id: 17,
+                name: "December 44 Museum, La Gleize",
+                category: "ww2",
+                distance: "About 30 min",
+                price: "Adults €10, ages 8–12 €7, under 8 free",
+                hours: "10:00–18:00, last entry 17:00. Likely Thursday–Monday plus every day during Belgian school holiday starting 19 Oct (which would cover 19–23 Oct). Check before a Tuesday or Wednesday visit before 19 Oct",
+                notes: "King Tiger outside.",
+                url: "http://www.december44.com/en/info.htm"
+            },
+            {
+                id: 18,
+                name: "Henri-Chapelle American Cemetery",
+                category: "ww2",
+                distance: "About 42 min",
+                price: "Free",
+                hours: "Daily 9:00–17:00 except 25 Dec and 1 Jan, last admission 16:45",
+                notes: "159 rue du Mémorial Américain, 4852.",
+                url: "https://www.abmc.gov/cemeteries-memorials/about-henri-chapelle-american-cemetery/"
+            },
+            {
+                id: 19,
+                name: "Bastogne War Museum",
+                category: "ww2",
+                distance: "About 68 min, 77 km, so it can run over an hour",
+                price: "Adults 19–64 €28, seniors €24.50, children 6–18 €15.50, under 6 free, family €72, parking €7.50",
+                hours: "Mid-October hours were not confirmed (a ticket page showed 9:30–18:00 only for 4–6 Oct)",
+                notes: "Mardasson memorial centre is closed because of falling concrete through about spring 2029; grounds and crypt still open.",
+                url: "https://www.bastognewarmuseum.be/en/your-visit/"
+            },
+            {
+                id: 20,
+                name: "Stavelot memorials",
+                category: "ww2",
+                lat: 50.3931316,
+                lng: 5.9317305,
+                distance: "About 19 min",
+                price: "Free",
+                hours: "Open",
+                notes: "Place du 18 décembre and Cour de Commémoration. Outdoor, no ticket. Coordinate is Stavelot town.",
+                url: "https://tourismestavelot.be/fr/coeur-historique"
+            },
+            {
+                id: 21,
+                name: "1st Infantry Division memorial",
+                category: "ww2",
+                distance: "About 24 min",
+                price: "Free",
+                hours: "Open",
+                notes: "Roundabout west of Büllingen.",
+                url: "https://www.uswarmemorials.org/html/monument_details.php?MemID=1485&SiteID=1133"
+            },
+            {
+                id: 22,
+                name: "Elsenborn Ridge memorial",
+                category: "ww2",
+                distance: "About 25 min",
+                price: "Free",
+                hours: "Open",
+                notes: "The stele, Wirtzfeld. Not the active military range.",
+                url: "https://worldwartours.be/mahnmal-wirtzfeld---elsenborn-ridge.html"
+            },
+            {
+                id: 23,
+                name: "Westwall-Weg, Simonskall",
+                category: "ww2",
+                distance: "About 50 min",
+                price: "Free",
+                hours: "Medical bunker interior open Sundays March–November only (Sunday 18 Oct in this window)",
+                notes: "8 km walk past Siegfried Line bunkers. Do not enter other bunkers.",
+                url: "https://www.rureifel-tourismus.de/en/touren/westwall-weg"
+            },
+            {
+                id: 24,
+                name: "Musée de la Bataille des Ardennes, La Roche-en-Ardenne",
+                category: "ww2",
+                distance: "About 60 min",
+                price: "Adults €12.50, children 6–12 €7.50",
+                hours: "Closed Thu 15 and Fri 16 Oct; open Sat 17 through Fri 23",
+                notes: "",
+                url: "http://www.batarden.be/informations/?lang=en"
+            }
+        ];
+        
+        // Initialize map centered on Xhoffraix
+        const map = L.map('map').setView([50.4569766, 6.0709928], 11);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Add markers for activities with coordinates
+        const markers = {};
+        activities.forEach(activity => {
+            if (activity.lat && activity.lng) {
+                const marker = L.marker([activity.lat, activity.lng]).addTo(map);
+                
+                const popupContent = `
+                    <div class="popup-name">${activity.name}</div>
+                    <div class="popup-meta">
+                        <strong>Distance:</strong> ${activity.distance}<br>
+                        <strong>Price:</strong> ${activity.price}<br>
+                        <strong>Hours:</strong> ${activity.hours}
+                        ${activity.url ? `<br><br><a href="${activity.url}" target="_blank">Visit website</a>` : ''}
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                markers[activity.id] = marker;
+                
+                marker.on('click', function() {
+                    // Scroll to activity card
+                    const card = document.querySelector(`[data-id="${activity.id}"]`);
+                    if (card) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+            }
+        });
+        
+        // Add Xhoffraix reference marker
+        const homeIcon = L.divIcon({
+            html: '<div style="background: #e53e3e; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+            className: '',
+            iconSize: [12, 12]
+        });
+        L.marker([50.4569766, 6.0709928], { icon: homeIcon })
+            .addTo(map)
+            .bindPopup('<div class="popup-name">Xhoffraix</div>');
+        
+        // Render activity list
+        function renderActivities() {
+            const listContainer = document.getElementById('activityList');
+            listContainer.innerHTML = '';
+            
+            activities.forEach(activity => {
+                const card = document.createElement('div');
+                card.className = 'activity-card';
+                card.dataset.id = activity.id;
+                card.dataset.category = activity.category;
+                
+                card.innerHTML = `
+                    <div class="category-badge ${activity.category}">${activity.category === 'family' ? 'Family' : 'World War II'}</div>
+                    <div class="activity-name">${activity.name}</div>
+                    <div class="activity-meta">
+                        <span>📍 ${activity.distance}</span>
+                        <span>💰 ${activity.price}</span>
+                    </div>
+                    <div class="activity-notes">
+                        <strong>Hours:</strong> ${activity.hours}<br>
+                        ${activity.notes ? activity.notes : ''}
+                    </div>
+                    ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Visit website →</a>` : ''}
+                `;
+                
+                card.addEventListener('click', function(e) {
+                    if (!e.target.matches('a')) {
+                        if (markers[activity.id]) {
+                            map.setView([activity.lat, activity.lng], 13);
+                            markers[activity.id].openPopup();
+                        }
+                    }
+                });
+                
+                listContainer.appendChild(card);
+            });
+        }
+        
+        // Filter functionality
+        let currentFilter = 'all';
+        let currentSearch = '';
+        
+        function applyFilters() {
+            const cards = document.querySelectorAll('.activity-card');
+            cards.forEach(card => {
+                const category = card.dataset.category;
+                const text = card.textContent.toLowerCase();
+                
+                const categoryMatch = currentFilter === 'all' || category === currentFilter;
+                const searchMatch = currentSearch === '' || text.includes(currentSearch.toLowerCase());
+                
+                if (categoryMatch && searchMatch) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                applyFilters();
+            });
+        });
+        
+        // Search box
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            currentSearch = e.target.value;
+            applyFilters();
+        });
+        
+        // Initial render
+        renderActivities();
+        
+        // Note about drive times
+        const note = document.createElement('div');
+        note.style.cssText = 'padding: 1rem; background: #fffaf0; border-top: 1px solid #fed7aa; font-size: 0.85rem; color: #744210; text-align: center;';
+        note.textContent = 'Drive times are no-traffic estimates from Xhoffraix (50.4569766 N, 6.0709928 E), fetched 3 October 2026, not live traffic.';
+        document.body.appendChild(note);
+    </script>
+</body>
+</html>
