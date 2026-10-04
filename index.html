@@ -357,7 +357,8 @@
                 }
             });
             
-            // Filter map markers
+            // Filter map markers and collect visible ones
+            const visibleMarkers = [];
             activities.forEach(activity => {
                 const marker = markers[activity.id];
                 if (marker) {
@@ -367,11 +368,25 @@
                     
                     if (categoryMatch && searchMatch) {
                         map.addLayer(marker);
+                        visibleMarkers.push(marker);
                     } else {
                         map.removeLayer(marker);
                     }
                 }
             });
+            
+            // Auto-fit map to visible markers
+            if (visibleMarkers.length > 1) {
+                // Multiple markers: fit bounds with padding
+                const group = L.featureGroup(visibleMarkers);
+                map.fitBounds(group.getBounds(), { padding: [50, 50] });
+            } else if (visibleMarkers.length === 1) {
+                // Single marker: center with sensible zoom
+                const marker = visibleMarkers[0];
+                const latLng = marker.getLatLng();
+                map.setView(latLng, 13);
+            }
+            // If no markers visible, leave map as-is
         }
         
         // Filter buttons
