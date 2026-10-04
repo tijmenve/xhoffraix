@@ -710,7 +710,7 @@
             
             if (visibleMarkers.length > 1) {
                 const group = L.featureGroup(visibleMarkers);
-                map.fitBounds(group.getBounds(), { padding: [50, 50] });
+                map.fitBounds(group.getBounds(), { padding: [80, 80] });
             } else if (visibleMarkers.length === 1) {
                 const marker = visibleMarkers[0];
                 const latLng = marker.getLatLng();
