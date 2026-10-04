@@ -71,6 +71,38 @@
             flex-wrap: wrap;
         }
         
+        .filter-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.5rem 0;
+            margin-bottom: 0.5rem;
+            background: none;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4b5563;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        .filter-toggle:hover {
+            color: #667eea;
+        }
+        
+        .filter-toggle-icon {
+            transition: transform 0.2s;
+        }
+        
+        .filter-toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .filters.collapsed {
+            display: none;
+        }
+        
         .filter-btn {
             flex: 1;
             min-width: 70px;
@@ -324,7 +356,11 @@
     
     <div class="controls">
         <input type="text" class="search-box" placeholder="Search activities..." id="searchBox">
-        <div class="filters">
+        <button class="filter-toggle" id="filterToggle">
+            <span>Categories</span>
+            <span class="filter-toggle-icon collapsed">▼</span>
+        </button>
+        <div class="filters collapsed" id="filters">
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn" data-filter="family">Family</button>
             <button class="filter-btn" data-filter="ww2">World War II</button>
@@ -371,7 +407,7 @@
         
         // Define custom icons for different categories
         const familyIcon = L.divIcon({
-            html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">👨‍👩‍👧</div></div>',
+            html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">👨‍👩‍👧</div></div>',
             className: '',
             iconSize: [32, 32],
             iconAnchor: [16, 32],
@@ -379,7 +415,7 @@
         });
         
         const ww2Icon = L.divIcon({
-            html: '<div style="background: #dc2626; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">🎖️</div></div>',
+            html: '<div style="background: #dc2626; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🎖️</div></div>',
             className: '',
             iconSize: [32, 32],
             iconAnchor: [16, 32],
@@ -387,7 +423,7 @@
         });
         
         const bakeryIcon = L.divIcon({
-            html: '<div style="background: #f59e0b; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">🥖</div></div>',
+            html: '<div style="background: #f59e0b; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🥖</div></div>',
             className: '',
             iconSize: [32, 32],
             iconAnchor: [16, 32],
@@ -395,7 +431,7 @@
         });
         
         const hikeIcon = L.divIcon({
-            html: '<div style="background: #10b981; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">🥾</div></div>',
+            html: '<div style="background: #10b981; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🥾</div></div>',
             className: '',
             iconSize: [32, 32],
             iconAnchor: [16, 32],
@@ -403,7 +439,7 @@
         });
         
         const groceryIcon = L.divIcon({
-            html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">🛒</div></div>',
+            html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🛒</div></div>',
             className: '',
             iconSize: [32, 32],
             iconAnchor: [16, 32],
@@ -700,6 +736,25 @@
         document.getElementById('searchBox').addEventListener('input', function(e) {
             currentSearch = e.target.value;
             applyFilters();
+        });
+        
+        // Filter collapse/expand toggle
+        const filterToggle = document.getElementById('filterToggle');
+        const filters = document.getElementById('filters');
+        const toggleIcon = filterToggle.querySelector('.filter-toggle-icon');
+        
+        // Default to collapsed on narrow screens
+        if (window.innerWidth < 768) {
+            filters.classList.add('collapsed');
+            toggleIcon.classList.add('collapsed');
+        } else {
+            filters.classList.remove('collapsed');
+            toggleIcon.classList.remove('collapsed');
+        }
+        
+        filterToggle.addEventListener('click', function() {
+            filters.classList.toggle('collapsed');
+            toggleIcon.classList.toggle('collapsed');
         });
         
         // Initial render
