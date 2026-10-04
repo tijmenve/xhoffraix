@@ -601,6 +601,22 @@
                     card.classList.add('hidden');
                 }
             });
+            
+            // Filter map markers
+            activities.forEach(activity => {
+                const marker = markers[activity.id];
+                if (marker) {
+                    const activityText = `${activity.name} ${activity.notes} ${activity.distance} ${activity.price} ${activity.hours}`.toLowerCase();
+                    const categoryMatch = currentFilter === 'all' || activity.category === currentFilter;
+                    const searchMatch = currentSearch === '' || activityText.includes(currentSearch.toLowerCase());
+                    
+                    if (categoryMatch && searchMatch) {
+                        map.addLayer(marker);
+                    } else {
+                        map.removeLayer(marker);
+                    }
+                }
+            });
         }
         
         // Filter buttons
