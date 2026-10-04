@@ -172,6 +172,11 @@
             color: #742a2a;
         }
         
+        .category-badge.bakeries {
+            background: #fef3c7;
+            color: #78350f;
+        }
+        
         @media (min-width: 768px) {
             .container {
                 flex-direction: row;
@@ -220,6 +225,7 @@
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn" data-filter="family">Family</button>
             <button class="filter-btn" data-filter="ww2">World War II</button>
+            <button class="filter-btn" data-filter="bakeries">Bakeries</button>
         </div>
     </div>
     
@@ -308,8 +314,13 @@
                     ? `https://www.google.com/maps/dir/?api=1&destination=${activity.lat},${activity.lng}`
                     : `https://www.google.com/maps/search/${encodeURIComponent(activity.address)}`;
                 
+                // Get category display name
+                let categoryDisplay = 'Family';
+                if (activity.category === 'ww2') categoryDisplay = 'World War II';
+                if (activity.category === 'bakeries') categoryDisplay = 'Bakeries';
+                
                 card.innerHTML = `
-                    <div class="category-badge ${activity.category}">${activity.category === 'family' ? 'Family' : 'World War II'}</div>
+                    <div class="category-badge ${activity.category}">${categoryDisplay}</div>
                     <div class="activity-name">${activity.name}</div>
                     <div class="activity-meta">
                         <span>📍 ${activity.distance}</span>
