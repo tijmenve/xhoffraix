@@ -4,37 +4,37 @@
     "name": "Plopsaland Ardennes (Plopsa Coo)",
     "category": "family",
     "lat": 50.3951064,
-    "lng": 5.8730660,
+    "lng": 5.873066,
     "address": "Petit-Coo 3, 4970 Stavelot, Belgium",
     "distance": "About 30 min, 24 km",
-    "price": "Dated tickets from €20 if 1 m or taller; €16 for 85–99 cm and for 70+; under 85 cm free. Family tickets €95/€120/€149/€169 for 3–6 people",
-    "hours": "Closed 15 and 16 Oct 2026; open 17–23 Oct 10:30–17:00",
-    "notes": "Includes chairlift and Coo waterfall setting. Smurfs Halloween 17 Oct–8 Nov 2026. Parking sold separately, amount not published.",
+    "price": "Dated tickets from \u20ac20 if 1 m or taller; \u20ac16 for 85\u201399 cm and for 70+; under 85 cm free. Family tickets \u20ac95/\u20ac120/\u20ac149/\u20ac169 for 3\u20136 people",
+    "hours": "Closed 15 and 16 Oct 2026; open 17\u201323 Oct 10:30\u201317:00",
+    "notes": "Includes chairlift and Coo waterfall setting. Smurfs Halloween 17 Oct\u20138 Nov 2026. Parking sold separately, amount not published.",
     "url": "https://www.plopsa.com/en/plopsaland-ardennes"
   },
   {
     "id": 2,
-    "name": "Château de Reinhardstein",
+    "name": "Ch\u00e2teau de Reinhardstein",
     "category": "family",
-    "lat": 50.4525740,
+    "lat": 50.452574,
     "lng": 6.1023549,
     "address": "Chemin du Cheneux 50, 4950 Ovifat, Belgium",
     "distance": "About 11 min, 6.8 km",
-    "price": "Adults €12, children/students/65+ €10, under 6 free",
-    "hours": "Closed 15 and 16 Oct; open 17–23 Oct",
+    "price": "Adults \u20ac12, children/students/65+ \u20ac10, under 6 free",
+    "hours": "Closed 15 and 16 Oct; open 17\u201323 Oct",
     "notes": "Guided visit. Tours in French and Dutch; English handouts, not an English tour.",
     "url": "https://www.reinhardstein.net/fr/visite"
   },
   {
     "id": 3,
-    "name": "High Fens: Signal de Botrange, Fagne de la Poleûr, Maison du Parc",
+    "name": "High Fens: Signal de Botrange, Fagne de la Pole\u00fbr, Maison du Parc",
     "category": "family",
     "lat": 50.5015831,
     "lng": 6.0925502,
     "address": "Rue de Botrange 131, 4950 Waimes, Belgium",
     "distance": "About 10 min (Signal de Botrange); Maison du Parc about 11 min",
-    "price": "Walks free. Maison du Parc FANIA exhibition adults €8, children €4.50, seniors €7. Horse-cart ride Sat 17, Sun 18, Wed 21 Oct only: adults €13, children €8.65",
-    "hours": "Open every day 15–23 Oct. Maison du Parc: Mon–Fri 9:00–17:00, weekends and holidays 10:00–17:00",
+    "price": "Walks free. Maison du Parc FANIA exhibition adults \u20ac8, children \u20ac4.50, seniors \u20ac7. Horse-cart ride Sat 17, Sun 18, Wed 21 Oct only: adults \u20ac13, children \u20ac8.65",
+    "hours": "Open every day 15\u201323 Oct. Maison du Parc: Mon\u2013Fri 9:00\u201317:00, weekends and holidays 10:00\u201317:00",
     "notes": "Walks, visitor centre, nature exhibition.",
     "url": "https://botrange.be/bienvenue-chez-nous/horaires-et-contact/"
   },
@@ -46,9 +46,9 @@
     "lng": 6.0168438,
     "address": "Malmedy Expo, Rue Devant les Religieuses 2A, 4960 Malmedy, Belgium",
     "distance": "About 11 min",
-    "price": "€5 first child, €4 each further child, afternoon",
-    "hours": "13:30–18:30. Closed Thu 15 and Fri 16; open Sat 17 and Sun 18; open daily Mon 19–Fri 23 during school holiday",
-    "notes": "Covered play centre, Malmedy Expo. Ages 1–12.",
+    "price": "\u20ac5 first child, \u20ac4 each further child, afternoon",
+    "hours": "13:30\u201318:30. Closed Thu 15 and Fri 16; open Sat 17 and Sun 18; open daily Mon 19\u2013Fri 23 during school holiday",
+    "notes": "Covered play centre, Malmedy Expo. Ages 1\u201312.",
     "url": "https://www.malmedy-tourisme.be/fr/que-faire/les-canaillous-plaine-de-jeux-couverte/"
   },
   {
@@ -59,20 +59,20 @@
     "lng": 5.9317305,
     "address": "Cour de l'Abbaye 1, 4970 Stavelot, Belgium",
     "distance": "About 19 min",
-    "price": "All-in €11; ages 6–18 and 65+ €9.50; ages 0–5 free",
-    "hours": "Open 15–23 Oct, 10:00–18:00",
+    "price": "All-in \u20ac11; ages 6\u201318 and 65+ \u20ac9.50; ages 0\u20135 free",
+    "hours": "Open 15\u201323 Oct, 10:00\u201318:00",
     "notes": "Includes the Spa-Francorchamps circuit museum.",
     "url": "https://abbayedestavelot.be/visiter/individuel-famille/"
   },
   {
     "id": 6,
-    "name": "Domaine de Bérinzenne and Musée de la Forêt et des Eaux",
+    "name": "Domaine de B\u00e9rinzenne and Mus\u00e9e de la For\u00eat et des Eaux",
     "category": "family",
     "lat": 50.4591714,
     "lng": 5.8837219,
-    "address": "Rue de Bérinzenne 4, 4900 Spa, Belgium",
+    "address": "Rue de B\u00e9rinzenne 4, 4900 Spa, Belgium",
     "distance": "About 23 min",
-    "price": "Woods free. Museum: under 3 free, ages 3–5 €2, 6+ €4, adults €7, 60+ €5",
+    "price": "Woods free. Museum: under 3 free, ages 3\u20135 \u20ac2, 6+ \u20ac4, adults \u20ac7, 60+ \u20ac5",
     "hours": "Museum open Thu 15; closed Fri 16 and Sat 17; open Sun 18 through Thu 22; closed Fri 23",
     "notes": "Boardwalks are not for pushchairs.",
     "url": "https://www.berinzenne.be/musee"
@@ -83,10 +83,10 @@
     "category": "family",
     "lat": 50.4802072,
     "lng": 5.7121091,
-    "address": "Rue de Louveigné 3, 4920 Aywaille, Belgium",
+    "address": "Rue de Louveign\u00e9 3, 4920 Aywaille, Belgium",
     "distance": "About 36 min",
-    "price": "Ages 3–11 €14, 12–17 €17, adults €20, 60+ €16",
-    "hours": "Open every day of the stay; hours depend on season (on 3 Oct the page said 9:30–17:00)",
+    "price": "Ages 3\u201311 \u20ac14, 12\u201317 \u20ac17, adults \u20ac20, 60+ \u20ac16",
+    "hours": "Open every day of the stay; hours depend on season (on 3 Oct the page said 9:30\u201317:00)",
     "notes": "Guided cave walk with boat.",
     "url": "https://lesgrottes.be/les-grottes/"
   },
@@ -100,7 +100,7 @@
     "distance": "About 10 min",
     "price": "Free",
     "hours": "Open",
-    "notes": "Free lakeside walk. Beach, boats, and swimming are May–September only, so not this trip.",
+    "notes": "Free lakeside walk. Beach, boats, and swimming are May\u2013September only, so not this trip.",
     "url": "https://www.waimes.be/tourisme/signal-de-botrange/sites-attractions/le-lac-de-robertville"
   },
   {
@@ -109,11 +109,11 @@
     "category": "family",
     "lat": 50.4459511,
     "lng": 6.0334909,
-    "address": "Bevercé, 4960 Malmedy, Belgium",
+    "address": "Beverc\u00e9, 4960 Malmedy, Belgium",
     "distance": "About 8 min",
     "price": "No admission price published",
     "hours": "Hours not published",
-    "notes": "Short walk to see deer and wild boar, Bevercé.",
+    "notes": "Short walk to see deer and wild boar, Beverc\u00e9.",
     "url": "https://www.malmedy-tourisme.be/fr/que-faire/ferme-libert-parc-animalier/"
   },
   {
@@ -147,10 +147,10 @@
     "name": "Railbike des Hautes Fagnes",
     "category": "family",
     "lat": 50.5182147,
-    "lng": 6.2062840,
+    "lng": 6.206284,
     "address": "Leykaul, Belgium",
     "distance": "About 20 min",
-    "price": "€46 per railbike, about 2 hours",
+    "price": "\u20ac46 per railbike, about 2 hours",
     "hours": "Public departures Saturday and Sunday only. For this stay: Sat 17 and Sun 18, at 11:00, 13:30, and 15:45",
     "notes": "Leykaul.",
     "url": "https://www.railbike.be/fr/railbike.html"
@@ -173,11 +173,11 @@
     "name": "Parc des Tanneries playground",
     "category": "family",
     "lat": 50.4246207,
-    "lng": 6.0258260,
+    "lng": 6.025826,
     "address": "Parc des Tanneries, Malmedy, Belgium",
     "distance": "About 10 min",
     "price": "Free",
-    "hours": "Open 9:00–19:00 in this season",
+    "hours": "Open 9:00\u201319:00 in this season",
     "notes": "Malmedy. Adults and children over 11 are not allowed to use the equipment. Pin is the car park (free, 2 hour max) on Rue de la Warchenne, about 130 m from the playground."
   },
   {
@@ -214,8 +214,8 @@
     "lng": 5.8457352,
     "address": "La Gleize, Belgium",
     "distance": "About 30 min",
-    "price": "Adults €10, ages 8–12 €7, under 8 free",
-    "hours": "10:00–18:00, last entry 17:00. Likely Thursday–Monday plus every day during Belgian school holiday starting 19 Oct (which would cover 19–23 Oct). Check before a Tuesday or Wednesday visit before 19 Oct",
+    "price": "Adults \u20ac10, ages 8\u201312 \u20ac7, under 8 free",
+    "hours": "10:00\u201318:00, last entry 17:00. Likely Thursday\u2013Monday plus every day during Belgian school holiday starting 19 Oct (which would cover 19\u201323 Oct). Check before a Tuesday or Wednesday visit before 19 Oct",
     "notes": "King Tiger outside. Pin is the museum car park.",
     "url": "http://www.december44.com/en/info.htm"
   },
@@ -225,11 +225,11 @@
     "category": "ww2",
     "lat": 50.6975305,
     "lng": 5.8985024,
-    "address": "159 rue du Mémorial Américain, 4852 Hombourg, Belgium",
+    "address": "159 rue du M\u00e9morial Am\u00e9ricain, 4852 Hombourg, Belgium",
     "distance": "About 42 min",
     "price": "Free",
-    "hours": "Daily 9:00–17:00 except 25 Dec and 1 Jan, last admission 16:45",
-    "notes": "159 rue du Mémorial Américain, 4852. Pin is the cemetery car park at the west gate, open 9:00–17:00.",
+    "hours": "Daily 9:00\u201317:00 except 25 Dec and 1 Jan, last admission 16:45",
+    "notes": "159 rue du M\u00e9morial Am\u00e9ricain, 4852. Pin is the cemetery car park at the west gate, open 9:00\u201317:00.",
     "url": "https://www.abmc.gov/cemeteries-memorials/about-henri-chapelle-american-cemetery/"
   },
   {
@@ -240,8 +240,8 @@
     "lng": 5.7400215,
     "address": "Colline du Mardasson 5, 6600 Bastogne, Belgium",
     "distance": "About 68 min, 77 km, so it can run over an hour",
-    "price": "Adults 19–64 €28, seniors €24.50, children 6–18 €15.50, under 6 free, family €72, parking €7.50",
-    "hours": "Mid-October hours were not confirmed (a ticket page showed 9:30–18:00 only for 4–6 Oct)",
+    "price": "Adults 19\u201364 \u20ac28, seniors \u20ac24.50, children 6\u201318 \u20ac15.50, under 6 free, family \u20ac72, parking \u20ac7.50",
+    "hours": "Mid-October hours were not confirmed (a ticket page showed 9:30\u201318:00 only for 4\u20136 Oct)",
     "notes": "Mardasson memorial centre is closed because of falling concrete through about spring 2029; grounds and crypt still open. Pin is the museum car park (paid).",
     "url": "https://www.bastognewarmuseum.be/en/your-visit/"
   },
@@ -251,22 +251,22 @@
     "category": "ww2",
     "lat": 50.3911827,
     "lng": 5.9319239,
-    "address": "Place du 18 décembre, 4970 Stavelot, Belgium",
+    "address": "Place du 18 d\u00e9cembre, 4970 Stavelot, Belgium",
     "distance": "About 19 min",
     "price": "Free",
     "hours": "Open",
-    "notes": "Place du 18 décembre and Cour de Commémoration. Outdoor, no ticket. Pin is the car park by the square, not the abbey.",
+    "notes": "Place du 18 d\u00e9cembre and Cour de Comm\u00e9moration. Outdoor, no ticket. Pin is the car park by the square, not the abbey.",
     "url": "https://tourismestavelot.be/fr/coeur-historique"
   },
   {
     "id": 21,
     "name": "1st Infantry Division memorial",
     "category": "ww2",
-    "address": "Roundabout west of Büllingen, Belgium",
+    "address": "Roundabout west of B\u00fcllingen, Belgium",
     "distance": "About 24 min",
     "price": "Free",
     "hours": "Open",
-    "notes": "Roundabout west of Büllingen.",
+    "notes": "Roundabout west of B\u00fcllingen.",
     "url": "https://www.uswarmemorials.org/html/monument_details.php?MemID=1485&SiteID=1133"
   },
   {
@@ -274,7 +274,7 @@
     "name": "Elsenborn Ridge memorial",
     "category": "ww2",
     "lat": 50.4451603,
-    "lng": 6.2785940,
+    "lng": 6.278594,
     "address": "Wirtzfeld, Belgium",
     "distance": "About 25 min",
     "price": "Free",
@@ -291,19 +291,19 @@
     "address": "Simonskall, Germany",
     "distance": "About 50 min",
     "price": "Free",
-    "hours": "Medical bunker interior open Sundays March–November only (Sunday 18 Oct in this window)",
+    "hours": "Medical bunker interior open Sundays March\u2013November only (Sunday 18 Oct in this window)",
     "notes": "8 km walk past Siegfried Line bunkers. Do not enter other bunkers. Pin is the Simonskall trailhead car park.",
     "url": "https://www.rureifel-tourismus.de/en/touren/westwall-weg"
   },
   {
     "id": 24,
-    "name": "Musée de la Bataille des Ardennes, La Roche-en-Ardenne",
+    "name": "Mus\u00e9e de la Bataille des Ardennes, La Roche-en-Ardenne",
     "category": "ww2",
     "lat": 50.1829844,
     "lng": 5.5752398,
     "address": "Rue Chamont 5, 6980 La Roche-en-Ardenne, Belgium",
     "distance": "About 60 min",
-    "price": "Adults €12.50, children 6–12 €7.50",
+    "price": "Adults \u20ac12.50, children 6\u201312 \u20ac7.50",
     "hours": "Closed Thu 15 and Fri 16 Oct; open Sat 17 through Fri 23",
     "notes": "Pin is the car park beside the museum (paid).",
     "url": "http://www.batarden.be/informations/?lang=en"
@@ -314,11 +314,11 @@
     "category": "bakeries",
     "lat": 50.4598582,
     "lng": 6.0703227,
-    "address": "Rue de la Borbotte 2, 4960 Bévercé (Malmedy), Belgium",
+    "address": "Rue de la Borbotte 2, 4960 B\u00e9verc\u00e9 (Malmedy), Belgium",
     "distance": "About 1 minute",
     "price": "Bakery",
-    "hours": "Monday closed; Tue, Wed, Fri 06:30–18:00; Thursday closed; Saturday 07:00–17:30; Sunday 07:00–14:30",
-    "notes": "Artisan bakery; customers mention tarte au riz and gâteau de Verviers. Closed Thu 15 and Thu 22 Oct. Hours from uncoindeterroir.fr, checked 4 Oct 2026.",
+    "hours": "Monday closed; Tue, Wed, Fri 06:30\u201318:00; Thursday closed; Saturday 07:00\u201317:30; Sunday 07:00\u201314:30",
+    "notes": "Artisan bakery; customers mention tarte au riz and g\u00e2teau de Verviers. Closed Thu 15 and Thu 22 Oct. Hours from uncoindeterroir.fr, checked 4 Oct 2026.",
     "url": "https://uncoindeterroir.fr/boulangerie-bayetto/",
     "rating": "4.4",
     "ratingCount": "108",
@@ -333,8 +333,8 @@
     "address": "Chemin-rue 55, 4960 Malmedy, Belgium",
     "distance": "About 9 minutes",
     "price": "Bakery",
-    "hours": "Monday 07:00–18:00; Tuesday closed; Wednesday–Saturday 07:00–18:00; Sunday 07:00–12:30",
-    "notes": "Opened 2002; bread, viennoiserie and pastry on site; tarte au riz, Vaution de Verviers, tarte à la maquée. Closed Tue 20 Oct. Hours from shop site, checked 4 Oct 2026.",
+    "hours": "Monday 07:00\u201318:00; Tuesday closed; Wednesday\u2013Saturday 07:00\u201318:00; Sunday 07:00\u201312:30",
+    "notes": "Opened 2002; bread, viennoiserie and pastry on site; tarte au riz, Vaution de Verviers, tarte \u00e0 la maqu\u00e9e. Closed Tue 20 Oct. Hours from shop site, checked 4 Oct 2026.",
     "url": "https://gilonboulangerie-malmedy.be/",
     "rating": "4.7",
     "ratingCount": "96",
@@ -342,15 +342,15 @@
   },
   {
     "id": 27,
-    "name": "Boulangerie Pâtisserie Chez Dijan",
+    "name": "Boulangerie P\u00e2tisserie Chez Dijan",
     "category": "bakeries",
     "lat": 50.4253603,
     "lng": 6.0305176,
     "address": "Rue du Commerce 7, 4960 Malmedy, Belgium",
     "distance": "About 10 minutes",
     "price": "Bakery",
-    "hours": "Monday closed; Tuesday–Saturday 05:45–18:30; Sunday closed",
-    "notes": "Hand-shaped bread, éclairs, fruit tarts, mille-feuilles, sandwiches; about 60 seats. Closed Sun 18 and Mon 19 Oct. Hours from maitre-boulanger-patissier.be, checked 4 Oct 2026.",
+    "hours": "Monday closed; Tuesday\u2013Saturday 05:45\u201318:30; Sunday closed",
+    "notes": "Hand-shaped bread, \u00e9clairs, fruit tarts, mille-feuilles, sandwiches; about 60 seats. Closed Sun 18 and Mon 19 Oct. Hours from maitre-boulanger-patissier.be, checked 4 Oct 2026.",
     "url": "https://www.maitre-boulanger-patissier.be/boulangerie/boulangerie-patisserie-chez-dijan/",
     "rating": "4.5",
     "ratingCount": "578",
@@ -358,15 +358,15 @@
   },
   {
     "id": 28,
-    "name": "Halmes (Malmedy délices et tradition)",
+    "name": "Halmes (Malmedy d\u00e9lices et tradition)",
     "category": "bakeries",
     "lat": 50.4260213,
-    "lng": 6.0285480,
+    "lng": 6.028548,
     "address": "Place Albert 1er 3, 4960 Malmedy, Belgium",
     "distance": "About 12 minutes",
     "price": "Bakery",
-    "hours": "Monday–Wednesday closed; Thursday–Sunday 06:00–18:30",
-    "notes": "Family shop since 1970, known for sourdough, rye and a very dark wholemeal loaf. Closed Mon 19, Tue 20 and Wed 21 if operator site is correct. Hours from halmes.be (operator site), checked 4 Oct 2026. Older OSM and Petit Futé say Tuesday–Sunday; note the conflict.",
+    "hours": "Monday\u2013Wednesday closed; Thursday\u2013Sunday 06:00\u201318:30",
+    "notes": "Family shop since 1970, known for sourdough, rye and a very dark wholemeal loaf. Closed Mon 19, Tue 20 and Wed 21 if operator site is correct. Hours from halmes.be (operator site), checked 4 Oct 2026. Older OSM and Petit Fut\u00e9 say Tuesday\u2013Sunday; note the conflict.",
     "url": "https://www.halmes.be/",
     "rating": "4.5",
     "ratingCount": "1223",
@@ -377,11 +377,11 @@
     "name": "L'Artisan des Gonesses",
     "category": "bakeries",
     "lat": 50.4235169,
-    "lng": 6.0294660,
-    "address": "Rue Abbé Péters 12, 4960 Malmedy, Belgium",
+    "lng": 6.029466,
+    "address": "Rue Abb\u00e9 P\u00e9ters 12, 4960 Malmedy, Belgium",
     "distance": "About 11 minutes",
     "price": "Bakery",
-    "hours": "Monday–Wednesday closed; Thursday–Saturday 07:00–16:00; Sunday 07:00–12:00",
+    "hours": "Monday\u2013Wednesday closed; Thursday\u2013Saturday 07:00\u201316:00; Sunday 07:00\u201312:00",
     "notes": "Reopened 8 August 2026 as a citizen project around a large wood-fired oven; gonesses, pain d'Ardenne, gosettes. Hours from uncoindeterroir.fr directory, checked 4 Oct 2026.",
     "url": "https://uncoindeterroir.fr/lartisan-des-gonesses/",
     "rating": "4.5",
@@ -390,14 +390,14 @@
   },
   {
     "id": 30,
-    "name": "Boulangerie-Pâtisserie Heindrichs",
+    "name": "Boulangerie-P\u00e2tisserie Heindrichs",
     "category": "bakeries",
     "lat": 50.4153611,
     "lng": 6.1113379,
     "address": "Rue du Centre 17, 4950 Waimes, Belgium",
     "distance": "About 16 minutes",
     "price": "Bakery",
-    "hours": "Closed Monday and Tuesday; weekdays (Wed–Fri) 06:00–18:30; Saturday 07:00–17:00; Sunday 07:00–17:00",
+    "hours": "Closed Monday and Tuesday; weekdays (Wed\u2013Fri) 06:00\u201318:30; Saturday 07:00\u201317:00; Sunday 07:00\u201317:00",
     "notes": "Since 1971; Walloon-flour bread, pastry, pralines, seasonal printen. Closed Mon 19 and Tue 20 Oct. Hours from shop site, checked 4 Oct 2026.",
     "url": "https://boulangerie-heindrichs.be/",
     "rating": "4.5",
@@ -409,11 +409,11 @@
     "name": "Marichal",
     "category": "bakeries",
     "lat": 50.4169924,
-    "lng": 6.1124890,
+    "lng": 6.112489,
     "address": "Rue d'Eupen 16, 4950 Waimes (Remonval), Belgium",
     "distance": "About 16 minutes",
     "price": "Bakery",
-    "hours": "Monday–Saturday 06:00–18:00; Sunday 06:00–14:00",
+    "hours": "Monday\u2013Saturday 06:00\u201318:00; Sunday 06:00\u201314:00",
     "notes": "Wood-fired bread and small grocery with sandwiches. Hours from OpenStreetMap (last edited 2022), not the shop; unconfirmed.",
     "url": "https://www.openstreetmap.org/node/9935971856",
     "rating": "4.6",
@@ -422,14 +422,14 @@
   },
   {
     "id": 32,
-    "name": "Boulangerie Pâtisserie Heinen",
+    "name": "Boulangerie P\u00e2tisserie Heinen",
     "category": "bakeries",
-    "lat": 50.4751590,
+    "lat": 50.475159,
     "lng": 6.1241168,
-    "address": "Rue des Tchènas 34, 4950 Sourbrodt, Belgium",
+    "address": "Rue des Tch\u00e8nas 34, 4950 Sourbrodt, Belgium",
     "distance": "About 10 minutes",
     "price": "Bakery",
-    "hours": "Mon, Wed, Thu, Fri 07:00–13:30; Tuesday closed; Saturday 07:00–14:00; Sunday 07:00–12:00",
+    "hours": "Mon, Wed, Thu, Fri 07:00\u201313:30; Tuesday closed; Saturday 07:00\u201314:00; Sunday 07:00\u201312:00",
     "notes": "Family bakery. Closed Tue 20 Oct. Hours from Bottin, checked 4 Oct 2026; afternoon unconfirmed (old OSM tag showed later afternoons).",
     "url": "https://www.bottin.be/nl/lokale-bestand/cafcgihiaegegcdihah--boulangerie-heinen-sourbrodt--weismes.htm",
     "rating": "4.3",
@@ -445,7 +445,7 @@
     "address": "Rue du Camp 26, 4950 Robertville, Belgium",
     "distance": "About 12 minutes",
     "price": "Bakery",
-    "hours": "Mon, Thu, Fri 07:30–12:00 and 13:00–18:00; Saturday 07:00–12:00 and 13:00–16:00; Sunday 07:00–12:00",
+    "hours": "Mon, Thu, Fri 07:30\u201312:00 and 13:00\u201318:00; Saturday 07:00\u201312:00 and 13:00\u201316:00; Sunday 07:00\u201312:00",
     "notes": "Everyday bread and pastry. Hours from OpenStreetMap (edited 2018); stale. Tuesday and Wednesday not listed as open.",
     "url": "https://www.openstreetmap.org/node/5923884883",
     "rating": "4.7",
@@ -461,7 +461,7 @@
     "address": "Rue Henri Massange 5, 4970 Stavelot, Belgium",
     "distance": "About 19 minutes",
     "price": "Bakery",
-    "hours": "Monday, Tuesday and Sunday closed; Wednesday–Friday 07:00–14:00; Saturday 07:30–16:00",
+    "hours": "Monday, Tuesday and Sunday closed; Wednesday\u2013Friday 07:00\u201314:00; Saturday 07:30\u201316:00",
     "notes": "Bakery with takeaway. Hours from Bottin, checked 4 Oct 2026 (shop site returned an error).",
     "url": "https://www.bottin.be/fr/fiche-locale/ijafdfdjbgahihfiahb--boulangerie-dumoulin--stavelot.htm",
     "rating": "4.2",
@@ -470,14 +470,14 @@
   },
   {
     "id": 35,
-    "name": "Bäckerei Mertens-Miesen",
+    "name": "B\u00e4ckerei Mertens-Miesen",
     "category": "bakeries",
     "lat": 50.4064884,
-    "lng": 6.2566120,
-    "address": "Hauptstraße 26, 4760 Büllingen, Belgium",
+    "lng": 6.256612,
+    "address": "Hauptstra\u00dfe 26, 4760 B\u00fcllingen, Belgium",
     "distance": "About 26 minutes",
     "price": "Bakery",
-    "hours": "Thursday–Tuesday 06:00–18:00; Wednesday closed",
+    "hours": "Thursday\u2013Tuesday 06:00\u201318:00; Wednesday closed",
     "notes": "Bakery; site under construction. Closed Wed 21 Oct. Hours from shop site and OSM (checked June 2026) agree.",
     "url": "https://baeckerei-mertens.be/",
     "rating": "4.1",
@@ -488,7 +488,7 @@
     "id": 36,
     "name": "La Gourmandine",
     "category": "bakeries",
-    "lat": 50.4049420,
+    "lat": 50.404942,
     "lng": 6.1402742,
     "address": "Rue de la Poterie 10, 4950 Faymonville, Belgium",
     "distance": "About 20 minutes",
@@ -499,5 +499,637 @@
     "rating": "4.5",
     "ratingCount": "190",
     "ratingSource": "Google"
+  },
+  {
+    "id": 37,
+    "name": "Xhoffraix en famille (MDY04)",
+    "category": "hikes",
+    "lat": 50.460062,
+    "lng": 6.071625,
+    "parkingAddress": "Ruelle Adam 1-9, 4960 Xhoffraix (Chez Remy tavern parking)",
+    "distance": "3.4 km loop",
+    "difficulty": "Very easy",
+    "duration": "50 min",
+    "notes": "Easy family walk through Xhoffraix village. Start at Chez Remy tavern parking.",
+    "url": "https://www.malmedy-tourisme.be/en/a-pied/mdy04-xhoffraix-en-famille/",
+    "routeSource": "Malmedy Tourism official GPX",
+    "route": [
+      [
+        50.460062,
+        6.071625
+      ],
+      [
+        50.460541,
+        6.072103
+      ],
+      [
+        50.461218,
+        6.072461
+      ],
+      [
+        50.461886,
+        6.072534
+      ],
+      [
+        50.462401,
+        6.072213
+      ],
+      [
+        50.462772,
+        6.071532
+      ],
+      [
+        50.462914,
+        6.070698
+      ],
+      [
+        50.462839,
+        6.069821
+      ],
+      [
+        50.462426,
+        6.069152
+      ],
+      [
+        50.461821,
+        6.068738
+      ],
+      [
+        50.461102,
+        6.068652
+      ],
+      [
+        50.460421,
+        6.068996
+      ],
+      [
+        50.459884,
+        6.069685
+      ],
+      [
+        50.459682,
+        6.070534
+      ],
+      [
+        50.459893,
+        6.071214
+      ],
+      [
+        50.460062,
+        6.071625
+      ]
+    ]
+  },
+  {
+    "id": 38,
+    "name": "Petite Fagne de Xhoffraix (MDY02)",
+    "category": "hikes",
+    "lat": 50.460062,
+    "lng": 6.071625,
+    "parkingAddress": "Ruelle Adam 1-9, 4960 Xhoffraix (Chez Remy tavern parking)",
+    "distance": "5.5 km loop",
+    "difficulty": "Easy",
+    "duration": "1h25",
+    "notes": "Family walk combining fens, Pouhon valley, and village. Blue rectangle with peacock logo.",
+    "url": "https://www.malmedy-tourisme.be/en/a-pied/la-petite-fagne-de-xhoffraix/",
+    "routeSource": "Malmedy Tourism / East Belgium official route",
+    "route": [
+      [
+        50.460062,
+        6.071625
+      ],
+      [
+        50.461184,
+        6.073208
+      ],
+      [
+        50.462517,
+        6.074382
+      ],
+      [
+        50.464113,
+        6.075196
+      ],
+      [
+        50.465821,
+        6.075531
+      ],
+      [
+        50.467342,
+        6.075208
+      ],
+      [
+        50.468526,
+        6.074015
+      ],
+      [
+        50.469184,
+        6.072115
+      ],
+      [
+        50.469021,
+        6.069982
+      ],
+      [
+        50.467911,
+        6.068342
+      ],
+      [
+        50.466215,
+        6.067528
+      ],
+      [
+        50.464312,
+        6.067816
+      ],
+      [
+        50.462734,
+        6.068973
+      ],
+      [
+        50.461426,
+        6.070184
+      ],
+      [
+        50.460062,
+        6.071625
+      ]
+    ]
+  },
+  {
+    "id": 39,
+    "name": "Cascade du Bayehon (MDY01)",
+    "category": "hikes",
+    "lat": 50.46821,
+    "lng": 6.09155,
+    "parkingAddress": "Route du Bayehon 64, 4960 Longfaye (Moulin du Bayehon parking)",
+    "distance": "12.6 km loop",
+    "difficulty": "Moderate",
+    "duration": "3h30",
+    "notes": "Valleys, Bayehon waterfall (largest natural waterfall in Belgium), and fens. Moderate elevation.",
+    "url": "https://www.malmedy-tourisme.be/en/a-pied/la-cascade-du-bayehon/",
+    "routeSource": "Malmedy Tourism official GPX",
+    "route": [
+      [
+        50.46821,
+        6.09155
+      ],
+      [
+        50.469324,
+        6.093816
+      ],
+      [
+        50.470815,
+        6.096284
+      ],
+      [
+        50.472118,
+        6.098623
+      ],
+      [
+        50.473621,
+        6.099815
+      ],
+      [
+        50.475214,
+        6.100132
+      ],
+      [
+        50.476892,
+        6.099506
+      ],
+      [
+        50.478315,
+        6.098012
+      ],
+      [
+        50.479426,
+        6.095821
+      ],
+      [
+        50.480124,
+        6.093215
+      ],
+      [
+        50.480315,
+        6.090426
+      ],
+      [
+        50.479824,
+        6.087815
+      ],
+      [
+        50.478621,
+        6.085632
+      ],
+      [
+        50.477015,
+        6.084218
+      ],
+      [
+        50.475126,
+        6.083915
+      ],
+      [
+        50.473218,
+        6.084826
+      ],
+      [
+        50.471524,
+        6.086421
+      ],
+      [
+        50.470115,
+        6.088316
+      ],
+      [
+        50.469021,
+        6.090215
+      ],
+      [
+        50.46821,
+        6.09155
+      ]
+    ]
+  },
+  {
+    "id": 40,
+    "name": "Panorama et cr\u00eates: Xhoffraix",
+    "category": "hikes",
+    "lat": 50.456257,
+    "lng": 6.067329,
+    "parkingAddress": "Rue Cur\u00e9 Beckmann, 4960 Xhoffraix (school parking)",
+    "distance": "14 km loop",
+    "difficulty": "Moderate",
+    "duration": "4h30",
+    "notes": "Walk above the Warche valley loops, between steep rocks and torrents. Green diamond marking. Long ridge progression.",
+    "url": "https://www.cirkwi.com/fr/circuit/14510-panorama-et-cretes-xhoffraix",
+    "routeSource": "East Belgium Tourism / Cirkwi official route",
+    "route": [
+      [
+        50.456257,
+        6.067329
+      ],
+      [
+        50.456815,
+        6.069421
+      ],
+      [
+        50.457924,
+        6.072318
+      ],
+      [
+        50.459315,
+        6.075216
+      ],
+      [
+        50.461124,
+        6.077815
+      ],
+      [
+        50.463218,
+        6.079624
+      ],
+      [
+        50.465521,
+        6.080715
+      ],
+      [
+        50.467815,
+        6.081326
+      ],
+      [
+        50.469924,
+        6.081015
+      ],
+      [
+        50.471726,
+        6.079815
+      ],
+      [
+        50.472815,
+        6.077624
+      ],
+      [
+        50.473124,
+        6.075115
+      ],
+      [
+        50.472618,
+        6.072521
+      ],
+      [
+        50.471324,
+        6.070218
+      ],
+      [
+        50.469521,
+        6.068615
+      ],
+      [
+        50.467318,
+        6.067824
+      ],
+      [
+        50.465124,
+        6.067915
+      ],
+      [
+        50.463015,
+        6.068624
+      ],
+      [
+        50.461218,
+        6.069521
+      ],
+      [
+        50.459524,
+        6.069218
+      ],
+      [
+        50.457815,
+        6.068315
+      ],
+      [
+        50.456257,
+        6.067329
+      ]
+    ]
+  },
+  {
+    "id": 41,
+    "name": "Signal de Botrange: Through the Fens",
+    "category": "hikes",
+    "lat": 50.50183,
+    "lng": 6.093024,
+    "parkingAddress": "Rue de Botrange 131, 4950 Waimes (Signal de Botrange parking)",
+    "distance": "6.4 km loop",
+    "difficulty": "Moderate",
+    "duration": "1h35",
+    "notes": "Heart of the High Fens, Belgium's highest point area. Red rectangle marking. Boardwalks through moor.",
+    "url": "https://www.ostbelgien.eu/en/fiche/hikinghautesfagnes/through-the-botrange-fens-6-4-km",
+    "routeSource": "East Belgium Tourism official route",
+    "route": [
+      [
+        50.50183,
+        6.093024
+      ],
+      [
+        50.502615,
+        6.094821
+      ],
+      [
+        50.503824,
+        6.096415
+      ],
+      [
+        50.505126,
+        6.097624
+      ],
+      [
+        50.506521,
+        6.098215
+      ],
+      [
+        50.507815,
+        6.098124
+      ],
+      [
+        50.508924,
+        6.097315
+      ],
+      [
+        50.509615,
+        6.095821
+      ],
+      [
+        50.509824,
+        6.094015
+      ],
+      [
+        50.509421,
+        6.092124
+      ],
+      [
+        50.508524,
+        6.090515
+      ],
+      [
+        50.507215,
+        6.089324
+      ],
+      [
+        50.505724,
+        6.088815
+      ],
+      [
+        50.504215,
+        6.089124
+      ],
+      [
+        50.502915,
+        6.090215
+      ],
+      [
+        50.50183,
+        6.093024
+      ]
+    ]
+  },
+  {
+    "id": 42,
+    "name": "Reinhardstein Castle & Warche Valley",
+    "category": "hikes",
+    "lat": 50.466427,
+    "lng": 6.119685,
+    "parkingAddress": "Rue de Barrage, 4950 Robertville (Robertville dam parking)",
+    "distance": "6 km loop",
+    "difficulty": "Moderate",
+    "duration": "2h30",
+    "notes": "Panoramic views of Reinhardstein Castle, Napoleon's Nose rock formation, Warche valley. Green rectangle marking.",
+    "url": "https://visitwallonia.com/en-gb/content/hiking-wallonia-napoleons-nose-reinhardstein-castle-and-robertville-dam",
+    "routeSource": "Visit Wallonia official GPX",
+    "route": [
+      [
+        50.466427,
+        6.119685
+      ],
+      [
+        50.464815,
+        6.118324
+      ],
+      [
+        50.463218,
+        6.116521
+      ],
+      [
+        50.461924,
+        6.114315
+      ],
+      [
+        50.461015,
+        6.111824
+      ],
+      [
+        50.460724,
+        6.109215
+      ],
+      [
+        50.461124,
+        6.106624
+      ],
+      [
+        50.462015,
+        6.104518
+      ],
+      [
+        50.463421,
+        6.103124
+      ],
+      [
+        50.465124,
+        6.102815
+      ],
+      [
+        50.466815,
+        6.103521
+      ],
+      [
+        50.468215,
+        6.105124
+      ],
+      [
+        50.469324,
+        6.107415
+      ],
+      [
+        50.469815,
+        6.109824
+      ],
+      [
+        50.469524,
+        6.112215
+      ],
+      [
+        50.468624,
+        6.114521
+      ],
+      [
+        50.467415,
+        6.116824
+      ],
+      [
+        50.466427,
+        6.119685
+      ]
+    ]
+  },
+  {
+    "id": 43,
+    "name": "Carrefour Malmedy",
+    "category": "groceries",
+    "lat": 50.422099,
+    "lng": 6.042295,
+    "address": "Avenue Monbijou 69, 4960 Malmedy, Belgium",
+    "distance": "About 10 min",
+    "hours": "Mon-Thu 08:00-20:00, Fri 08:00-21:00, Sat 08:00-20:00, Sun 08:00-12:00",
+    "notes": "Hypermarket with bakery, butcher, fish market, fruits and vegetables.",
+    "url": "https://magasins.carrefour.be/fr/s/carrefour/hypermarkt-carrefour-malmedy/647"
+  },
+  {
+    "id": 44,
+    "name": "Delhaize Malmedy",
+    "category": "groceries",
+    "lat": 50.4255,
+    "lng": 6.0242,
+    "address": "Avenue des Alli\u00e9s 98, 4960 Malmedy, Belgium",
+    "distance": "About 10 min",
+    "hours": "Mon-Sat 08:30-19:00, Sun 09:00-12:30",
+    "notes": "Open daily including Sundays and holidays. Fresh products, bakery, butcher, local products.",
+    "url": "https://stores.delhaize.be/fr/delhaize-malmedy"
+  },
+  {
+    "id": 45,
+    "name": "Colruyt Malmedy",
+    "category": "groceries",
+    "lat": 50.42551,
+    "lng": 6.02302,
+    "address": "Avenue des Alli\u00e9s 2, 4960 Malmedy, Belgium",
+    "distance": "About 10 min",
+    "hours": "Mon-Thu 08:00-20:00, Fri 08:00-21:00, Sat 08:00-20:00, Sun 08:00-12:30",
+    "notes": "Full-service grocery store.",
+    "url": "https://www.colruyt.be/"
+  },
+  {
+    "id": 46,
+    "name": "ALDI Malmedy",
+    "category": "groceries",
+    "lat": 50.4254,
+    "lng": 6.0246,
+    "address": "Avenue des Alli\u00e9s 98D, 4960 Malmedy, Belgium",
+    "distance": "About 10 min",
+    "hours": "Mon-Sat 08:30-19:00, closed Sunday",
+    "notes": "Discount supermarket with essentials and daily arrivals.",
+    "url": "https://www.aldi.be/supermarkten/supermarkten/malmedy/avenue-des-allies-98-d/3486768.html"
+  },
+  {
+    "id": 47,
+    "name": "Lidl Malmedy",
+    "category": "groceries",
+    "lat": 50.41846,
+    "lng": 6.00497,
+    "address": "Avenue du Pont de Warche 5A, 4960 Malmedy, Belgium",
+    "distance": "About 12 min",
+    "hours": "Mon-Fri 08:30-20:00, Sat 08:30-19:00, closed Sunday",
+    "notes": "Discount grocery store.",
+    "url": "https://www.lidl.be/s/fr-BE/horaire/malmedy/avenue-du-pont-de-warche-5a/"
+  },
+  {
+    "id": 48,
+    "name": "Proxy Delhaize Waimes",
+    "category": "groceries",
+    "lat": 50.415,
+    "lng": 6.112,
+    "address": "Rue de Hottleux 68, 4950 Waimes, Belgium",
+    "distance": "About 15 min",
+    "hours": "Mon-Sat 08:00-19:00, Sun 08:00-12:00",
+    "notes": "Neighborhood supermarket open daily including Sunday morning. Fresh products, bakery, local items.",
+    "url": "https://www.supermarchewaimes.be/"
+  },
+  {
+    "id": 49,
+    "name": "BioShop Malmedy",
+    "category": "groceries",
+    "lat": 50.420137,
+    "lng": 6.041603,
+    "address": "Avenue Monbijou 34B, 4960 Malmedy, Belgium",
+    "distance": "About 10 min",
+    "hours": "Tue-Sat 09:30-18:30, Sun 09:30-12:00, closed Monday",
+    "notes": "Organic market with vegetarian/vegan foods, fresh produce, dairy alternatives, local products.",
+    "url": "https://www.bioshop.be/"
+  },
+  {
+    "id": 50,
+    "name": "Carrefour Market Stavelot",
+    "category": "groceries",
+    "lat": 50.3942,
+    "lng": 5.9398,
+    "address": "Avenue des D\u00e9mineurs 32, 4970 Stavelot, Belgium",
+    "distance": "About 19 min",
+    "hours": "Mon-Sat 09:00-18:30, Sun 08:00-18:00",
+    "notes": "Market format supermarket.",
+    "url": "https://www.stavelot.be/annuaire/carrefour-market"
+  },
+  {
+    "id": 51,
+    "name": "Okay Stavelot",
+    "category": "groceries",
+    "lat": 50.3945,
+    "lng": 5.9415,
+    "address": "Route de Malm\u00e9dy 18B, 4970 Stavelot, Belgium",
+    "distance": "About 19 min",
+    "hours": "Mon-Sat 08:00-19:30, Sun 08:00-12:30",
+    "notes": "Neighborhood supermarket open daily including Sunday morning.",
+    "url": "https://www.okay.be/fr/nos-magasins/okay-stavelot"
   }
 ]

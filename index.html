@@ -23,26 +23,26 @@
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2rem 1.5rem;
+            padding: 1rem 1.5rem;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
         header h1 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             letter-spacing: -0.5px;
         }
         
         header p {
-            font-size: 1rem;
+            font-size: 0.875rem;
             opacity: 0.95;
             font-weight: 500;
         }
         
         .controls {
-            padding: 1.5rem;
+            padding: 0.75rem 1rem;
             background: white;
             border-bottom: 1px solid #e2e8f0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -50,11 +50,11 @@
         
         .search-box {
             width: 100%;
-            padding: 0.875rem 1rem;
-            font-size: 1rem;
+            padding: 0.625rem 0.875rem;
+            font-size: 0.875rem;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            margin-bottom: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
             font-family: inherit;
             transition: all 0.2s;
         }
@@ -67,18 +67,18 @@
         
         .filters {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
         }
         
         .filter-btn {
             flex: 1;
-            min-width: 100px;
-            padding: 0.875rem 1.25rem;
-            font-size: 1rem;
+            min-width: 70px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
             font-weight: 600;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            border-radius: 8px;
             background: white;
             cursor: pointer;
             transition: all 0.2s;
@@ -87,14 +87,12 @@
         
         .filter-btn:hover {
             border-color: #cbd5e0;
-            transform: translateY(-1px);
         }
         
         .filter-btn.active {
             background: #667eea;
             color: white;
             border-color: #667eea;
-            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
         }
         
         .container {
@@ -105,8 +103,8 @@
         
         #map {
             width: 100%;
-            height: 50vh;
-            min-height: 400px;
+            height: 55vh;
+            min-height: 300px;
         }
         
         .list-container {
@@ -239,6 +237,16 @@
             color: #92400e;
         }
         
+        .category-badge.hikes {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .category-badge.groceries {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
         @media (min-width: 768px) {
             .container {
                 flex-direction: row;
@@ -321,6 +329,8 @@
             <button class="filter-btn" data-filter="family">Family</button>
             <button class="filter-btn" data-filter="ww2">World War II</button>
             <button class="filter-btn" data-filter="bakeries">Bakeries</button>
+            <button class="filter-btn" data-filter="hikes">Hikes</button>
+            <button class="filter-btn" data-filter="groceries">Groceries</button>
         </div>
     </div>
     
@@ -384,6 +394,22 @@
             popupAnchor: [0, -32]
         });
         
+        const hikeIcon = L.divIcon({
+            html: '<div style="background: #10b981; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">🥾</div></div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+        
+        const groceryIcon = L.divIcon({
+            html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">🛒</div></div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+        
         // Add home marker for Xhoffraix (always visible)
         const homeIcon = L.divIcon({
             html: '<div style="background: #10b981; width: 36px; height: 36px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><span style="font-size: 20px;">🏠</span></div>',
@@ -399,12 +425,15 @@
         
         // Add markers for activities with coordinates
         const markers = {};
+        const routes = {};
         activities.forEach(activity => {
             if (activity.lat && activity.lng) {
                 let icon;
                 if (activity.category === 'family') icon = familyIcon;
                 else if (activity.category === 'ww2') icon = ww2Icon;
                 else if (activity.category === 'bakeries') icon = bakeryIcon;
+                else if (activity.category === 'hikes') icon = hikeIcon;
+                else if (activity.category === 'groceries') icon = groceryIcon;
                 
                 const marker = L.marker([activity.lat, activity.lng], { icon: icon }).addTo(map);
                 
@@ -421,11 +450,28 @@
                 marker.bindPopup(popupContent);
                 markers[activity.id] = marker;
                 
+                // Add route line for hikes
+                if (activity.category === 'hikes' && activity.route && activity.route.length > 0) {
+                    const routeLine = L.polyline(activity.route, {
+                        color: '#10b981',
+                        weight: 3,
+                        opacity: 0.7
+                    }).addTo(map);
+                    routes[activity.id] = routeLine;
+                }
+                
                 marker.on('click', function() {
                     window.location.hash = `activity-${activity.id}`;
                     const card = document.querySelector(`[data-id="${activity.id}"]`);
                     if (card) {
                         card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                    // Highlight route if it's a hike
+                    if (activity.category === 'hikes' && routes[activity.id]) {
+                        routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
+                        setTimeout(() => {
+                            routes[activity.id].setStyle({ color: '#10b981', weight: 3, opacity: 0.7 });
+                        }, 2000);
                     }
                 });
             }
@@ -484,6 +530,8 @@
                 let categoryDisplay = 'Family';
                 if (activity.category === 'ww2') categoryDisplay = 'World War II';
                 if (activity.category === 'bakeries') categoryDisplay = 'Bakeries';
+                if (activity.category === 'hikes') categoryDisplay = 'Hikes';
+                if (activity.category === 'groceries') categoryDisplay = 'Groceries';
                 
                 // Create rating display
                 let ratingHTML = '';
@@ -496,23 +544,49 @@
                     `;
                 }
                 
-                card.innerHTML = `
-                    <div class="category-badge ${activity.category}">${categoryDisplay}</div>
-                    <div class="activity-header">
-                        <div class="activity-name">${activity.name}</div>
-                        ${ratingHTML}
-                    </div>
-                    <div class="activity-meta">
-                        <span>📍 ${activity.distance}</span>
-                        <span>💰 ${activity.price}</span>
-                    </div>
-                    <div class="activity-notes">
-                        <strong>Address:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.address}</a><br>
-                        <strong>Hours:</strong> ${activity.hours}<br>
-                        ${activity.notes ? activity.notes + '<br>' : ''}
-                    </div>
-                    ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Visit website →</a>` : ''}
-                `;
+                // Build card content based on activity type
+                let cardContent;
+                if (activity.category === 'hikes') {
+                    // Hikes have different fields
+                    cardContent = `
+                        <div class="category-badge ${activity.category}">${categoryDisplay}</div>
+                        <div class="activity-header">
+                            <div class="activity-name">${activity.name}</div>
+                        </div>
+                        <div class="activity-meta">
+                            <span>📍 ${activity.distance}</span>
+                            <span>⏱️ ${activity.duration}</span>
+                            <span>💪 ${activity.difficulty}</span>
+                        </div>
+                        <div class="activity-notes">
+                            <strong>Parking:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.parkingAddress}</a><br>
+                            ${activity.notes ? activity.notes + '<br>' : ''}
+                            ${activity.routeSource ? `<em style="font-size: 0.875rem; color: #64748b;">Route: ${activity.routeSource}</em><br>` : ''}
+                        </div>
+                        ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Visit trail page →</a>` : ''}
+                    `;
+                } else {
+                    // Regular activities
+                    cardContent = `
+                        <div class="category-badge ${activity.category}">${categoryDisplay}</div>
+                        <div class="activity-header">
+                            <div class="activity-name">${activity.name}</div>
+                            ${ratingHTML}
+                        </div>
+                        <div class="activity-meta">
+                            <span>📍 ${activity.distance}</span>
+                            <span>💰 ${activity.price}</span>
+                        </div>
+                        <div class="activity-notes">
+                            <strong>Address:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.address}</a><br>
+                            <strong>Hours:</strong> ${activity.hours}<br>
+                            ${activity.notes ? activity.notes + '<br>' : ''}
+                        </div>
+                        ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Visit website →</a>` : ''}
+                    `;
+                }
+                
+                card.innerHTML = cardContent;
                 
                 card.addEventListener('click', function(e) {
                     if (!e.target.matches('a')) {
@@ -520,6 +594,13 @@
                         if (markers[activity.id]) {
                             map.setView([activity.lat, activity.lng], 14);
                             markers[activity.id].openPopup();
+                            // Highlight route for hikes
+                            if (activity.category === 'hikes' && routes[activity.id]) {
+                                routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
+                                setTimeout(() => {
+                                    routes[activity.id].setStyle({ color: '#10b981', weight: 3, opacity: 0.7 });
+                                }, 2000);
+                            }
                         }
                     }
                 });
@@ -528,8 +609,8 @@
             });
         }
         
-        // Filter functionality
-        let currentFilter = 'all';
+        // Filter functionality - multi-select toggles
+        let activeCategories = new Set(['family', 'ww2', 'bakeries', 'hikes', 'groceries']);
         let currentSearch = '';
         
         function applyFilters() {
@@ -538,7 +619,7 @@
                 const category = card.dataset.category;
                 const text = card.textContent.toLowerCase();
                 
-                const categoryMatch = currentFilter === 'all' || category === currentFilter;
+                const categoryMatch = activeCategories.has(category);
                 const searchMatch = currentSearch === '' || text.includes(currentSearch.toLowerCase());
                 
                 if (categoryMatch && searchMatch) {
@@ -548,20 +629,25 @@
                 }
             });
             
-            // Filter map markers and collect visible ones
+            // Filter map markers and routes, collect visible ones
             const visibleMarkers = [];
             activities.forEach(activity => {
                 const marker = markers[activity.id];
+                const route = routes[activity.id];
                 if (marker) {
-                    const activityText = `${activity.name} ${activity.notes} ${activity.distance} ${activity.price} ${activity.hours}`.toLowerCase();
-                    const categoryMatch = currentFilter === 'all' || activity.category === currentFilter;
+                    const activityText = `${activity.name} ${activity.notes || ''} ${activity.distance} ${activity.price || activity.difficulty || ''}`.toLowerCase();
+                    const categoryMatch = activeCategories.has(activity.category);
                     const searchMatch = currentSearch === '' || activityText.includes(currentSearch.toLowerCase());
                     
                     if (categoryMatch && searchMatch) {
                         map.addLayer(marker);
                         visibleMarkers.push(marker);
+                        // Show route for hikes
+                        if (route) map.addLayer(route);
                     } else {
                         map.removeLayer(marker);
+                        // Hide route for hikes
+                        if (route) map.removeLayer(route);
                     }
                 }
             });
@@ -579,12 +665,33 @@
             }
         }
         
-        // Filter buttons
+        // Filter buttons - toggle behavior
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentFilter = this.dataset.filter;
+                const filter = this.dataset.filter;
+                
+                if (filter === 'all') {
+                    // "All" turns everything on
+                    activeCategories = new Set(['family', 'ww2', 'bakeries', 'hikes', 'groceries']);
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.add('active'));
+                } else {
+                    // Toggle individual category
+                    if (activeCategories.has(filter)) {
+                        activeCategories.delete(filter);
+                        this.classList.remove('active');
+                    } else {
+                        activeCategories.add(filter);
+                        this.classList.add('active');
+                    }
+                    // Update "All" button state
+                    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                    if (activeCategories.size === 5) {
+                        allBtn.classList.add('active');
+                    } else {
+                        allBtn.classList.remove('active');
+                    }
+                }
+                
                 applyFilters();
             });
         });
