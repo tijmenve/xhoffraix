@@ -319,7 +319,10 @@
     "price": "Bakery",
     "hours": "Monday closed; Tue, Wed, Fri 06:30–18:00; Thursday closed; Saturday 07:00–17:30; Sunday 07:00–14:30",
     "notes": "Artisan bakery; customers mention tarte au riz and gâteau de Verviers. Closed Thu 15 and Thu 22 Oct. Hours from uncoindeterroir.fr, checked 4 Oct 2026.",
-    "url": "https://uncoindeterroir.fr/boulangerie-bayetto/"
+    "url": "https://uncoindeterroir.fr/boulangerie-bayetto/",
+    "rating": "4.4",
+    "ratingCount": "108",
+    "ratingSource": "Google"
   },
   {
     "id": 26,
@@ -332,7 +335,10 @@
     "price": "Bakery",
     "hours": "Monday 07:00–18:00; Tuesday closed; Wednesday–Saturday 07:00–18:00; Sunday 07:00–12:30",
     "notes": "Opened 2002; bread, viennoiserie and pastry on site; tarte au riz, Vaution de Verviers, tarte à la maquée. Closed Tue 20 Oct. Hours from shop site, checked 4 Oct 2026.",
-    "url": "https://gilonboulangerie-malmedy.be/"
+    "url": "https://gilonboulangerie-malmedy.be/",
+    "rating": "4.7",
+    "ratingCount": "96",
+    "ratingSource": "Google"
   },
   {
     "id": 27,
@@ -345,7 +351,10 @@
     "price": "Bakery",
     "hours": "Monday closed; Tuesday–Saturday 05:45–18:30; Sunday closed",
     "notes": "Hand-shaped bread, éclairs, fruit tarts, mille-feuilles, sandwiches; about 60 seats. Closed Sun 18 and Mon 19 Oct. Hours from maitre-boulanger-patissier.be, checked 4 Oct 2026.",
-    "url": "https://www.maitre-boulanger-patissier.be/boulangerie/boulangerie-patisserie-chez-dijan/"
+    "url": "https://www.maitre-boulanger-patissier.be/boulangerie/boulangerie-patisserie-chez-dijan/",
+    "rating": "4.5",
+    "ratingCount": "578",
+    "ratingSource": "Google"
   },
   {
     "id": 28,
@@ -358,7 +367,10 @@
     "price": "Bakery",
     "hours": "Monday–Wednesday closed; Thursday–Sunday 06:00–18:30",
     "notes": "Family shop since 1970, known for sourdough, rye and a very dark wholemeal loaf. Closed Mon 19, Tue 20 and Wed 21 if operator site is correct. Hours from halmes.be (operator site), checked 4 Oct 2026. Older OSM and Petit Futé say Tuesday–Sunday; note the conflict.",
-    "url": "https://www.halmes.be/"
+    "url": "https://www.halmes.be/",
+    "rating": "4.5",
+    "ratingCount": "1223",
+    "ratingSource": "Google"
   },
   {
     "id": 29,
@@ -371,7 +383,10 @@
     "price": "Bakery",
     "hours": "Monday–Wednesday closed; Thursday–Saturday 07:00–16:00; Sunday 07:00–12:00",
     "notes": "Reopened 8 August 2026 as a citizen project around a large wood-fired oven; gonesses, pain d'Ardenne, gosettes. Hours from uncoindeterroir.fr directory, checked 4 Oct 2026.",
-    "url": "https://uncoindeterroir.fr/lartisan-des-gonesses/"
+    "url": "https://uncoindeterroir.fr/lartisan-des-gonesses/",
+    "rating": "4.5",
+    "ratingCount": "73",
+    "ratingSource": "Google"
   },
   {
     "id": 30,
@@ -384,7 +399,10 @@
     "price": "Bakery",
     "hours": "Closed Monday and Tuesday; weekdays (Wed–Fri) 06:00–18:30; Saturday 07:00–17:00; Sunday 07:00–17:00",
     "notes": "Since 1971; Walloon-flour bread, pastry, pralines, seasonal printen. Closed Mon 19 and Tue 20 Oct. Hours from shop site, checked 4 Oct 2026.",
-    "url": "https://boulangerie-heindrichs.be/"
+    "url": "https://boulangerie-heindrichs.be/",
+    "rating": "4.5",
+    "ratingCount": "351",
+    "ratingSource": "Google"
   },
   {
     "id": 31,
@@ -397,7 +415,10 @@
     "price": "Bakery",
     "hours": "Monday–Saturday 06:00–18:00; Sunday 06:00–14:00",
     "notes": "Wood-fired bread and small grocery with sandwiches. Hours from OpenStreetMap (last edited 2022), not the shop; unconfirmed.",
-    "url": "https://www.openstreetmap.org/node/9935971856"
+    "url": "https://www.openstreetmap.org/node/9935971856",
+    "rating": "4.6",
+    "ratingCount": "267",
+    "ratingSource": "Google"
   },
   {
     "id": 32,
@@ -410,7 +431,10 @@
     "price": "Bakery",
     "hours": "Mon, Wed, Thu, Fri 07:00–13:30; Tuesday closed; Saturday 07:00–14:00; Sunday 07:00–12:00",
     "notes": "Family bakery. Closed Tue 20 Oct. Hours from Bottin, checked 4 Oct 2026; afternoon unconfirmed (old OSM tag showed later afternoons).",
-    "url": "https://www.bottin.be/nl/lokale-bestand/cafcgihiaegegcdihah--boulangerie-heinen-sourbrodt--weismes.htm"
+    "url": "https://www.bottin.be/nl/lokale-bestand/cafcgihiaegegcdihah--boulangerie-heinen-sourbrodt--weismes.htm",
+    "rating": "4.3",
+    "ratingCount": "60",
+    "ratingSource": "Google"
   },
   {
     "id": 33,
@@ -423,7 +447,10 @@
     "price": "Bakery",
     "hours": "Mon, Thu, Fri 07:30–12:00 and 13:00–18:00; Saturday 07:00–12:00 and 13:00–16:00; Sunday 07:00–12:00",
     "notes": "Everyday bread and pastry. Hours from OpenStreetMap (edited 2018); stale. Tuesday and Wednesday not listed as open.",
-    "url": "https://www.openstreetmap.org/node/5923884883"
+    "url": "https://www.openstreetmap.org/node/5923884883",
+    "rating": "4.7",
+    "ratingCount": "62",
+    "ratingSource": "Google"
   },
   {
     "id": 34,
@@ -436,7 +463,10 @@
     "price": "Bakery",
     "hours": "Monday, Tuesday and Sunday closed; Wednesday–Friday 07:00–14:00; Saturday 07:30–16:00",
     "notes": "Bakery with takeaway. Hours from Bottin, checked 4 Oct 2026 (shop site returned an error).",
-    "url": "https://www.bottin.be/fr/fiche-locale/ijafdfdjbgahihfiahb--boulangerie-dumoulin--stavelot.htm"
+    "url": "https://www.bottin.be/fr/fiche-locale/ijafdfdjbgahihfiahb--boulangerie-dumoulin--stavelot.htm",
+    "rating": "4.2",
+    "ratingCount": "69",
+    "ratingSource": "Google"
   },
   {
     "id": 35,
@@ -449,7 +479,10 @@
     "price": "Bakery",
     "hours": "Thursday–Tuesday 06:00–18:00; Wednesday closed",
     "notes": "Bakery; site under construction. Closed Wed 21 Oct. Hours from shop site and OSM (checked June 2026) agree.",
-    "url": "https://baeckerei-mertens.be/"
+    "url": "https://baeckerei-mertens.be/",
+    "rating": "4.1",
+    "ratingCount": "105",
+    "ratingSource": "Google"
   },
   {
     "id": 36,
@@ -462,6 +495,9 @@
     "price": "Bakery",
     "hours": "Hours unknown",
     "notes": "Village bakery; bread and sandwiches mentioned in comments.",
-    "url": "https://boulangeriebelgique.com/c/waimes-63/"
+    "url": "https://boulangeriebelgique.com/c/waimes-63/",
+    "rating": "4.5",
+    "ratingCount": "190",
+    "ratingSource": "Google"
   }
 ]

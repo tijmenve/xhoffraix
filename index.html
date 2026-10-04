@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xhoffraix Trip - Oct 15–23, 2026</title>
+    <title>Xhoffraix Trip Guide</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,168 +14,229 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.5;
-            color: #333;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: #f7fafc;
         }
         
         header {
-            background: #2c5282;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1rem;
+            padding: 2rem 1.5rem;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
         header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 0.25rem;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
         }
         
         header p {
-            font-size: 0.9rem;
-            opacity: 0.9;
+            font-size: 1rem;
+            opacity: 0.95;
+            font-weight: 500;
         }
         
         .controls {
-            padding: 1rem;
-            background: #f7fafc;
+            padding: 1.5rem;
+            background: white;
             border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         
         .search-box {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.875rem 1rem;
             font-size: 1rem;
-            border: 2px solid #cbd5e0;
-            border-radius: 8px;
-            margin-bottom: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
         .filters {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
         
         .filter-btn {
             flex: 1;
-            min-width: 80px;
-            padding: 0.75rem 1rem;
+            min-width: 100px;
+            padding: 0.875rem 1.25rem;
             font-size: 1rem;
-            font-weight: 500;
-            border: 2px solid #cbd5e0;
-            border-radius: 8px;
+            font-weight: 600;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             background: white;
             cursor: pointer;
             transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .filter-btn:hover {
+            border-color: #cbd5e0;
+            transform: translateY(-1px);
         }
         
         .filter-btn.active {
-            background: #2c5282;
+            background: #667eea;
             color: white;
-            border-color: #2c5282;
+            border-color: #667eea;
+            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
         }
         
         .container {
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 180px);
+            min-height: calc(100vh - 220px);
         }
         
         #map {
             width: 100%;
-            height: 40vh;
-            min-height: 300px;
+            height: 50vh;
+            min-height: 400px;
         }
         
         .list-container {
             flex: 1;
             overflow-y: auto;
-            padding: 1rem;
+            padding: 1.5rem;
+            background: #f7fafc;
         }
         
         .activity-card {
             background: white;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         
         .activity-card:hover {
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             transform: translateY(-2px);
+            border-color: #cbd5e0;
         }
         
         .activity-card.hidden {
             display: none;
         }
         
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+        
         .activity-name {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a202c;
+            line-height: 1.3;
+            flex: 1;
+        }
+        
+        .activity-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.875rem;
             font-weight: 600;
-            color: #2c5282;
-            margin-bottom: 0.5rem;
+            color: #f59e0b;
+            white-space: nowrap;
+        }
+        
+        .activity-rating-stars {
+            font-size: 1rem;
+        }
+        
+        .activity-rating-count {
+            color: #718096;
+            font-weight: 500;
         }
         
         .activity-meta {
             display: flex;
-            gap: 1rem;
+            gap: 1.25rem;
             flex-wrap: wrap;
-            font-size: 0.9rem;
-            color: #718096;
-            margin-bottom: 0.5rem;
+            font-size: 0.9375rem;
+            color: #4a5568;
+            margin-bottom: 1rem;
         }
         
         .activity-meta span {
             display: inline-flex;
             align-items: center;
+            gap: 0.375rem;
         }
         
         .activity-notes {
-            font-size: 0.9rem;
+            font-size: 0.9375rem;
             color: #4a5568;
-            line-height: 1.6;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        
+        .activity-notes strong {
+            color: #2d3748;
+            font-weight: 600;
         }
         
         .activity-link {
             display: inline-block;
-            margin-top: 0.5rem;
-            color: #2c5282;
+            color: #667eea;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            transition: all 0.2s;
         }
         
         .activity-link:hover {
-            text-decoration: underline;
+            color: #5a67d8;
+            transform: translateX(2px);
         }
         
         .category-badge {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: #edf2f7;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #4a5568;
-            margin-bottom: 0.5rem;
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .category-badge.family {
-            background: #bee3f8;
-            color: #2c5282;
+            background: #dbeafe;
+            color: #1e40af;
         }
         
         .category-badge.ww2 {
-            background: #fed7d7;
-            color: #742a2a;
+            background: #fee2e2;
+            color: #991b1b;
         }
         
         .category-badge.bakeries {
             background: #fef3c7;
-            color: #78350f;
+            color: #92400e;
         }
         
         @media (min-width: 768px) {
@@ -184,7 +246,8 @@
             
             #map {
                 width: 50%;
-                height: calc(100vh - 180px);
+                height: calc(100vh - 220px);
+                min-height: 500px;
             }
             
             .list-container {
@@ -192,31 +255,63 @@
             }
             
             header h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
+            }
+            
+            header p {
+                font-size: 1.125rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            #map {
+                width: 55%;
+            }
+            
+            .list-container {
+                width: 45%;
+                padding: 2rem;
             }
         }
         
         .leaflet-popup-content {
-            margin: 0.75rem;
+            margin: 1rem;
+            font-family: 'Inter', sans-serif;
         }
         
         .popup-name {
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            color: #2c5282;
+            font-weight: 700;
+            font-size: 1.0625rem;
+            margin-bottom: 0.625rem;
+            color: #1a202c;
         }
         
         .popup-meta {
-            font-size: 0.85rem;
+            font-size: 0.875rem;
             color: #4a5568;
+            line-height: 1.7;
+        }
+        
+        .popup-meta strong {
+            color: #2d3748;
+            font-weight: 600;
+        }
+        
+        .footer-note {
+            padding: 1rem 1.5rem;
+            background: #fffbeb;
+            border-top: 1px solid #fde68a;
+            font-size: 0.8125rem;
+            color: #92400e;
+            text-align: center;
             line-height: 1.6;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Xhoffraix Trip</h1>
+        <h1>Xhoffraix Trip Guide</h1>
+        <p>Discover activities, history & local bakeries</p>
     </header>
     
     <div class="controls">
@@ -234,9 +329,15 @@
         <div class="list-container" id="activityList"></div>
     </div>
     
+    <div class="footer-note">
+        <strong>Note:</strong> Drive times are no-traffic estimates from Rue du Herdier, Xhoffraix (50.4569766 N, 6.0709928 E), fetched 3 October 2026, not live traffic.
+    </div>
+    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         let activities = [];
+        let userLocationMarker = null;
+        let watchId = null;
         
         // Load activities from JSON file
         fetch('activities.json')
@@ -247,7 +348,7 @@
             })
             .catch(error => {
                 console.error('Error loading activities:', error);
-                document.getElementById('activityList').innerHTML = '<p style="padding: 1rem; color: red;">Error loading activities. Please refresh the page.</p>';
+                document.getElementById('activityList').innerHTML = '<p style="padding: 1rem; color: #e53e3e;">Error loading activities. Please refresh the page.</p>';
             });
         
         function initializeMap() {
@@ -258,11 +359,54 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
         
+        // Define custom icons for different categories
+        const familyIcon = L.divIcon({
+            html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">👨‍👩‍👧</div></div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+        
+        const ww2Icon = L.divIcon({
+            html: '<div style="background: #dc2626; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">🎖️</div></div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+        
+        const bakeryIcon = L.divIcon({
+            html: '<div style="background: #f59e0b; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 16px; margin-top: 4px; margin-left: 7px;">🥖</div></div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+        
+        // Add home marker for Xhoffraix (always visible)
+        const homeIcon = L.divIcon({
+            html: '<div style="background: #10b981; width: 36px; height: 36px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><span style="font-size: 20px;">🏠</span></div>',
+            className: '',
+            iconSize: [36, 36],
+            iconAnchor: [18, 18],
+            popupAnchor: [0, -18]
+        });
+        
+        const homeMarker = L.marker([50.4569766, 6.0709928], { icon: homeIcon })
+            .addTo(map)
+            .bindPopup('<div class="popup-name">Xhoffraix Home</div><div class="popup-meta">Rue du Herdier<br>Your base for this trip</div>');
+        
         // Add markers for activities with coordinates
         const markers = {};
         activities.forEach(activity => {
             if (activity.lat && activity.lng) {
-                const marker = L.marker([activity.lat, activity.lng]).addTo(map);
+                let icon;
+                if (activity.category === 'family') icon = familyIcon;
+                else if (activity.category === 'ww2') icon = ww2Icon;
+                else if (activity.category === 'bakeries') icon = bakeryIcon;
+                
+                const marker = L.marker([activity.lat, activity.lng], { icon: icon }).addTo(map);
                 
                 const popupContent = `
                     <div class="popup-name">${activity.name}</div>
@@ -270,7 +414,7 @@
                         <strong>Distance:</strong> ${activity.distance}<br>
                         <strong>Price:</strong> ${activity.price}<br>
                         <strong>Hours:</strong> ${activity.hours}
-                        ${activity.url ? `<br><br><a href="${activity.url}" target="_blank">Visit website</a>` : ''}
+                        ${activity.url ? `<br><br><a href="${activity.url}" target="_blank" style="color: #667eea; font-weight: 600;">Visit website →</a>` : ''}
                     </div>
                 `;
                 
@@ -279,7 +423,6 @@
                 
                 marker.on('click', function() {
                     window.location.hash = `activity-${activity.id}`;
-                    // Scroll to activity card
                     const card = document.querySelector(`[data-id="${activity.id}"]`);
                     if (card) {
                         card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -288,15 +431,38 @@
             }
         });
         
-        // Add Xhoffraix reference marker
-        const homeIcon = L.divIcon({
-            html: '<div style="background: #e53e3e; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+        // Add user location tracking
+        const userIcon = L.divIcon({
+            html: '<div style="width: 20px; height: 20px; border-radius: 50%; background: #667eea; border: 3px solid white; box-shadow: 0 0 10px rgba(102, 126, 234, 0.6), 0 0 0 8px rgba(102, 126, 234, 0.2);"></div>',
             className: '',
-            iconSize: [12, 12]
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
         });
-        L.marker([50.4569766, 6.0709928], { icon: homeIcon })
-            .addTo(map)
-            .bindPopup('<div class="popup-name">Xhoffraix</div>');
+        
+        if ('geolocation' in navigator) {
+            watchId = navigator.geolocation.watchPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    if (userLocationMarker) {
+                        userLocationMarker.setLatLng([lat, lng]);
+                    } else {
+                        userLocationMarker = L.marker([lat, lng], { icon: userIcon })
+                            .addTo(map)
+                            .bindPopup('<div class="popup-name">Your Location</div>');
+                    }
+                },
+                function(error) {
+                    console.log('Geolocation error:', error.message);
+                },
+                {
+                    enableHighAccuracy: true,
+                    maximumAge: 30000,
+                    timeout: 27000
+                }
+            );
+        }
         
         // Render activity list
         function renderActivities() {
@@ -319,17 +485,31 @@
                 if (activity.category === 'ww2') categoryDisplay = 'World War II';
                 if (activity.category === 'bakeries') categoryDisplay = 'Bakeries';
                 
+                // Create rating display
+                let ratingHTML = '';
+                if (activity.rating) {
+                    ratingHTML = `
+                        <div class="activity-rating">
+                            <span class="activity-rating-stars">⭐ ${activity.rating}</span>
+                            <span class="activity-rating-count">(${activity.ratingCount} ${activity.ratingSource})</span>
+                        </div>
+                    `;
+                }
+                
                 card.innerHTML = `
                     <div class="category-badge ${activity.category}">${categoryDisplay}</div>
-                    <div class="activity-name">${activity.name}</div>
+                    <div class="activity-header">
+                        <div class="activity-name">${activity.name}</div>
+                        ${ratingHTML}
+                    </div>
                     <div class="activity-meta">
                         <span>📍 ${activity.distance}</span>
                         <span>💰 ${activity.price}</span>
                     </div>
                     <div class="activity-notes">
-                        <strong>Address:</strong> <a href="${mapsUrl}" target="_blank" style="color: #2c5282;">${activity.address}</a><br>
+                        <strong>Address:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.address}</a><br>
                         <strong>Hours:</strong> ${activity.hours}<br>
-                        ${activity.notes ? activity.notes : ''}
+                        ${activity.notes ? activity.notes + '<br>' : ''}
                     </div>
                     ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Visit website →</a>` : ''}
                 `;
@@ -338,7 +518,7 @@
                     if (!e.target.matches('a')) {
                         window.location.hash = `activity-${activity.id}`;
                         if (markers[activity.id]) {
-                            map.setView([activity.lat, activity.lng], 13);
+                            map.setView([activity.lat, activity.lng], 14);
                             markers[activity.id].openPopup();
                         }
                     }
@@ -386,18 +566,17 @@
                 }
             });
             
-            // Auto-fit map to visible markers
+            // Auto-fit map to visible markers (including home marker)
+            visibleMarkers.push(homeMarker);
+            
             if (visibleMarkers.length > 1) {
-                // Multiple markers: fit bounds with padding
                 const group = L.featureGroup(visibleMarkers);
                 map.fitBounds(group.getBounds(), { padding: [50, 50] });
             } else if (visibleMarkers.length === 1) {
-                // Single marker: center with sensible zoom
                 const marker = visibleMarkers[0];
                 const latLng = marker.getLatLng();
                 map.setView(latLng, 13);
             }
-            // If no markers visible, leave map as-is
         }
         
         // Filter buttons
@@ -431,7 +610,7 @@
                         setTimeout(() => {
                             card.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             if (markers[activityId]) {
-                                map.setView([activity.lat, activity.lng], 13);
+                                map.setView([activity.lat, activity.lng], 14);
                                 markers[activityId].openPopup();
                             }
                         }, 100);
@@ -443,12 +622,6 @@
         // Handle hash on page load and hash changes
         window.addEventListener('hashchange', handleHash);
         handleHash();
-        
-        // Note about drive times
-        const note = document.createElement('div');
-        note.style.cssText = 'padding: 1rem; background: #fffaf0; border-top: 1px solid #fed7aa; font-size: 0.85rem; color: #744210; text-align: center;';
-        note.textContent = 'Drive times are no-traffic estimates from Xhoffraix (50.4569766 N, 6.0709928 E), fetched 3 October 2026, not live traffic.';
-        document.body.appendChild(note);
         
         } // End initializeMap
     </script>
