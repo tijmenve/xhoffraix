@@ -1,12 +1,10 @@
-const CACHE_NAME = 'xhoffraix-v1';
+const CACHE_NAME = 'xhoffraix-v2';
 const BASE_PATH = '/xhoffraix';
 
 const urlsToCache = [
   `${BASE_PATH}/`,
   `${BASE_PATH}/index.html`,
   `${BASE_PATH}/activities.json`,
-  `${BASE_PATH}/icon-192x192.png`,
-  `${BASE_PATH}/icon-512x512.png`,
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
@@ -44,6 +42,13 @@ self.addEventListener('activate', (event) => {
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
+  
+  // Don't cache icon files - let them load directly
+  if (url.pathname.includes('icon-') || 
+      url.pathname.includes('apple-touch-icon') || 
+      url.pathname.includes('favicon')) {
+    return;
+  }
   
   // Cache OpenStreetMap tiles
   if (url.hostname.includes('tile.openstreetmap.org')) {
