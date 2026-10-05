@@ -35,41 +35,57 @@
             line-height: 1.6;
             color: #1a202c;
             background: #f7fafc;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
         }
         
+        /* Mobile: compact header */
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1rem 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
         }
         
         header h1 {
-            font-size: 1.5rem;
+            font-size: 1.125rem;
             font-weight: 700;
-            margin-bottom: 0.25rem;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.3px;
+            line-height: 1.2;
+            margin: 0;
         }
         
         header p {
-            font-size: 0.875rem;
-            opacity: 0.95;
-            font-weight: 500;
+            display: none;
         }
         
+        /* Mobile: compact controls with horizontal scroll */
         .controls {
-            padding: 0.75rem 1rem;
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 2.5rem;
+            left: 0;
+            right: 0;
+            z-index: 1001;
         }
         
         .search-box {
             width: 100%;
-            padding: 0.625rem 0.875rem;
-            font-size: 0.875rem;
-            border: 2px solid #e2e8f0;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            border: 1.5px solid #e2e8f0;
             border-radius: 8px;
             margin-bottom: 0.5rem;
             font-family: inherit;
@@ -79,59 +95,42 @@
         .search-box:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
         }
         
         .filters {
             display: flex;
             gap: 0.5rem;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 0.25rem;
         }
         
-        .filter-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0.5rem 0;
-            margin-bottom: 0.5rem;
-            background: none;
-            border: none;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #4b5563;
-            cursor: pointer;
-            font-family: inherit;
-        }
-        
-        .filter-toggle:hover {
-            color: #667eea;
-        }
-        
-        .filter-toggle-icon {
-            transition: transform 0.2s;
-        }
-        
-        .filter-toggle-icon.collapsed {
-            transform: rotate(-90deg);
-        }
-        
-        .filters.collapsed {
+        .filters::-webkit-scrollbar {
             display: none;
         }
         
+        .filter-toggle {
+            display: none;
+        }
+        
+        .filters.collapsed {
+            display: flex;
+        }
+        
         .filter-btn {
-            flex: 1;
-            min-width: 70px;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.8rem;
+            flex-shrink: 0;
+            padding: 0.4rem 0.75rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 20px;
             background: white;
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
+            white-space: nowrap;
         }
         
         .filter-btn:hover {
@@ -139,91 +138,92 @@
         }
         
         .filter-btn.active {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-color: #667eea;
         }
         
-        .container {
+        /* Mobile: map/list toggle */
+        .view-toggle {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1002;
             display: flex;
-            flex-direction: column;
-            min-height: calc(100vh - 220px);
-        }
-        
-        #map {
-            width: 100%;
-            height: 55vh;
-            min-height: 300px;
-            position: relative;
-        }
-        
-        .map-fullscreen-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
             background: white;
-            border: 2px solid rgba(0,0,0,0.2);
-            border-radius: 8px;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .view-toggle-btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: none;
+            background: white;
+            color: #64748b;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            font-size: 20px;
             transition: all 0.2s;
-            touch-action: manipulation;
+            font-family: inherit;
         }
         
-        .map-fullscreen-btn:hover {
-            background: #f7fafc;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        .view-toggle-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
         
-        .map-fullscreen-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .map-fullscreen-overlay {
+        /* Mobile: full-screen map background */
+        .container {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            z-index: 9999;
-            background: #f7fafc;
+        }
+        
+        #map {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        .map-fullscreen-btn {
             display: none;
         }
         
-        .map-fullscreen-overlay.active {
-            display: flex;
-            flex-direction: column;
+        .map-fullscreen-overlay {
+            display: none;
         }
         
-        .map-fullscreen-overlay #map {
-            width: 100% !important;
-            height: 100vh;
-            min-height: 100vh;
-            flex: 1;
-            position: relative !important;
-            top: 0 !important;
-        }
-        
+        /* Mobile: list container */
         .list-container {
-            flex: 1;
+            position: fixed;
+            top: 7rem;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
             overflow-y: auto;
-            padding: 1.5rem;
-            background: #f7fafc;
+            padding: 1rem;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .list-container.active {
+            display: block;
         }
         
         .activity-card {
             background: white;
             border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1.25rem;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -352,7 +352,7 @@
         }
         
         @media (min-width: 768px) {
-            /* Map-first layout: edge-to-edge map with floating overlays */
+            /* Desktop: map-first layout unchanged */
             body {
                 overflow: hidden;
             }
@@ -377,6 +377,7 @@
             }
             
             header p {
+                display: block;
                 font-size: 0.8125rem;
                 opacity: 0.95;
             }
@@ -406,12 +407,9 @@
                 box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
             }
             
-            .filter-toggle {
-                display: none;
-            }
-            
             .filters {
-                display: flex !important;
+                overflow-x: visible;
+                flex-wrap: wrap;
             }
             
             .filter-btn {
@@ -421,6 +419,7 @@
                 border-color: #e2e8f0;
                 color: #64748b;
                 font-weight: 500;
+                border-radius: 8px;
             }
             
             .filter-btn:hover {
@@ -433,6 +432,10 @@
                 color: white;
                 border-color: #667eea;
                 font-weight: 600;
+            }
+            
+            .view-toggle {
+                display: none;
             }
             
             .container {
@@ -454,6 +457,7 @@
             }
             
             .list-container {
+                display: block !important;
                 position: fixed;
                 right: 1.5rem;
                 top: 1rem;
@@ -466,6 +470,12 @@
                 z-index: 1000;
                 overflow-y: auto;
                 padding: 1.5rem;
+            }
+            
+            .activity-card {
+                padding: 1.5rem;
+                margin-bottom: 1.25rem;
+                border-radius: 16px;
             }
             
             .footer-note {
@@ -515,28 +525,25 @@
     
     <div class="controls">
         <input type="text" class="search-box" placeholder="Zoek activiteiten..." id="searchBox">
-        <button class="filter-toggle" id="filterToggle">
-            <span>Categorieën</span>
-            <span class="filter-toggle-icon collapsed">▼</span>
-        </button>
-        <div class="filters collapsed" id="filters">
+        <div class="filters" id="filters">
             <button class="filter-btn active" data-filter="all">Alles</button>
             <button class="filter-btn" data-filter="family">Gezin</button>
-            <button class="filter-btn" data-filter="ww2">Tweede Wereldoorlog</button>
+            <button class="filter-btn" data-filter="ww2">WOII</button>
             <button class="filter-btn" data-filter="bakeries">Bakkerijen</button>
             <button class="filter-btn" data-filter="hikes">Wandelingen</button>
-            <button class="filter-btn" data-filter="groceries">Supermarkten</button>
+            <button class="filter-btn" data-filter="groceries">Winkels</button>
         </div>
+    </div>
+    
+    <div class="view-toggle" id="viewToggle">
+        <button class="view-toggle-btn active" data-view="map">Kaart</button>
+        <button class="view-toggle-btn" data-view="list">Lijst</button>
     </div>
     
     <div class="container">
-        <div id="map">
-            <button class="map-fullscreen-btn" id="fullscreenBtn" aria-label="Volledig scherm in-/uitschakelen">⛶</button>
-        </div>
+        <div id="map"></div>
         <div class="list-container" id="activityList"></div>
     </div>
-    
-    <div class="map-fullscreen-overlay" id="fullscreenOverlay"></div>
     
     <div class="footer-note">
         <strong>Let op:</strong> Rijtijden zijn schattingen zonder verkeer vanaf Rue du Herdier, Xhoffraix (50.4569766 N, 6.0709928 E), opgehaald op 3 oktober 2026, geen live verkeer.
@@ -663,7 +670,15 @@
                     window.location.hash = `activity-${activity.id}`;
                     const card = document.querySelector(`[data-id="${activity.id}"]`);
                     if (card) {
-                        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        // Switch to list view on mobile to show the card
+                        if (window.innerWidth < 768) {
+                            setView('list');
+                            setTimeout(() => {
+                                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }, 100);
+                        } else {
+                            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
                     }
                     // Highlight route if it's a hike
                     if (activity.category === 'hikes' && routes[activity.id]) {
@@ -707,6 +722,55 @@
                     timeout: 27000
                 }
             );
+        }
+        
+        // Mobile view toggle setup (declare early so marker handlers can use it)
+        let currentView = sessionStorage.getItem('xhoffraix-view') || 'map';
+        const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
+        const listContainer = document.getElementById('activityList');
+        
+        function setView(view) {
+            currentView = view;
+            sessionStorage.setItem('xhoffraix-view', view);
+            
+            viewToggleBtns.forEach(btn => {
+                if (btn.dataset.view === view) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            if (view === 'list') {
+                listContainer.classList.add('active');
+            } else {
+                listContainer.classList.remove('active');
+            }
+            
+            // Invalidate map size when switching to map view
+            if (view === 'map') {
+                setTimeout(() => map.invalidateSize(), 100);
+            }
+        }
+        
+        // When clicking an activity card on mobile, switch to map view
+        function handleActivityClick(activity) {
+            if (window.innerWidth < 768) {
+                setView('map');
+            }
+            
+            if (markers[activity.id]) {
+                map.setView([activity.lat, activity.lng], 14);
+                markers[activity.id].openPopup();
+                
+                // Highlight route for hikes
+                if (activity.category === 'hikes' && routes[activity.id]) {
+                    routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
+                    setTimeout(() => {
+                        routes[activity.id].setStyle({ color: '#10b981', weight: 3, opacity: 0.7 });
+                    }, 2000);
+                }
+            }
         }
         
         // Render activity list
@@ -792,17 +856,7 @@
                 card.addEventListener('click', function(e) {
                     if (!e.target.matches('a')) {
                         window.location.hash = `activity-${activity.id}`;
-                        if (markers[activity.id]) {
-                            map.setView([activity.lat, activity.lng], 14);
-                            markers[activity.id].openPopup();
-                            // Highlight route for hikes
-                            if (activity.category === 'hikes' && routes[activity.id]) {
-                                routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
-                                setTimeout(() => {
-                                    routes[activity.id].setStyle({ color: '#10b981', weight: 3, opacity: 0.7 });
-                                }, 2000);
-                            }
-                        }
+                        handleActivityClick(activity);
                     }
                 });
                 
@@ -903,91 +957,20 @@
             applyFilters();
         });
         
-        // Filter collapse/expand toggle
-        const filterToggle = document.getElementById('filterToggle');
-        const filters = document.getElementById('filters');
-        const toggleIcon = filterToggle.querySelector('.filter-toggle-icon');
-        
-        // Default to collapsed on narrow screens
+        // Set initial view (only on mobile)
         if (window.innerWidth < 768) {
-            filters.classList.add('collapsed');
-            toggleIcon.classList.add('collapsed');
-        } else {
-            filters.classList.remove('collapsed');
-            toggleIcon.classList.remove('collapsed');
+            setView(currentView);
         }
         
-        filterToggle.addEventListener('click', function() {
-            filters.classList.toggle('collapsed');
-            toggleIcon.classList.toggle('collapsed');
-        });
-        
-        // Fullscreen map toggle
-        const fullscreenBtn = document.getElementById('fullscreenBtn');
-        const fullscreenOverlay = document.getElementById('fullscreenOverlay');
-        const mapContainer = document.getElementById('map');
-        let isFullscreen = false;
-        
-        fullscreenBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            isFullscreen = !isFullscreen;
-            
-            if (isFullscreen) {
-                // Enter fullscreen
-                fullscreenBtn.textContent = '✕';
-                fullscreenBtn.setAttribute('aria-label', 'Volledig scherm afsluiten');
-                fullscreenOverlay.appendChild(mapContainer);
-                fullscreenOverlay.classList.add('active');
-            } else {
-                // Exit fullscreen
-                fullscreenBtn.textContent = '⛶';
-                fullscreenBtn.setAttribute('aria-label', 'Volledig scherm in-/uitschakelen');
-                document.querySelector('.container').insertBefore(mapContainer, document.getElementById('activityList'));
-                fullscreenOverlay.classList.remove('active');
-            }
-            
-            // Invalidate map size and re-fit bounds after layout change
-            setTimeout(() => {
-                map.invalidateSize();
-                
-                // Re-apply current filters to maintain fit with proper padding
-                const visibleMarkers = [];
-                activities.forEach(activity => {
-                    const marker = markers[activity.id];
-                    if (marker && map.hasLayer(marker)) {
-                        visibleMarkers.push(marker);
-                    }
-                });
-                
-                visibleMarkers.push(homeMarker);
-                
-                if (visibleMarkers.length > 1) {
-                    const group = L.featureGroup(visibleMarkers);
-                    map.fitBounds(group.getBounds(), { padding: [80, 80] });
-                }
-            }, 150);
+        // View toggle buttons
+        viewToggleBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                setView(this.dataset.view);
+            });
         });
         
         // Initial render
         renderActivities();
-        
-        // Monitor sticky map position changes on desktop and invalidate size
-        if (window.innerWidth >= 768) {
-            // Use ResizeObserver to detect when sticky positioning affects the map
-            const resizeObserver = new ResizeObserver(() => {
-                map.invalidateSize();
-            });
-            resizeObserver.observe(mapContainer);
-            
-            // Also invalidate on scroll to handle initial sticky transition
-            let scrollTimeout;
-            window.addEventListener('scroll', () => {
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    map.invalidateSize();
-                }, 100);
-            }, { passive: true });
-        }
         
         // Handle URL hash for sharing specific activities
         function handleHash() {
@@ -999,6 +982,10 @@
                     const card = document.querySelector(`[data-id="${activityId}"]`);
                     if (card && !card.classList.contains('hidden')) {
                         setTimeout(() => {
+                            // On mobile, switch to list view first
+                            if (window.innerWidth < 768) {
+                                setView('list');
+                            }
                             card.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             if (markers[activityId]) {
                                 map.setView([activity.lat, activity.lng], 14);
