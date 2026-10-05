@@ -351,12 +351,16 @@
         @media (min-width: 768px) {
             .container {
                 flex-direction: row;
+                align-items: flex-start;
             }
             
             #map {
                 width: 50%;
                 height: calc(100vh - 220px);
                 min-height: 500px;
+                position: sticky;
+                top: 0;
+                align-self: flex-start;
             }
             
             .list-container {
@@ -878,6 +882,24 @@
         
         // Initial render
         renderActivities();
+        
+        // Monitor sticky map position changes on desktop and invalidate size
+        if (window.innerWidth >= 768) {
+            // Use ResizeObserver to detect when sticky positioning affects the map
+            const resizeObserver = new ResizeObserver(() => {
+                map.invalidateSize();
+            });
+            resizeObserver.observe(mapContainer);
+            
+            // Also invalidate on scroll to handle initial sticky transition
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
+            }, { passive: true });
+        }
         
         // Handle URL hash for sharing specific activities
         function handleHash() {
