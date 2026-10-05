@@ -1,7 +1,7 @@
 {
-  "name": "Xhoffraix Trip",
+  "name": "Xhoffraix Reisgids",
   "short_name": "Xhoffraix",
-  "description": "Discover activities, hikes, history, bakeries, and groceries near Xhoffraix, Belgium",
+  "description": "Ontdek activiteiten, wandelingen, geschiedenis, bakkerijen en supermarkten bij Xhoffraix, België",
   "start_url": "/xhoffraix/",
   "scope": "/xhoffraix/",
   "display": "standalone",

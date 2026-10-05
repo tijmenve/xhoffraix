@@ -6,11 +6,11 @@
     <title>Xhoffraix Trip Guide</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="description" content="Discover activities, hikes, history, bakeries, and groceries near Xhoffraix, Belgium">
+    <meta name="description" content="Ontdek activiteiten, wandelingen, geschiedenis, bakkerijen en supermarkten bij Xhoffraix, België">
     <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Xhoffraix Trip">
+    <meta name="apple-mobile-web-app-title" content="Xhoffraix">
     
     <!-- Icons -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -423,29 +423,29 @@
 </head>
 <body>
     <header>
-        <h1>Xhoffraix Trip Guide</h1>
-        <p>Discover activities, history & local bakeries</p>
+        <h1>Xhoffraix Reisgids</h1>
+        <p>Ontdek activiteiten, geschiedenis & lokale bakkerijen</p>
     </header>
     
     <div class="controls">
-        <input type="text" class="search-box" placeholder="Search activities..." id="searchBox">
+        <input type="text" class="search-box" placeholder="Zoek activiteiten..." id="searchBox">
         <button class="filter-toggle" id="filterToggle">
-            <span>Categories</span>
+            <span>Categorieën</span>
             <span class="filter-toggle-icon collapsed">▼</span>
         </button>
         <div class="filters collapsed" id="filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="family">Family</button>
-            <button class="filter-btn" data-filter="ww2">World War II</button>
-            <button class="filter-btn" data-filter="bakeries">Bakeries</button>
-            <button class="filter-btn" data-filter="hikes">Hikes</button>
-            <button class="filter-btn" data-filter="groceries">Groceries</button>
+            <button class="filter-btn active" data-filter="all">Alles</button>
+            <button class="filter-btn" data-filter="family">Gezin</button>
+            <button class="filter-btn" data-filter="ww2">Tweede Wereldoorlog</button>
+            <button class="filter-btn" data-filter="bakeries">Bakkerijen</button>
+            <button class="filter-btn" data-filter="hikes">Wandelingen</button>
+            <button class="filter-btn" data-filter="groceries">Supermarkten</button>
         </div>
     </div>
     
     <div class="container">
         <div id="map">
-            <button class="map-fullscreen-btn" id="fullscreenBtn" aria-label="Toggle fullscreen">⛶</button>
+            <button class="map-fullscreen-btn" id="fullscreenBtn" aria-label="Volledig scherm in-/uitschakelen">⛶</button>
         </div>
         <div class="list-container" id="activityList"></div>
     </div>
@@ -453,7 +453,7 @@
     <div class="map-fullscreen-overlay" id="fullscreenOverlay"></div>
     
     <div class="footer-note">
-        <strong>Note:</strong> Drive times are no-traffic estimates from Rue du Herdier, Xhoffraix (50.4569766 N, 6.0709928 E), fetched 3 October 2026, not live traffic.
+        <strong>Let op:</strong> Rijtijden zijn schattingen zonder verkeer vanaf Rue du Herdier, Xhoffraix (50.4569766 N, 6.0709928 E), opgehaald op 3 oktober 2026, geen live verkeer.
     </div>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -534,7 +534,7 @@
         
         const homeMarker = L.marker([50.4569766, 6.0709928], { icon: homeIcon })
             .addTo(map)
-            .bindPopup('<div class="popup-name">Xhoffraix Home</div><div class="popup-meta">Rue du Herdier<br>Your base for this trip</div>');
+            .bindPopup('<div class="popup-name">Xhoffraix Thuis</div><div class="popup-meta">Rue du Herdier<br>Je uitvalsbasis voor deze reis</div>');
         
         // Add markers for activities with coordinates
         const markers = {};
@@ -553,10 +553,10 @@
                 const popupContent = `
                     <div class="popup-name">${activity.name}</div>
                     <div class="popup-meta">
-                        <strong>Distance:</strong> ${activity.distance}<br>
-                        <strong>Price:</strong> ${activity.price}<br>
-                        <strong>Hours:</strong> ${activity.hours}
-                        ${activity.url ? `<br><br><a href="${activity.url}" target="_blank" style="color: #667eea; font-weight: 600;">Visit website →</a>` : ''}
+                        <strong>Afstand:</strong> ${activity.distance}<br>
+                        <strong>Prijs:</strong> ${activity.price}<br>
+                        <strong>Openingstijden:</strong> ${activity.hours}
+                        ${activity.url ? `<br><br><a href="${activity.url}" target="_blank" style="color: #667eea; font-weight: 600;">Bezoek website →</a>` : ''}
                     </div>
                 `;
                 
@@ -640,11 +640,11 @@
                     : `https://www.google.com/maps/search/${encodeURIComponent(activity.address)}`;
                 
                 // Get category display name
-                let categoryDisplay = 'Family';
-                if (activity.category === 'ww2') categoryDisplay = 'World War II';
-                if (activity.category === 'bakeries') categoryDisplay = 'Bakeries';
-                if (activity.category === 'hikes') categoryDisplay = 'Hikes';
-                if (activity.category === 'groceries') categoryDisplay = 'Groceries';
+                let categoryDisplay = 'Gezin';
+                if (activity.category === 'ww2') categoryDisplay = 'Tweede Wereldoorlog';
+                if (activity.category === 'bakeries') categoryDisplay = 'Bakkerijen';
+                if (activity.category === 'hikes') categoryDisplay = 'Wandelingen';
+                if (activity.category === 'groceries') categoryDisplay = 'Supermarkten';
                 
                 // Create rating display
                 let ratingHTML = '';
@@ -666,6 +666,7 @@
                         <div class="activity-header">
                             <div class="activity-name">${activity.name}</div>
                         </div>
+                        ${activity.summary ? `<p style="font-size: 0.9375rem; color: #4a5568; margin: 0.75rem 0 1rem 0; line-height: 1.5;">${activity.summary}</p>` : ''}
                         <div class="activity-meta">
                             <span>📍 ${activity.distance}</span>
                             <span>⏱️ ${activity.duration}</span>
@@ -676,7 +677,7 @@
                             ${activity.notes ? activity.notes + '<br>' : ''}
                             ${activity.routeSource ? `<em style="font-size: 0.875rem; color: #64748b;">Route: ${activity.routeSource}</em><br>` : ''}
                         </div>
-                        ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Visit trail page →</a>` : ''}
+                        ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Bekijk wandelpagina →</a>` : ''}
                     `;
                 } else {
                     // Regular activities
@@ -686,16 +687,17 @@
                             <div class="activity-name">${activity.name}</div>
                             ${ratingHTML}
                         </div>
+                        ${activity.summary ? `<p style="font-size: 0.9375rem; color: #4a5568; margin: 0.75rem 0 1rem 0; line-height: 1.5;">${activity.summary}</p>` : ''}
                         <div class="activity-meta">
                             <span>📍 ${activity.distance}</span>
                             <span>💰 ${activity.price}</span>
                         </div>
                         <div class="activity-notes">
-                            <strong>Address:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.address}</a><br>
-                            <strong>Hours:</strong> ${activity.hours}<br>
+                            <strong>Adres:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.address}</a><br>
+                            <strong>Openingstijden:</strong> ${activity.hours}<br>
                             ${activity.notes ? activity.notes + '<br>' : ''}
                         </div>
-                        ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Visit website →</a>` : ''}
+                        ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Bezoek website →</a>` : ''}
                     `;
                 }
                 
@@ -847,13 +849,13 @@
             if (isFullscreen) {
                 // Enter fullscreen
                 fullscreenBtn.textContent = '✕';
-                fullscreenBtn.setAttribute('aria-label', 'Exit fullscreen');
+                fullscreenBtn.setAttribute('aria-label', 'Volledig scherm afsluiten');
                 fullscreenOverlay.appendChild(mapContainer);
                 fullscreenOverlay.classList.add('active');
             } else {
                 // Exit fullscreen
                 fullscreenBtn.textContent = '⛶';
-                fullscreenBtn.setAttribute('aria-label', 'Toggle fullscreen');
+                fullscreenBtn.setAttribute('aria-label', 'Volledig scherm in-/uitschakelen');
                 document.querySelector('.container').insertBefore(mapContainer, document.getElementById('activityList'));
                 fullscreenOverlay.classList.remove('active');
             }
