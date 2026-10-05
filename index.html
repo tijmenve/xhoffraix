@@ -153,8 +153,16 @@
             border-radius: 16px 16px 0 0;
             box-shadow: 0 -2px 16px rgba(0,0,0,0.15);
             z-index: 1002;
-            transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
             will-change: transform;
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .bottom-sheet.animating {
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .bottom-sheet.dragging {
+            transition: none;
         }
         
         .bottom-sheet.collapsed {
@@ -1055,14 +1063,30 @@
             const mapButton = document.getElementById('mapButton');
             
             let startY = 0;
-            let startScrollTop = 0;
             let currentY = 0;
+            let lastY = 0;
+            let lastTime = 0;
+            let velocity = 0;
             let isDragging = false;
             let sheetState = 'half'; // collapsed, half, full
+            let rafId = null;
             
-            function setSheetState(state) {
+            // Calculate positions for each state
+            const getSheetPositions = () => ({
+                collapsed: window.innerHeight - 64, // 4rem = 64px
+                half: window.innerHeight * 0.5,
+                full: 112 // 7rem = 112px
+            });
+            
+            function setSheetState(state, animate = true) {
+                const prevState = sheetState;
                 sheetState = state;
-                sheet.classList.remove('collapsed', 'half', 'full');
+                
+                // Manage CSS classes for state
+                sheet.classList.remove('collapsed', 'half', 'full', 'dragging');
+                if (animate) {
+                    sheet.classList.add('animating');
+                }
                 sheet.classList.add(state);
                 
                 // Manage content scrolling and pointer events
@@ -1075,17 +1099,41 @@
                     content.style.pointerEvents = 'auto';
                 }
                 
-                // Invalidate map size
-                setTimeout(() => map.invalidateSize(), 100);
+                // Defer map resize until after animation completes
+                if (animate && prevState !== state) {
+                    const handleTransitionEnd = () => {
+                        sheet.classList.remove('animating');
+                        requestAnimationFrame(() => {
+                            map.invalidateSize();
+                        });
+                        sheet.removeEventListener('transitionend', handleTransitionEnd);
+                    };
+                    sheet.addEventListener('transitionend', handleTransitionEnd, { once: true });
+                } else if (!animate) {
+                    requestAnimationFrame(() => {
+                        map.invalidateSize();
+                    });
+                }
             }
             
             // Touch/mouse handlers for dragging - only on handle
             function handleStart(e) {
                 const touch = e.touches ? e.touches[0] : e;
                 startY = touch.clientY;
-                startScrollTop = content.scrollTop;
+                currentY = startY;
+                lastY = startY;
+                lastTime = Date.now();
+                velocity = 0;
                 isDragging = true;
-                sheet.style.transition = 'none';
+                
+                sheet.classList.add('dragging');
+                sheet.classList.remove('animating');
+                
+                // Cancel any ongoing animation
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
             }
             
             function handleMove(e) {
@@ -1095,21 +1143,51 @@
                 currentY = touch.clientY;
                 const deltaY = currentY - startY;
                 
-                // Prevent default only when actually dragging the sheet
+                // Calculate velocity for momentum
+                const now = Date.now();
+                const dt = now - lastTime;
+                if (dt > 0) {
+                    velocity = (currentY - lastY) / dt;
+                }
+                lastY = currentY;
+                lastTime = now;
+                
+                // Prevent default only when actually dragging
                 if (Math.abs(deltaY) > 5) {
                     e.preventDefault();
                     
-                    // Apply transform based on current state and drag direction
-                    let transform = 0;
-                    if (sheetState === 'collapsed') {
-                        transform = Math.max(-window.innerHeight * 0.5, deltaY);
-                    } else if (sheetState === 'half') {
-                        transform = Math.min(window.innerHeight * 0.5, Math.max(-window.innerHeight * 0.5, deltaY));
-                    } else if (sheetState === 'full') {
-                        transform = Math.max(-window.innerHeight * 0.5, deltaY);
+                    // Use RAF for smooth 60fps updates
+                    if (rafId) {
+                        cancelAnimationFrame(rafId);
                     }
                     
-                    sheet.style.transform = `translateY(${transform}px)`;
+                    rafId = requestAnimationFrame(() => {
+                        const positions = getSheetPositions();
+                        let basePosition;
+                        
+                        if (sheetState === 'collapsed') {
+                            basePosition = positions.collapsed;
+                        } else if (sheetState === 'half') {
+                            basePosition = positions.half;
+                        } else {
+                            basePosition = positions.full;
+                        }
+                        
+                        // Calculate new position with rubber-banding at limits
+                        let newPosition = basePosition + deltaY;
+                        
+                        // Apply rubber-band effect at extremes
+                        if (newPosition < positions.full) {
+                            const overflow = positions.full - newPosition;
+                            newPosition = positions.full - overflow * 0.3; // 30% resistance
+                        } else if (newPosition > positions.collapsed) {
+                            const overflow = newPosition - positions.collapsed;
+                            newPosition = positions.collapsed + overflow * 0.3;
+                        }
+                        
+                        // Apply transform for 1:1 finger tracking
+                        sheet.style.transform = `translateY(${newPosition}px)`;
+                    });
                 }
             }
             
@@ -1117,30 +1195,61 @@
                 if (!isDragging) return;
                 
                 isDragging = false;
-                sheet.style.transition = '';
-                sheet.style.transform = '';
+                
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
                 
                 const deltaY = currentY - startY;
-                const threshold = 50;
+                const positions = getSheetPositions();
                 
-                // Determine new state based on drag distance
-                if (Math.abs(deltaY) > threshold) {
-                    if (deltaY > 0) {
-                        // Dragged down
+                // Determine target state based on velocity and position
+                let targetState = sheetState;
+                
+                // Strong velocity overrides position
+                if (Math.abs(velocity) > 0.5) {
+                    if (velocity > 0) {
+                        // Fast swipe down
                         if (sheetState === 'full') {
-                            setSheetState('half');
+                            targetState = 'half';
                         } else if (sheetState === 'half') {
-                            setSheetState('collapsed');
+                            targetState = 'collapsed';
                         }
                     } else {
-                        // Dragged up
+                        // Fast swipe up
                         if (sheetState === 'collapsed') {
-                            setSheetState('half');
+                            targetState = 'half';
                         } else if (sheetState === 'half') {
-                            setSheetState('full');
+                            targetState = 'full';
+                        }
+                    }
+                } else {
+                    // Slow drag - snap to nearest based on distance
+                    const threshold = 80; // Increased for better feel
+                    
+                    if (Math.abs(deltaY) > threshold) {
+                        if (deltaY > 0) {
+                            // Dragged down
+                            if (sheetState === 'full') {
+                                targetState = 'half';
+                            } else if (sheetState === 'half') {
+                                targetState = 'collapsed';
+                            }
+                        } else {
+                            // Dragged up
+                            if (sheetState === 'collapsed') {
+                                targetState = 'half';
+                            } else if (sheetState === 'half') {
+                                targetState = 'full';
+                            }
                         }
                     }
                 }
+                
+                // Clear inline transform and animate to target state
+                sheet.style.transform = '';
+                setSheetState(targetState, true);
             }
             
             // Add event listeners only to handle area
@@ -1159,7 +1268,8 @@
             content.addEventListener('touchstart', (e) => {
                 contentTouchStart = {
                     y: e.touches[0].clientY,
-                    scrollTop: content.scrollTop
+                    scrollTop: content.scrollTop,
+                    time: Date.now()
                 };
             }, { passive: true });
             
@@ -1176,9 +1286,13 @@
                     if (Math.abs(deltaY) > 10) {
                         startY = contentTouchStart.y;
                         currentY = e.touches[0].clientY;
+                        lastY = contentTouchStart.y;
+                        lastTime = contentTouchStart.time;
+                        velocity = 0;
                         isDragging = true;
-                        sheet.style.transition = 'none';
-                        contentTouchStart = null; // Prevent content scroll
+                        sheet.classList.add('dragging');
+                        sheet.classList.remove('animating');
+                        contentTouchStart = null;
                         e.preventDefault();
                     }
                 }
@@ -1193,11 +1307,11 @@
             
             // Map button click
             mapButton.addEventListener('click', () => {
-                setSheetState('collapsed');
+                setSheetState('collapsed', true);
             });
             
             // Initialize
-            setSheetState('half');
+            setSheetState('half', false);
         }
         
         // Update sheet title with activity count
