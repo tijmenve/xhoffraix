@@ -155,7 +155,6 @@
             z-index: 1002;
             transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
             will-change: transform;
-            touch-action: none;
         }
         
         .bottom-sheet.collapsed {
@@ -177,6 +176,7 @@
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
+            touch-action: none;
         }
         
         .sheet-handle-area:active {
@@ -201,10 +201,16 @@
             height: calc(100vh - 10rem);
             padding: 0 1rem 2rem;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
         }
         
         .bottom-sheet.collapsed .sheet-content {
             overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bottom-sheet.half .sheet-content {
+            overflow-y: auto;
         }
         
         /* Map button when sheet is full */
@@ -1049,6 +1055,7 @@
             const mapButton = document.getElementById('mapButton');
             
             let startY = 0;
+            let startScrollTop = 0;
             let currentY = 0;
             let isDragging = false;
             let sheetState = 'half'; // collapsed, half, full
@@ -1058,30 +1065,27 @@
                 sheet.classList.remove('collapsed', 'half', 'full');
                 sheet.classList.add(state);
                 
-                // Disable content scrolling when not full
-                if (state === 'full') {
-                    content.style.overflowY = 'auto';
-                } else {
+                // Manage content scrolling and pointer events
+                if (state === 'collapsed') {
                     content.style.overflowY = 'hidden';
+                    content.style.pointerEvents = 'none';
                     content.scrollTop = 0;
+                } else {
+                    content.style.overflowY = 'auto';
+                    content.style.pointerEvents = 'auto';
                 }
                 
                 // Invalidate map size
                 setTimeout(() => map.invalidateSize(), 100);
             }
             
-            // Touch/mouse handlers for dragging
+            // Touch/mouse handlers for dragging - only on handle
             function handleStart(e) {
-                // Only start drag from handle area or when content is at top and dragging down
                 const touch = e.touches ? e.touches[0] : e;
-                const isHandle = e.target.closest('.sheet-handle-area');
-                const isContentTop = content.scrollTop === 0;
-                
-                if (isHandle || (sheetState === 'full' && isContentTop)) {
-                    startY = touch.clientY;
-                    isDragging = true;
-                    sheet.style.transition = 'none';
-                }
+                startY = touch.clientY;
+                startScrollTop = content.scrollTop;
+                isDragging = true;
+                sheet.style.transition = 'none';
             }
             
             function handleMove(e) {
@@ -1091,22 +1095,22 @@
                 currentY = touch.clientY;
                 const deltaY = currentY - startY;
                 
-                // Prevent default scrolling when dragging
+                // Prevent default only when actually dragging the sheet
                 if (Math.abs(deltaY) > 5) {
                     e.preventDefault();
+                    
+                    // Apply transform based on current state and drag direction
+                    let transform = 0;
+                    if (sheetState === 'collapsed') {
+                        transform = Math.max(-window.innerHeight * 0.5, deltaY);
+                    } else if (sheetState === 'half') {
+                        transform = Math.min(window.innerHeight * 0.5, Math.max(-window.innerHeight * 0.5, deltaY));
+                    } else if (sheetState === 'full') {
+                        transform = Math.max(-window.innerHeight * 0.5, deltaY);
+                    }
+                    
+                    sheet.style.transform = `translateY(${transform}px)`;
                 }
-                
-                // Apply transform based on current state and drag direction
-                let transform = 0;
-                if (sheetState === 'collapsed') {
-                    transform = Math.max(-window.innerHeight * 0.5, deltaY);
-                } else if (sheetState === 'half') {
-                    transform = Math.min(window.innerHeight * 0.5, Math.max(-window.innerHeight * 0.5, deltaY));
-                } else if (sheetState === 'full') {
-                    transform = Math.max(-window.innerHeight * 0.5, deltaY);
-                }
-                
-                sheet.style.transform = `translateY(${transform}px)`;
             }
             
             function handleEnd(e) {
@@ -1139,22 +1143,53 @@
                 }
             }
             
-            // Add event listeners
-            handle.addEventListener('touchstart', handleStart, { passive: false });
+            // Add event listeners only to handle area
+            handle.addEventListener('touchstart', handleStart, { passive: true });
             handle.addEventListener('mousedown', handleStart);
             
-            document.addEventListener('touchmove', handleMove, { passive: false });
-            document.addEventListener('mousemove', handleMove);
+            handle.addEventListener('touchmove', handleMove, { passive: false });
+            handle.addEventListener('mousemove', handleMove);
             
-            document.addEventListener('touchend', handleEnd);
-            document.addEventListener('mouseup', handleEnd);
+            handle.addEventListener('touchend', handleEnd, { passive: true });
+            handle.addEventListener('mouseup', handleEnd);
             
-            // Content scroll to expand
-            content.addEventListener('scroll', () => {
-                if (content.scrollTop < -20 && sheetState === 'full') {
-                    setSheetState('half');
+            // Allow drag from content area only when scrolled to top and dragging down
+            let contentTouchStart = null;
+            
+            content.addEventListener('touchstart', (e) => {
+                contentTouchStart = {
+                    y: e.touches[0].clientY,
+                    scrollTop: content.scrollTop
+                };
+            }, { passive: true });
+            
+            content.addEventListener('touchmove', (e) => {
+                if (!contentTouchStart) return;
+                
+                const deltaY = e.touches[0].clientY - contentTouchStart.y;
+                const isAtTop = contentTouchStart.scrollTop <= 0;
+                const isDraggingDown = deltaY > 0;
+                
+                // If at top and dragging down, allow sheet to be pulled down
+                if (isAtTop && isDraggingDown && sheetState === 'full') {
+                    // Start sheet drag
+                    if (Math.abs(deltaY) > 10) {
+                        startY = contentTouchStart.y;
+                        currentY = e.touches[0].clientY;
+                        isDragging = true;
+                        sheet.style.transition = 'none';
+                        contentTouchStart = null; // Prevent content scroll
+                        e.preventDefault();
+                    }
                 }
-            });
+            }, { passive: false });
+            
+            content.addEventListener('touchend', (e) => {
+                if (isDragging) {
+                    handleEnd(e);
+                }
+                contentTouchStart = null;
+            }, { passive: true });
             
             // Map button click
             mapButton.addEventListener('click', () => {
