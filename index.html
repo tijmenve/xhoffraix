@@ -416,6 +416,21 @@
             color: white;
         }
         
+        .category-badge.museums {
+            background: #ede9fe;
+            color: #6b21a8;
+        }
+        
+        .category-badge.indoor {
+            background: #cffafe;
+            color: #155e75;
+        }
+        
+        .category-badge.wellness {
+            background: #fce7f3;
+            color: #9f1239;
+        }
+        
         @media (min-width: 768px) {
             /* Desktop: map-first layout unchanged */
             body {
@@ -605,6 +620,9 @@
             <button class="filter-btn" data-filter="bakeries">Bakkerijen</button>
             <button class="filter-btn" data-filter="hikes">Wandelingen</button>
             <button class="filter-btn" data-filter="groceries">Winkels</button>
+            <button class="filter-btn" data-filter="museums">Musea</button>
+            <button class="filter-btn" data-filter="indoor">Regen</button>
+            <button class="filter-btn" data-filter="wellness">Wellness</button>
         </div>
     </div>
     
@@ -698,6 +716,30 @@
             popupAnchor: [0, -32]
         });
         
+        const museumIcon = L.divIcon({
+            html: '<div style="background: #8b5cf6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🏛️</div></div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+        
+        const indoorIcon = L.divIcon({
+            html: '<div style="background: #06b6d4; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🏠</div></div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+        
+        const wellnessIcon = L.divIcon({
+            html: '<div style="background: #ec4899; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">💆</div></div>',
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+        
         // Add home marker for Xhoffraix (always visible)
         const homeIcon = L.divIcon({
             html: '<div style="background: #10b981; width: 36px; height: 36px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><span style="font-size: 20px;">🏠</span></div>',
@@ -711,17 +753,39 @@
             .addTo(map)
             .bindPopup('<div class="popup-name">Xhoffraix Thuis</div><div class="popup-meta">Rue du Herdier<br>Je uitvalsbasis voor deze reis</div>');
         
+        // Helper: get primary category for icon selection
+        // Priority: family > ww2 > hikes > bakeries > groceries > museums > indoor > wellness
+        function getPrimaryCategory(activity) {
+            const categories = activity.categories || [activity.category]; // Legacy fallback
+            const priority = ['family', 'ww2', 'hikes', 'bakeries', 'groceries', 'museums', 'indoor', 'wellness'];
+            for (const cat of priority) {
+                if (categories.includes(cat)) return cat;
+            }
+            return categories[0]; // Fallback to first
+        }
+        
+        // Helper: get icon for category
+        function getIconForCategory(category) {
+            const iconMap = {
+                'family': familyIcon,
+                'ww2': ww2Icon,
+                'bakeries': bakeryIcon,
+                'hikes': hikeIcon,
+                'groceries': groceryIcon,
+                'museums': museumIcon,
+                'indoor': indoorIcon,
+                'wellness': wellnessIcon
+            };
+            return iconMap[category] || familyIcon;
+        }
+        
         // Add markers for activities with coordinates
         const markers = {};
         const routes = {};
         activities.forEach(activity => {
             if (activity.lat && activity.lng) {
-                let icon;
-                if (activity.category === 'family') icon = familyIcon;
-                else if (activity.category === 'ww2') icon = ww2Icon;
-                else if (activity.category === 'bakeries') icon = bakeryIcon;
-                else if (activity.category === 'hikes') icon = hikeIcon;
-                else if (activity.category === 'groceries') icon = groceryIcon;
+                const primaryCategory = getPrimaryCategory(activity);
+                const icon = getIconForCategory(primaryCategory);
                 
                 const marker = L.marker([activity.lat, activity.lng], { icon: icon }).addTo(map);
                 
@@ -739,7 +803,8 @@
                 markers[activity.id] = marker;
                 
                 // Add route line for hikes
-                if (activity.category === 'hikes' && activity.route && activity.route.length > 0) {
+                const categories = activity.categories || [activity.category];
+                if (categories.includes('hikes') && activity.route && activity.route.length > 0) {
                     const routeLine = L.polyline(activity.route, {
                         color: '#10b981',
                         weight: 3,
@@ -771,7 +836,8 @@
                         }
                     }
                     // Highlight route if it's a hike
-                    if (activity.category === 'hikes' && routes[activity.id]) {
+                    const categories = activity.categories || [activity.category];
+                    if (categories.includes('hikes') && routes[activity.id]) {
                         routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
                         setTimeout(() => {
                             routes[activity.id].setStyle({ color: '#10b981', weight: 3, opacity: 0.7 });
@@ -839,7 +905,8 @@
                 markers[activity.id].openPopup();
                 
                 // Highlight route for hikes
-                if (activity.category === 'hikes' && routes[activity.id]) {
+                const categories = getCategories(activity);
+                if (categories.includes('hikes') && routes[activity.id]) {
                     routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
                     setTimeout(() => {
                         routes[activity.id].setStyle({ color: '#10b981', weight: 3, opacity: 0.7 });
@@ -853,23 +920,36 @@
             const listContainer = document.getElementById('activityList');
             listContainer.innerHTML = '';
             
+            // Category display names
+            const categoryNames = {
+                'family': 'Gezin',
+                'ww2': 'WOII',
+                'bakeries': 'Bakkerijen',
+                'hikes': 'Wandelingen',
+                'groceries': 'Winkels',
+                'museums': 'Musea',
+                'indoor': 'Regen',
+                'wellness': 'Wellness'
+            };
+            
             activities.forEach(activity => {
                 const card = document.createElement('div');
                 card.className = 'activity-card';
                 card.dataset.id = activity.id;
-                card.dataset.category = activity.category;
+                
+                // Store all categories as data attribute
+                const categories = getCategories(activity);
+                card.dataset.categories = JSON.stringify(categories);
                 
                 // Create Google Maps link
                 const mapsUrl = activity.lat && activity.lng 
                     ? `https://www.google.com/maps/dir/?api=1&destination=${activity.lat},${activity.lng}`
                     : `https://www.google.com/maps/search/${encodeURIComponent(activity.address)}`;
                 
-                // Get category display name
-                let categoryDisplay = 'Gezin';
-                if (activity.category === 'ww2') categoryDisplay = 'Tweede Wereldoorlog';
-                if (activity.category === 'bakeries') categoryDisplay = 'Bakkerijen';
-                if (activity.category === 'hikes') categoryDisplay = 'Wandelingen';
-                if (activity.category === 'groceries') categoryDisplay = 'Supermarkten';
+                // Render category badges
+                const badgesHTML = categories.map(cat => 
+                    `<span class="category-badge ${cat}">${categoryNames[cat] || cat}</span>`
+                ).join(' ');
                 
                 // Create rating display
                 let ratingHTML = '';
@@ -882,23 +962,23 @@
                     `;
                 }
                 
-                // Build card content based on activity type
+                // Build card content based on whether it has hiking fields
                 let cardContent;
-                if (activity.category === 'hikes') {
+                if (categories.includes('hikes') && activity.parkingAddress) {
                     // Hikes have different fields
                     cardContent = `
-                        <div class="category-badge ${activity.category}">${categoryDisplay}</div>
+                        <div style="margin-bottom: 0.75rem;">${badgesHTML}</div>
                         <div class="activity-header">
                             <div class="activity-name">${activity.name}</div>
                         </div>
                         ${activity.summary ? `<p style="font-size: 0.9375rem; color: #4a5568; margin: 0.75rem 0 1rem 0; line-height: 1.5;">${activity.summary}</p>` : ''}
                         <div class="activity-meta">
                             <span>📍 ${activity.distance}</span>
-                            <span>⏱️ ${activity.duration}</span>
-                            <span>💪 ${activity.difficulty}</span>
+                            ${activity.duration ? `<span>⏱️ ${activity.duration}</span>` : ''}
+                            ${activity.difficulty ? `<span>💪 ${activity.difficulty}</span>` : ''}
                         </div>
                         <div class="activity-notes">
-                            <strong>Parking:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.parkingAddress}</a><br>
+                            ${activity.parkingAddress ? `<strong>Parking:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.parkingAddress}</a><br>` : ''}
                             ${activity.notes ? activity.notes + '<br>' : ''}
                             ${activity.routeSource ? `<em style="font-size: 0.875rem; color: #64748b;">Route: ${activity.routeSource}</em><br>` : ''}
                         </div>
@@ -907,7 +987,7 @@
                 } else {
                     // Regular activities
                     cardContent = `
-                        <div class="category-badge ${activity.category}">${categoryDisplay}</div>
+                        <div style="margin-bottom: 0.75rem;">${badgesHTML}</div>
                         <div class="activity-header">
                             <div class="activity-name">${activity.name}</div>
                             ${ratingHTML}
@@ -915,11 +995,11 @@
                         ${activity.summary ? `<p style="font-size: 0.9375rem; color: #4a5568; margin: 0.75rem 0 1rem 0; line-height: 1.5;">${activity.summary}</p>` : ''}
                         <div class="activity-meta">
                             <span>📍 ${activity.distance}</span>
-                            <span>💰 ${activity.price}</span>
+                            ${activity.price ? `<span>💰 ${activity.price}</span>` : ''}
                         </div>
                         <div class="activity-notes">
-                            <strong>Adres:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.address}</a><br>
-                            <strong>Openingstijden:</strong> ${activity.hours}<br>
+                            ${activity.address ? `<strong>Adres:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.address}</a><br>` : ''}
+                            ${activity.hours ? `<strong>Openingstijden:</strong> ${activity.hours}<br>` : ''}
                             ${activity.notes ? activity.notes + '<br>' : ''}
                         </div>
                         ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Bezoek website →</a>` : ''}
@@ -943,15 +1023,33 @@
         let activeCategories = new Set(); // Start with empty = show all
         let currentSearch = '';
         
+        // Helper: get categories array (supports legacy single category)
+        function getCategories(activity) {
+            if (activity.categories) return activity.categories;
+            if (activity.category) return [activity.category];
+            return [];
+        }
+        
+        // Helper: check if activity matches any selected category (OR logic)
+        function matchesAnyCategory(activity, activeCategories) {
+            if (activeCategories.size === 0) return true; // Empty = show all
+            const activityCategories = getCategories(activity);
+            for (const cat of activityCategories) {
+                if (activeCategories.has(cat)) return true;
+            }
+            return false;
+        }
+        
         function applyFilters() {
             const cards = document.querySelectorAll('.activity-card');
-            const showAll = activeCategories.size === 0; // Empty = show everything
             
             cards.forEach(card => {
-                const category = card.dataset.category;
-                const text = card.textContent.toLowerCase();
+                const activityId = parseInt(card.dataset.id);
+                const activity = activities.find(a => a.id === activityId);
+                if (!activity) return;
                 
-                const categoryMatch = showAll || activeCategories.has(category);
+                const text = card.textContent.toLowerCase();
+                const categoryMatch = matchesAnyCategory(activity, activeCategories);
                 const searchMatch = currentSearch === '' || text.includes(currentSearch.toLowerCase());
                 
                 if (categoryMatch && searchMatch) {
@@ -968,7 +1066,7 @@
                 const route = routes[activity.id];
                 if (marker) {
                     const activityText = `${activity.name} ${activity.notes || ''} ${activity.distance} ${activity.price || activity.difficulty || ''}`.toLowerCase();
-                    const categoryMatch = showAll || activeCategories.has(activity.category);
+                    const categoryMatch = matchesAnyCategory(activity, activeCategories);
                     const searchMatch = currentSearch === '' || activityText.includes(currentSearch.toLowerCase());
                     
                     if (categoryMatch && searchMatch) {
@@ -1071,6 +1169,11 @@
                     content.style.pointerEvents = 'auto';
                 }
                 
+                // Update map padding based on sheet state (mobile only)
+                if (window.innerWidth < 768) {
+                    updateMapPadding(state);
+                }
+                
                 // Defer map resize until after animation completes
                 if (animate && prevState !== state) {
                     const handleTransitionEnd = () => {
@@ -1086,6 +1189,34 @@
                         map.invalidateSize();
                     });
                 }
+            }
+            
+            // Update map viewport padding based on bottom sheet state
+            function updateMapPadding(state) {
+                const mapContainer = document.getElementById('map');
+                if (!mapContainer) return;
+                
+                // Calculate bottom padding based on sheet state
+                let bottomPadding;
+                if (state === 'collapsed') {
+                    // Minimal padding when collapsed (~64px sheet handle)
+                    bottomPadding = 64;
+                } else if (state === 'half') {
+                    // Pad so visible center is in upper half (~50% of viewport)
+                    bottomPadding = Math.floor(window.innerHeight * 0.5);
+                } else {
+                    // Full state: keep light padding, don't fight animation
+                    bottomPadding = Math.floor(window.innerHeight * 0.85);
+                }
+                
+                // Apply padding by adjusting map container bottom
+                // This shifts the effective center up without needing to pan
+                mapContainer.style.paddingBottom = `${bottomPadding}px`;
+                
+                // Invalidate size to trigger recalculation
+                requestAnimationFrame(() => {
+                    map.invalidateSize({ pan: false });
+                });
             }
             
             // Touch/mouse handlers for dragging - only on handle
