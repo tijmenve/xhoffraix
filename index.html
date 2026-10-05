@@ -587,11 +587,11 @@
         <input type="text" class="search-box" placeholder="Zoek activiteiten..." id="searchBox">
         <div class="filters" id="filters">
             <button class="filter-btn active" data-filter="all">Alles</button>
-            <button class="filter-btn" data-filter="family">Gezin</button>
-            <button class="filter-btn" data-filter="ww2">WOII</button>
-            <button class="filter-btn" data-filter="bakeries">Bakkerijen</button>
-            <button class="filter-btn" data-filter="hikes">Wandelingen</button>
-            <button class="filter-btn" data-filter="groceries">Winkels</button>
+            <button class="filter-btn active" data-filter="family">Gezin</button>
+            <button class="filter-btn active" data-filter="ww2">WOII</button>
+            <button class="filter-btn active" data-filter="bakeries">Bakkerijen</button>
+            <button class="filter-btn active" data-filter="hikes">Wandelingen</button>
+            <button class="filter-btn active" data-filter="groceries">Winkels</button>
         </div>
     </div>
     
@@ -990,18 +990,37 @@
                 const filter = this.dataset.filter;
                 
                 if (filter === 'all') {
-                    // "All" turns everything on
-                    activeCategories = new Set(['family', 'ww2', 'bakeries', 'hikes', 'groceries']);
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.add('active'));
+                    // Toggle "All" button behavior
+                    if (activeCategories.size === 5) {
+                        // All categories are on, clicking Alles turns everything off would be confusing
+                        // Instead, do nothing (keep all selected) OR turn all off - let's keep at least one
+                        // Most intuitive: clicking Alles when all are on does nothing
+                        return;
+                    } else {
+                        // Not all categories are on, clicking Alles turns everything on
+                        activeCategories = new Set(['family', 'ww2', 'bakeries', 'hikes', 'groceries']);
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.add('active'));
+                    }
                 } else {
                     // Toggle individual category
                     if (activeCategories.has(filter)) {
+                        // Turning off a category
                         activeCategories.delete(filter);
                         this.classList.remove('active');
+                        
+                        // Ensure at least one category remains
+                        if (activeCategories.size === 0) {
+                            // Re-add this category to keep at least one
+                            activeCategories.add(filter);
+                            this.classList.add('active');
+                            return; // Don't apply filters, nothing changed
+                        }
                     } else {
+                        // Turning on a category
                         activeCategories.add(filter);
                         this.classList.add('active');
                     }
+                    
                     // Update "All" button state
                     const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
                     if (activeCategories.size === 5) {
