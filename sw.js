@@ -1,4 +1,4 @@
-const CACHE_NAME = 'xhoffraix-v2';
+const CACHE_NAME = 'xhoffraix-v3';
 const BASE_PATH = '/xhoffraix';
 
 const urlsToCache = [
@@ -39,7 +39,7 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - different strategies based on resource type
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
@@ -50,20 +50,53 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   
-  // Cache OpenStreetMap tiles
+  // Network-first for HTML and activities.json (refresh when online, fallback to cache offline)
+  if (url.pathname.endsWith('.html') || 
+      url.pathname.endsWith('/') || 
+      url.pathname.endsWith('activities.json')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Update cache with fresh content
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+          return response;
+        })
+        .catch(() => {
+          // Offline - serve from cache
+          return caches.match(event.request).then((response) => {
+            if (response) {
+              return response;
+            }
+            // Fallback to index.html for navigation requests
+            if (event.request.mode === 'navigate') {
+              return caches.match(`${BASE_PATH}/index.html`);
+            }
+          });
+        })
+    );
+    return;
+  }
+  
+  // Cache-first for OpenStreetMap tiles (save viewed tiles, don't refetch)
   if (url.hostname.includes('tile.openstreetmap.org')) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
         return cache.match(event.request).then((response) => {
           if (response) {
+            // Tile already cached - return it
             return response;
           }
+          // Tile not cached - fetch and cache it
           return fetch(event.request).then((networkResponse) => {
-            // Cache tile for offline use
-            cache.put(event.request, networkResponse.clone());
+            if (networkResponse && networkResponse.status === 200) {
+              cache.put(event.request, networkResponse.clone());
+            }
             return networkResponse;
           }).catch(() => {
-            // Return a placeholder or nothing if offline and not cached
+            // Offline and tile not cached - return empty response
             return new Response('', { status: 503, statusText: 'Service Unavailable' });
           });
         });
@@ -72,7 +105,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   
-  // For other requests, use cache-first strategy
+  // Cache-first for external resources (Leaflet, fonts, etc.)
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
@@ -95,7 +128,7 @@ self.addEventListener('fetch', (event) => {
         });
       })
       .catch(() => {
-        // Offline fallback - return cached index if available
+        // Offline fallback for navigation
         if (event.request.mode === 'navigate') {
           return caches.match(`${BASE_PATH}/index.html`);
         }
