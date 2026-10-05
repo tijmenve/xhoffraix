@@ -143,35 +143,104 @@
             border-color: #667eea;
         }
         
-        /* Mobile: map/list toggle */
-        .view-toggle {
+        /* Mobile: bottom sheet */
+        .bottom-sheet {
             position: fixed;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1002;
-            display: flex;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -2px 16px rgba(0,0,0,0.15);
+            z-index: 1002;
+            transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+            will-change: transform;
+            touch-action: none;
+        }
+        
+        .bottom-sheet.collapsed {
+            transform: translateY(calc(100% - 4rem));
+        }
+        
+        .bottom-sheet.half {
+            transform: translateY(50%);
+        }
+        
+        .bottom-sheet.full {
+            transform: translateY(7rem);
+        }
+        
+        .sheet-handle-area {
+            padding: 0.75rem 1rem 0.5rem;
+            cursor: grab;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sheet-handle-area:active {
+            cursor: grabbing;
+        }
+        
+        .sheet-handle {
+            width: 40px;
+            height: 4px;
+            background: #cbd5e0;
+            border-radius: 2px;
+        }
+        
+        .sheet-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .sheet-content {
+            overflow-y: auto;
+            height: calc(100vh - 10rem);
+            padding: 0 1rem 2rem;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .bottom-sheet.collapsed .sheet-content {
             overflow: hidden;
         }
         
-        .view-toggle-btn {
+        /* Map button when sheet is full */
+        .map-button {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1003;
             padding: 0.75rem 1.5rem;
+            background: #1a202c;
+            color: white;
+            border: none;
+            border-radius: 24px;
             font-size: 0.875rem;
             font-weight: 600;
-            border: none;
-            background: white;
-            color: #64748b;
             cursor: pointer;
-            transition: all 0.2s;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
             font-family: inherit;
         }
         
-        .view-toggle-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .bottom-sheet.full ~ .map-button {
+            display: flex;
+        }
+        
+        /* Hide old toggle */
+        .view-toggle {
+            display: none;
+        }
+        
+        /* Mobile: list container inside sheet */
+        .list-container {
+            display: block;
         }
         
         /* Mobile: full-screen map background */
@@ -198,24 +267,6 @@
         
         .map-fullscreen-overlay {
             display: none;
-        }
-        
-        /* Mobile: list container */
-        .list-container {
-            position: fixed;
-            top: 7rem;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: white;
-            overflow-y: auto;
-            padding: 1rem;
-            z-index: 1000;
-            display: none;
-        }
-        
-        .list-container.active {
-            display: block;
         }
         
         .activity-card {
@@ -357,6 +408,15 @@
                 overflow: hidden;
             }
             
+            /* Hide mobile bottom sheet on desktop */
+            .bottom-sheet {
+                display: none;
+            }
+            
+            .map-button {
+                display: none !important;
+            }
+            
             header {
                 position: fixed;
                 top: 1rem;
@@ -438,6 +498,22 @@
                 display: none;
             }
             
+            .list-container {
+                display: block !important;
+                position: fixed;
+                right: 1.5rem;
+                top: 1rem;
+                bottom: 1.5rem;
+                width: 420px;
+                max-width: calc(100vw - 3rem);
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+                z-index: 1000;
+                overflow-y: auto;
+                padding: 1.5rem;
+            }
+            
             .container {
                 position: fixed;
                 top: 0;
@@ -454,22 +530,6 @@
                 top: 0 !important;
                 left: 0 !important;
                 z-index: 0;
-            }
-            
-            .list-container {
-                display: block !important;
-                position: fixed;
-                right: 1.5rem;
-                top: 1rem;
-                bottom: 1.5rem;
-                width: 420px;
-                max-width: calc(100vw - 3rem);
-                background: white;
-                border-radius: 16px;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-                z-index: 1000;
-                overflow-y: auto;
-                padding: 1.5rem;
             }
             
             .activity-card {
@@ -535,15 +595,24 @@
         </div>
     </div>
     
-    <div class="view-toggle" id="viewToggle">
-        <button class="view-toggle-btn active" data-view="map">Kaart</button>
-        <button class="view-toggle-btn" data-view="list">Lijst</button>
-    </div>
-    
     <div class="container">
         <div id="map"></div>
-        <div class="list-container" id="activityList"></div>
     </div>
+    
+    <div class="bottom-sheet half" id="bottomSheet">
+        <div class="sheet-handle-area" id="sheetHandle">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title" id="sheetTitle">51 activiteiten</div>
+        </div>
+        <div class="sheet-content" id="sheetContent">
+            <div class="list-container" id="activityList"></div>
+        </div>
+    </div>
+    
+    <button class="map-button" id="mapButton">
+        <span>🗺️</span>
+        <span>Kaart</span>
+    </button>
     
     <div class="footer-note">
         <strong>Let op:</strong> Rijtijden zijn schattingen zonder verkeer vanaf Rue du Herdier, Xhoffraix (50.4569766 N, 6.0709928 E), opgehaald op 3 oktober 2026, geen live verkeer.
@@ -670,9 +739,17 @@
                     window.location.hash = `activity-${activity.id}`;
                     const card = document.querySelector(`[data-id="${activity.id}"]`);
                     if (card) {
-                        // Switch to list view on mobile to show the card
+                        // On mobile, expand sheet to half or full to show the card
                         if (window.innerWidth < 768) {
-                            setView('list');
+                            const sheet = document.getElementById('bottomSheet');
+                            if (sheet && sheet.classList.contains('collapsed')) {
+                                sheet.classList.remove('collapsed');
+                                sheet.classList.add('half');
+                                const content = document.getElementById('sheetContent');
+                                if (content) {
+                                    content.style.overflowY = 'auto';
+                                }
+                            }
                             setTimeout(() => {
                                 card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                             }, 100);
@@ -724,39 +801,24 @@
             );
         }
         
-        // Mobile view toggle setup (declare early so marker handlers can use it)
-        let currentView = sessionStorage.getItem('xhoffraix-view') || 'map';
-        const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
-        const listContainer = document.getElementById('activityList');
-        
-        function setView(view) {
-            currentView = view;
-            sessionStorage.setItem('xhoffraix-view', view);
-            
-            viewToggleBtns.forEach(btn => {
-                if (btn.dataset.view === view) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            
-            if (view === 'list') {
-                listContainer.classList.add('active');
-            } else {
-                listContainer.classList.remove('active');
-            }
-            
-            // Invalidate map size when switching to map view
-            if (view === 'map') {
-                setTimeout(() => map.invalidateSize(), 100);
-            }
-        }
-        
-        // When clicking an activity card on mobile, switch to map view
+        // When clicking an activity card on mobile, collapse sheet to show map
         function handleActivityClick(activity) {
             if (window.innerWidth < 768) {
-                setView('map');
+                const sheet = document.getElementById('bottomSheet');
+                if (sheet && sheet.classList.contains('full')) {
+                    sheet.classList.remove('full');
+                    sheet.classList.add('collapsed');
+                    setTimeout(() => {
+                        const content = document.getElementById('sheetContent');
+                        if (content) {
+                            content.style.overflowY = 'hidden';
+                            content.scrollTop = 0;
+                        }
+                    }, 100);
+                } else if (sheet) {
+                    sheet.classList.remove('half', 'full');
+                    sheet.classList.add('collapsed');
+                }
             }
             
             if (markers[activity.id]) {
@@ -918,6 +980,8 @@
                 const latLng = marker.getLatLng();
                 map.setView(latLng, 13);
             }
+            
+            updateSheetTitle();
         }
         
         // Filter buttons - toggle behavior
@@ -955,22 +1019,180 @@
         document.getElementById('searchBox').addEventListener('input', function(e) {
             currentSearch = e.target.value;
             applyFilters();
+            updateSheetTitle();
         });
         
-        // Set initial view (only on mobile)
+        // Bottom sheet gesture handling (mobile only)
         if (window.innerWidth < 768) {
-            setView(currentView);
+            const sheet = document.getElementById('bottomSheet');
+            const handle = document.getElementById('sheetHandle');
+            const content = document.getElementById('sheetContent');
+            const mapButton = document.getElementById('mapButton');
+            
+            let startY = 0;
+            let currentY = 0;
+            let isDragging = false;
+            let sheetState = 'half'; // collapsed, half, full
+            
+            function setSheetState(state) {
+                sheetState = state;
+                sheet.classList.remove('collapsed', 'half', 'full');
+                sheet.classList.add(state);
+                
+                // Disable content scrolling when not full
+                if (state === 'full') {
+                    content.style.overflowY = 'auto';
+                } else {
+                    content.style.overflowY = 'hidden';
+                    content.scrollTop = 0;
+                }
+                
+                // Invalidate map size
+                setTimeout(() => map.invalidateSize(), 100);
+            }
+            
+            // Touch/mouse handlers for dragging
+            function handleStart(e) {
+                // Only start drag from handle area or when content is at top and dragging down
+                const touch = e.touches ? e.touches[0] : e;
+                const isHandle = e.target.closest('.sheet-handle-area');
+                const isContentTop = content.scrollTop === 0;
+                
+                if (isHandle || (sheetState === 'full' && isContentTop)) {
+                    startY = touch.clientY;
+                    isDragging = true;
+                    sheet.style.transition = 'none';
+                }
+            }
+            
+            function handleMove(e) {
+                if (!isDragging) return;
+                
+                const touch = e.touches ? e.touches[0] : e;
+                currentY = touch.clientY;
+                const deltaY = currentY - startY;
+                
+                // Prevent default scrolling when dragging
+                if (Math.abs(deltaY) > 5) {
+                    e.preventDefault();
+                }
+                
+                // Apply transform based on current state and drag direction
+                let transform = 0;
+                if (sheetState === 'collapsed') {
+                    transform = Math.max(-window.innerHeight * 0.5, deltaY);
+                } else if (sheetState === 'half') {
+                    transform = Math.min(window.innerHeight * 0.5, Math.max(-window.innerHeight * 0.5, deltaY));
+                } else if (sheetState === 'full') {
+                    transform = Math.max(-window.innerHeight * 0.5, deltaY);
+                }
+                
+                sheet.style.transform = `translateY(${transform}px)`;
+            }
+            
+            function handleEnd(e) {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                sheet.style.transition = '';
+                sheet.style.transform = '';
+                
+                const deltaY = currentY - startY;
+                const threshold = 50;
+                
+                // Determine new state based on drag distance
+                if (Math.abs(deltaY) > threshold) {
+                    if (deltaY > 0) {
+                        // Dragged down
+                        if (sheetState === 'full') {
+                            setSheetState('half');
+                        } else if (sheetState === 'half') {
+                            setSheetState('collapsed');
+                        }
+                    } else {
+                        // Dragged up
+                        if (sheetState === 'collapsed') {
+                            setSheetState('half');
+                        } else if (sheetState === 'half') {
+                            setSheetState('full');
+                        }
+                    }
+                }
+            }
+            
+            // Add event listeners
+            handle.addEventListener('touchstart', handleStart, { passive: false });
+            handle.addEventListener('mousedown', handleStart);
+            
+            document.addEventListener('touchmove', handleMove, { passive: false });
+            document.addEventListener('mousemove', handleMove);
+            
+            document.addEventListener('touchend', handleEnd);
+            document.addEventListener('mouseup', handleEnd);
+            
+            // Content scroll to expand
+            content.addEventListener('scroll', () => {
+                if (content.scrollTop < -20 && sheetState === 'full') {
+                    setSheetState('half');
+                }
+            });
+            
+            // Map button click
+            mapButton.addEventListener('click', () => {
+                setSheetState('collapsed');
+            });
+            
+            // Initialize
+            setSheetState('half');
         }
         
-        // View toggle buttons
-        viewToggleBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                setView(this.dataset.view);
-            });
-        });
+        // Update sheet title with activity count
+        function updateSheetTitle() {
+            const visibleCards = document.querySelectorAll('.activity-card:not(.hidden)');
+            const count = visibleCards.length;
+            const sheetTitle = document.getElementById('sheetTitle');
+            if (sheetTitle) {
+                sheetTitle.textContent = `${count} ${count === 1 ? 'activiteit' : 'activiteiten'}`;
+            }
+        }
+        
+        // When clicking an activity card on mobile, collapse sheet to show map
+        function handleActivityClick(activity) {
+            if (window.innerWidth < 768) {
+                const sheet = document.getElementById('bottomSheet');
+                if (sheet && sheet.classList.contains('full')) {
+                    sheet.classList.remove('full');
+                    sheet.classList.add('collapsed');
+                    setTimeout(() => {
+                        const content = document.getElementById('sheetContent');
+                        if (content) {
+                            content.style.overflowY = 'hidden';
+                            content.scrollTop = 0;
+                        }
+                    }, 100);
+                } else if (sheet) {
+                    sheet.classList.remove('half', 'full');
+                    sheet.classList.add('collapsed');
+                }
+            }
+            
+            if (markers[activity.id]) {
+                map.setView([activity.lat, activity.lng], 14);
+                markers[activity.id].openPopup();
+                
+                // Highlight route for hikes
+                if (activity.category === 'hikes' && routes[activity.id]) {
+                    routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
+                    setTimeout(() => {
+                        routes[activity.id].setStyle({ color: '#10b981', weight: 3, opacity: 0.7 });
+                    }, 2000);
+                }
+            }
+        }
         
         // Initial render
         renderActivities();
+        updateSheetTitle();
         
         // Handle URL hash for sharing specific activities
         function handleHash() {
@@ -982,9 +1204,17 @@
                     const card = document.querySelector(`[data-id="${activityId}"]`);
                     if (card && !card.classList.contains('hidden')) {
                         setTimeout(() => {
-                            // On mobile, switch to list view first
+                            // On mobile, expand sheet to show list
                             if (window.innerWidth < 768) {
-                                setView('list');
+                                const sheet = document.getElementById('bottomSheet');
+                                if (sheet) {
+                                    sheet.classList.remove('collapsed', 'full');
+                                    sheet.classList.add('half');
+                                    const content = document.getElementById('sheetContent');
+                                    if (content) {
+                                        content.style.overflowY = 'auto';
+                                    }
+                                }
                             }
                             card.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             if (markers[activityId]) {
