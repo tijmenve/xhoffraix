@@ -79,17 +79,32 @@
             left: 0;
             right: 0;
             z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        @media (max-width: 767px) {
+            .controls {
+                flex-direction: row;
+                align-items: center;
+            }
         }
         
         .search-box {
-            width: 100%;
+            flex: 1;
             padding: 0.5rem 0.75rem;
             font-size: 0.8125rem;
             border: 1.5px solid #e2e8f0;
             border-radius: 8px;
-            margin-bottom: 0.5rem;
             font-family: inherit;
             transition: all 0.2s;
+        }
+        
+        @media (min-width: 768px) {
+            .search-box {
+                margin-bottom: 0.5rem;
+            }
         }
         
         .search-box:focus {
@@ -109,6 +124,168 @@
         
         .filters::-webkit-scrollbar {
             display: none;
+        }
+        
+        /* Mobile: hide filter chips, show filter button */
+        @media (max-width: 767px) {
+            .filters {
+                display: none;
+            }
+        }
+        
+        .filter-toggle-btn {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            position: relative;
+        }
+        
+        @media (max-width: 767px) {
+            .filter-toggle-btn {
+                display: flex;
+            }
+        }
+        
+        .filter-toggle-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .filter-badge {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            min-width: 1.25rem;
+            height: 1.25rem;
+            padding: 0 0.35rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.6875rem;
+            font-weight: 700;
+        }
+        
+        .filter-badge.active {
+            display: flex;
+        }
+        
+        /* Filter sheet modal */
+        .filter-sheet {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.2s ease-out;
+        }
+        
+        .filter-sheet.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .filter-sheet-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-height: 70vh;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s ease-out;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .filter-sheet-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .filter-sheet-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .filter-sheet-close {
+            width: 2rem;
+            height: 2rem;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+        
+        .filter-sheet-close:active {
+            background: #e2e8f0;
+            transform: scale(0.95);
+        }
+        
+        .filter-sheet-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .filter-sheet-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .filter-sheet-chip {
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        
+        .filter-sheet-chip:active {
+            transform: scale(0.96);
+        }
+        
+        .filter-sheet-chip.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
         }
         
         .filter-toggle {
@@ -614,6 +791,10 @@
     
     <div class="controls">
         <input type="text" class="search-box" placeholder="Zoek activiteiten..." id="searchBox">
+        <button class="filter-toggle-btn" id="filterToggleBtn">
+            <span>Filters</span>
+            <span class="filter-badge" id="filterBadge">0</span>
+        </button>
         <div class="filters" id="filters">
             <button class="filter-btn" data-filter="family">Gezin</button>
             <button class="filter-btn" data-filter="ww2">WOII</button>
@@ -1115,8 +1296,98 @@
                 }
                 
                 applyFilters();
+                updateFilterBadge();
             });
         });
+        
+        // Mobile filter sheet
+        const filterToggleBtn = document.getElementById('filterToggleBtn');
+        const filterSheet = document.getElementById('filterSheet');
+        const filterSheetClose = document.getElementById('filterSheetClose');
+        const filterBadge = document.getElementById('filterBadge');
+        
+        function updateFilterBadge() {
+            const count = activeCategories.size;
+            if (count > 0) {
+                filterBadge.textContent = count;
+                filterBadge.classList.add('active');
+            } else {
+                filterBadge.classList.remove('active');
+            }
+        }
+        
+        function openFilterSheet() {
+            filterSheet.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Sync sheet chips with current active categories
+            document.querySelectorAll('.filter-sheet-chip').forEach(chip => {
+                const filter = chip.dataset.filter;
+                if (activeCategories.has(filter)) {
+                    chip.classList.add('active');
+                } else {
+                    chip.classList.remove('active');
+                }
+            });
+        }
+        
+        function closeFilterSheet() {
+            filterSheet.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Open filter sheet
+        if (filterToggleBtn) {
+            filterToggleBtn.addEventListener('click', openFilterSheet);
+        }
+        
+        // Close filter sheet
+        if (filterSheetClose) {
+            filterSheetClose.addEventListener('click', closeFilterSheet);
+        }
+        
+        // Close on backdrop click
+        if (filterSheet) {
+            filterSheet.addEventListener('click', function(e) {
+                if (e.target === filterSheet) {
+                    closeFilterSheet();
+                }
+            });
+        }
+        
+        // Filter sheet chip clicks (live toggle)
+        document.querySelectorAll('.filter-sheet-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                const filter = this.dataset.filter;
+                
+                // Toggle category
+                if (activeCategories.has(filter)) {
+                    activeCategories.delete(filter);
+                    this.classList.remove('active');
+                } else {
+                    activeCategories.add(filter);
+                    this.classList.add('active');
+                }
+                
+                // Also sync desktop filter buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    if (btn.dataset.filter === filter) {
+                        if (activeCategories.has(filter)) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    }
+                });
+                
+                // Apply immediately (live)
+                applyFilters();
+                updateFilterBadge();
+            });
+        });
+        
+        // Initialize badge
+        updateFilterBadge();
         
         // Search box
         document.getElementById('searchBox').addEventListener('input', function(e) {
@@ -1517,5 +1788,26 @@
             });
         }
     </script>
+    <!-- Filter Sheet Modal (Mobile Only) -->
+    <div class="filter-sheet" id="filterSheet">
+        <div class="filter-sheet-content">
+            <div class="filter-sheet-header">
+                <h2 class="filter-sheet-title">Filters</h2>
+                <button class="filter-sheet-close" id="filterSheetClose" aria-label="Sluiten">×</button>
+            </div>
+            <div class="filter-sheet-body">
+                <div class="filter-sheet-options" id="filterSheetOptions">
+                    <button class="filter-sheet-chip" data-filter="family">Gezin</button>
+                    <button class="filter-sheet-chip" data-filter="ww2">WOII</button>
+                    <button class="filter-sheet-chip" data-filter="bakeries">Bakkerijen</button>
+                    <button class="filter-sheet-chip" data-filter="hikes">Wandelingen</button>
+                    <button class="filter-sheet-chip" data-filter="groceries">Winkels</button>
+                    <button class="filter-sheet-chip" data-filter="museums">Musea</button>
+                    <button class="filter-sheet-chip" data-filter="indoor">Regen</button>
+                    <button class="filter-sheet-chip" data-filter="wellness">Wellness</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
