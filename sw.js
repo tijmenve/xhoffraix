@@ -1,4 +1,4 @@
-const CACHE_NAME = 'xhoffraix-v10';
+const CACHE_NAME = 'xhoffraix-v11';
 const BASE_PATH = '/xhoffraix';
 
 const urlsToCache = [

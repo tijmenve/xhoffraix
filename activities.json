@@ -44,7 +44,8 @@
     "url": "https://botrange.be/bienvenue-chez-nous/horaires-et-contact/",
     "summary": "Hoogste punt van België met wandelpaden door de Hoge Venen en bezoekerscentrum.",
     "categories": [
-      "family"
+      "family",
+      "hikes"
     ]
   },
   {
@@ -95,7 +96,8 @@
     "summary": "Natuurdomein met wandelpaden op vlonders door het veen en bosmuse um.",
     "categories": [
       "family",
-      "museums"
+      "museums",
+      "hikes"
     ]
   },
   {
@@ -128,7 +130,8 @@
     "url": "https://www.waimes.be/tourisme/signal-de-botrange/sites-attractions/le-lac-de-robertville",
     "summary": "Stuwmeer met wandelpad langs de oever en uitzicht op het kasteel.",
     "categories": [
-      "family"
+      "family",
+      "hikes"
     ]
   },
   {
@@ -160,7 +163,8 @@
     "url": "https://www.ostbelgien.eu/fr/fiche/leisurecenters/barrage-de-la-vesdre",
     "summary": "Stuwdam met wandelpad, bos en speeltuin in Eupen.",
     "categories": [
-      "family"
+      "family",
+      "hikes"
     ]
   },
   {
@@ -208,7 +212,8 @@
     "url": "https://www.malmedy-tourisme.be/fr/a-pied/mdy04-xhoffraix-en-famille/",
     "summary": "Korte gezinswandeling van 3,4 km door het dorp Xhoffraix.",
     "categories": [
-      "family"
+      "family",
+      "hikes"
     ]
   },
   {
@@ -369,7 +374,8 @@
     "url": "https://www.rureifel-tourismus.de/en/touren/westwall-weg",
     "summary": "Wandeling van 8 km langs Siegfried-liniebunkers, medische bunker zondag open.",
     "categories": [
-      "ww2"
+      "ww2",
+      "hikes"
     ]
   },
   {
@@ -1300,7 +1306,8 @@
     "categories": [
       "family",
       "museums",
-      "indoor"
+      "indoor",
+      "ww2"
     ],
     "lat": 50.427638,
     "lng": 6.027031,
@@ -1417,7 +1424,8 @@
     "id": 59,
     "name": "Hasselpath Rocherath WWII Trail",
     "categories": [
-      "ww2"
+      "ww2",
+      "hikes"
     ],
     "lat": 50.458857,
     "lng": 6.31125,
