@@ -170,9 +170,15 @@
         }
         
         @media (max-width: 767px) {
-            .filter-toggle-btn:not(.desktop-filter-toggle-btn) {
+            .filter-toggle-btn:not(.desktop-filter-toggle-btn):not(.desktop-list-toggle-btn) {
                 display: flex;
             }
+        }
+
+        .desktop-list-heading,
+        .desktop-list-close,
+        .desktop-card-hint {
+            display: none;
         }
 
         .desktop-filter-toggle-btn::after {
@@ -405,6 +411,7 @@
             align-items: center;
             gap: 0.5rem;
             touch-action: none;
+            user-select: none;
         }
         
         .sheet-handle-area:active {
@@ -643,6 +650,31 @@
             color: #1a202c;
             line-height: 1.3;
             flex: 1;
+            border: 0;
+            padding: 0;
+            background: transparent;
+            font-family: inherit;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .activity-name:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        .activity-summary {
+            font-size: 0.9375rem;
+            color: #4a5568;
+            margin: 0.75rem 0 1rem;
+            line-height: 1.5;
+        }
+
+        .activity-empty {
+            padding: 1rem;
+            color: #64748b;
+            font-size: 0.875rem;
         }
         
         .activity-rating {
@@ -801,7 +833,8 @@
         }
 
         .activity-marker:hover .category-pin,
-        .activity-marker:focus-visible .category-pin {
+        .activity-marker:focus-visible .category-pin,
+        .activity-marker.selected .category-pin {
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25), 0 3px 9px rgba(15, 23, 42, 0.25);
         }
@@ -843,14 +876,89 @@
         }
 
         @media (min-width: 768px) {
-            /* Desktop: map-first layout unchanged */
+            /* A side panel leaves the map's full height available on laptops. */
             body {
+                --desktop-sidebar-width: clamp(320px, 30vw, 400px);
                 overflow: hidden;
             }
-            
-            /* Hide mobile bottom sheet on desktop */
+
             .bottom-sheet {
+                display: flex;
+                flex-direction: column;
+                top: 11.25rem;
+                left: 1rem;
+                right: auto;
+                bottom: 1rem;
+                width: var(--desktop-sidebar-width);
+                border: 1px solid #e0e3f1;
+                border-radius: 16px;
+                overflow: hidden;
+                transform: none !important;
+                transition: none;
+                will-change: auto;
+                box-shadow: 0 4px 20px rgba(76, 65, 128, 0.12);
+            }
+
+            .desktop-list-collapsed .bottom-sheet {
                 display: none;
+            }
+
+            .sheet-handle-area {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 1rem;
+                border-bottom: 1px solid #e0e3f1;
+                cursor: default;
+                touch-action: auto;
+            }
+
+            .sheet-handle {
+                display: none;
+            }
+
+            .desktop-list-heading {
+                display: block;
+                font-size: 1rem;
+                font-weight: 700;
+                color: #373461;
+            }
+
+            .sheet-title {
+                font-size: 0.75rem;
+                font-weight: 400;
+                color: #64748b;
+            }
+
+            .desktop-list-close {
+                display: grid;
+                place-items: center;
+                width: 36px;
+                height: 36px;
+                border: 1px solid #e0e3f1;
+                border-radius: 10px;
+                background: #f0f0fc;
+                color: #667eea;
+                cursor: pointer;
+            }
+
+            .desktop-list-close:hover {
+                background: #e7e7fa;
+            }
+
+            .desktop-list-close:focus-visible {
+                outline: 2px solid #667eea;
+                outline-offset: 2px;
+            }
+
+            .sheet-content {
+                flex: 1;
+                min-height: 0;
+                height: auto;
+                overflow-y: auto !important;
+                pointer-events: auto !important;
+                padding: 0.75rem;
+                scrollbar-width: thin;
+                scrollbar-color: #c8ccef transparent;
             }
             
             .map-button {
@@ -860,37 +968,38 @@
             header {
                 position: fixed;
                 top: 1rem;
-                left: 50%;
-                transform: translateX(-50%);
+                left: 1rem;
+                transform: none;
                 z-index: 1001;
-                padding: 0.75rem 1.5rem;
-                max-width: 800px;
-                width: calc(100% - 3rem);
+                padding: 0.875rem 1rem;
+                max-width: none;
+                width: var(--desktop-sidebar-width);
                 border-radius: 12px;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             }
             
             header h1 {
-                font-size: 1.5rem;
+                font-size: 1.25rem;
                 margin-bottom: 0.125rem;
             }
             
             header p {
                 display: block;
-                font-size: 0.8125rem;
+                font-size: 0.75rem;
+                line-height: 1.45;
                 opacity: 0.95;
             }
             
             .controls {
                 position: fixed;
                 top: 6.5rem;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 1001;
-                padding: 0.75rem 1rem;
-                max-width: 800px;
-                width: calc(100% - 3rem);
+                left: 1rem;
+                transform: none;
+                z-index: 1003;
+                padding: 0.75rem;
+                max-width: none;
+                width: var(--desktop-sidebar-width);
                 border-radius: 12px;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);
                 background: white;
@@ -909,8 +1018,8 @@
 
             .desktop-filter-toggle-btn {
                 display: flex;
-                padding: 0.5rem 1rem;
-                font-size: 0.875rem;
+                padding: 0.5rem 0.625rem;
+                font-size: 0.8125rem;
                 color: #64748b;
                 background: #f7fafc;
             }
@@ -919,6 +1028,38 @@
             .desktop-filter-toggle-btn[aria-expanded="true"] {
                 color: #667eea;
                 border-color: #667eea;
+            }
+
+            .desktop-list-toggle-btn {
+                display: flex;
+                padding: 0.5rem 0.625rem;
+                font-size: 0.8125rem;
+                color: #5965ad;
+            }
+
+            .desktop-list-toggle-btn[aria-expanded="true"] {
+                border-color: #667eea;
+                background: #f0f0fc;
+            }
+
+            @media (max-width: 1100px) {
+                .desktop-list-toggle-btn span {
+                    display: none;
+                }
+            }
+
+            #desktopFilters {
+                position: absolute;
+                top: calc(100% + 0.5rem);
+                left: 0;
+                right: 0;
+                max-height: calc(100vh - 12rem);
+                overflow-y: auto;
+                padding: 1rem;
+                border: 1px solid #e0e3f1;
+                border-radius: 12px;
+                background: white;
+                box-shadow: 0 8px 24px rgba(76, 65, 128, 0.16);
             }
             
             .filters {
@@ -953,19 +1094,9 @@
             }
             
             .list-container {
-                display: block !important;
-                position: fixed;
-                right: 1.5rem;
-                top: 1rem;
-                bottom: 1.5rem;
-                width: 420px;
-                max-width: calc(100vw - 3rem);
-                background: white;
-                border-radius: 16px;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-                z-index: 1000;
-                overflow-y: auto;
-                padding: 1.5rem;
+                position: static;
+                width: auto;
+                padding: 0;
             }
             
             .container {
@@ -978,16 +1109,21 @@
             }
             
             #map {
-                width: 100vw !important;
-                height: 100vh !important;
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
+                width: calc(100vw - var(--desktop-sidebar-width) - 2rem);
+                height: 100vh;
+                position: fixed;
+                top: 0;
+                left: calc(var(--desktop-sidebar-width) + 2rem);
                 z-index: 0;
             }
 
+            .desktop-list-collapsed #map {
+                width: 100vw;
+                left: 0;
+            }
+
             #map .leaflet-top {
-                top: 10.5rem;
+                top: 1rem;
             }
 
             #map .leaflet-right .leaflet-control {
@@ -995,9 +1131,76 @@
             }
             
             .activity-card {
-                padding: 1.5rem;
-                margin-bottom: 1.25rem;
-                border-radius: 16px;
+                padding: 1rem;
+                margin-bottom: 0.75rem;
+                border-radius: 12px;
+                scroll-margin-block: 0.75rem;
+            }
+
+            .activity-card:hover {
+                transform: none;
+                border-color: #667eea;
+                box-shadow: 0 3px 12px rgba(76, 65, 128, 0.1);
+            }
+
+            .activity-card.selected {
+                border-color: #667eea;
+                background: #fafaff;
+                box-shadow: 0 0 0 1px #667eea;
+            }
+
+            .activity-header {
+                flex-direction: column;
+                gap: 0.375rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .activity-name {
+                font-size: 1rem;
+            }
+
+            .activity-summary {
+                margin: 0.5rem 0;
+                font-size: 0.8125rem;
+            }
+
+            .activity-card:not(.selected) .activity-summary {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+            }
+
+            .activity-meta {
+                gap: 0.375rem 0.75rem;
+                margin-bottom: 0;
+                font-size: 0.8125rem;
+            }
+
+            .activity-notes,
+            .activity-link {
+                font-size: 0.8125rem;
+            }
+
+            .activity-details {
+                margin-top: 0.75rem;
+            }
+
+            .activity-card:not(.selected) .activity-details,
+            .activity-card:not(.selected) .activity-price {
+                display: none;
+            }
+
+            .desktop-card-hint {
+                display: block;
+                margin-top: 0.75rem;
+                color: #5965ad;
+                font-size: 0.75rem;
+                font-weight: 600;
+            }
+
+            .activity-card.selected .desktop-card-hint {
+                display: none;
             }
             
             .footer-note {
@@ -1122,6 +1325,10 @@
                 <span>Filters</span>
                 <span class="filter-badge" id="desktopFilterBadge">0</span>
             </button>
+            <button type="button" class="filter-toggle-btn desktop-list-toggle-btn" id="desktopListToggleBtn" aria-expanded="true" aria-controls="bottomSheet" aria-label="Activiteitenlijst verbergen" title="Activiteitenlijst verbergen">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                <span>Lijst</span>
+            </button>
         </div>
         <div class="filter-groups" id="desktopFilters" hidden>
             <p class="category-guide"><span class="category-guide-symbols" aria-hidden="true"></span>Meerdere icoontjes op één pin = meerdere categorieën.</p>
@@ -1161,9 +1368,16 @@
     <div class="bottom-sheet half" id="bottomSheet">
         <div class="sheet-handle-area" id="sheetHandle">
             <div class="sheet-handle"></div>
-            <div class="sheet-title" id="sheetTitle">Activiteiten laden…</div>
+            <div class="sheet-heading">
+                <div class="desktop-list-heading">Activiteiten</div>
+                <div class="sheet-title" id="sheetTitle" aria-live="polite">Activiteiten laden…</div>
+            </div>
+            <button type="button" class="desktop-list-close" id="desktopListCloseBtn" aria-label="Activiteitenlijst verbergen" title="Activiteitenlijst verbergen">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg>
+            </button>
         </div>
         <div class="sheet-content" id="sheetContent">
+            <p class="activity-empty" id="activityEmpty" hidden>Geen activiteiten gevonden. Probeer een andere zoekopdracht of pas de filters aan.</p>
             <div class="list-container" id="activityList"></div>
         </div>
     </div>
@@ -1288,13 +1502,22 @@
             address: 'Chem. du Raideu 26, 4960 Malmedy, Belgium',
             coordinates: [50.45152, 6.06777]
         };
-        const popupOptions = {
-            maxWidth: window.innerWidth < 768 ? Math.max(160, window.innerWidth - 144) : 320,
-            maxHeight: window.innerWidth < 768 ? Math.max(140, window.innerHeight * 0.5 - 140) : null,
-            keepInView: true,
-            autoPanPaddingTopLeft: [16, window.innerWidth < 768 ? 144 : 180],
-            autoPanPaddingBottomRight: [window.innerWidth < 768 ? 76 : 16, 16]
-        };
+        const desktopLayout = window.matchMedia('(min-width: 768px)');
+        let desktopListOpen = true;
+        let selectedActivityId = null;
+        let mobileSheetReady = false;
+
+        function getPopupOptions() {
+            const mobile = !desktopLayout.matches;
+            return {
+                maxWidth: Math.min(320, Math.max(160, document.getElementById('map').clientWidth - 144)),
+                maxHeight: Math.max(140, mobile ? window.innerHeight * 0.5 - 140 : window.innerHeight - (desktopListOpen ? 80 : 220)),
+                keepInView: true,
+                autoPanPaddingTopLeft: [16, mobile ? 144 : desktopListOpen ? 16 : 180],
+                autoPanPaddingBottomRight: [76, 16]
+            };
+        }
+        const popupOptions = getPopupOptions();
 
         // Initialize map centered on the accommodation.
         const map = L.map('map', { zoomControl: false, touchZoom: true }).setView(homeLocation.coordinates, 11);
@@ -1372,6 +1595,7 @@
                 }
                 
                 marker.on('click', function() {
+                    selectActivityCard(activity.id);
                     window.location.hash = `activity-${activity.id}`;
                     const card = document.querySelector(`[data-id="${activity.id}"]`);
                     if (card) {
@@ -1401,6 +1625,77 @@
                         }, 2000);
                     }
                 });
+            }
+        });
+
+        function selectActivityCard(activityId) {
+            selectedActivityId = activityId;
+            document.querySelectorAll('.activity-card').forEach(card => {
+                const selected = Number(card.dataset.id) === activityId;
+                card.classList.toggle('selected', selected);
+                card.querySelector('.activity-name').setAttribute('aria-expanded', String(!desktopLayout.matches || selected));
+            });
+            Object.entries(markers).forEach(([id, marker]) => {
+                marker.getElement()?.classList.toggle('selected', Number(id) === activityId);
+            });
+        }
+
+        const desktopListToggleBtn = document.getElementById('desktopListToggleBtn');
+        const desktopListCloseBtn = document.getElementById('desktopListCloseBtn');
+        let mapLayoutFrame;
+
+        function syncMapLayout() {
+            document.body.classList.toggle('desktop-list-collapsed', !desktopListOpen);
+            document.getElementById('bottomSheet').inert = desktopLayout.matches && !desktopListOpen;
+            desktopListToggleBtn.setAttribute('aria-expanded', String(desktopListOpen));
+            const label = desktopListOpen ? 'Activiteitenlijst verbergen' : 'Activiteitenlijst tonen';
+            desktopListToggleBtn.setAttribute('aria-label', label);
+            desktopListToggleBtn.title = label;
+            if (desktopLayout.matches) {
+                document.getElementById('map').style.paddingBottom = '';
+            } else {
+                initializeMobileSheet();
+            }
+            selectActivityCard(selectedActivityId);
+            cancelAnimationFrame(mapLayoutFrame);
+            mapLayoutFrame = requestAnimationFrame(() => {
+                map.invalidateSize();
+                const attributionPosition = desktopLayout.matches ? 'bottomright' : 'topleft';
+                if (map.attributionControl.getPosition() !== attributionPosition) {
+                    map.attributionControl.setPosition(attributionPosition);
+                }
+                const options = getPopupOptions();
+                [homeMarker, ...Object.values(markers)].forEach(marker => {
+                    Object.assign(marker.getPopup().options, options);
+                    if (marker.isPopupOpen()) marker.getPopup().update();
+                });
+            });
+        }
+
+        desktopListToggleBtn.addEventListener('click', () => {
+            desktopListOpen = !desktopListOpen;
+            syncMapLayout();
+        });
+        desktopListCloseBtn.addEventListener('click', () => {
+            desktopListOpen = false;
+            desktopListToggleBtn.focus();
+            syncMapLayout();
+        });
+        window.addEventListener('resize', syncMapLayout);
+
+        function closeDesktopFilters() {
+            desktopFilters.hidden = true;
+            desktopFilterToggleBtn.setAttribute('aria-expanded', 'false');
+        }
+        document.addEventListener('click', event => {
+            if (desktopLayout.matches && !desktopFilters.hidden && !event.target.closest('.controls')) {
+                closeDesktopFilters();
+            }
+        });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && !desktopFilters.hidden) {
+                closeDesktopFilters();
+                desktopFilterToggleBtn.focus();
             }
         });
         
@@ -1435,41 +1730,6 @@
                     timeout: 27000
                 }
             );
-        }
-        
-        // When clicking an activity card on mobile, collapse sheet to show map
-        function handleActivityClick(activity) {
-            if (window.innerWidth < 768) {
-                const sheet = document.getElementById('bottomSheet');
-                if (sheet && sheet.classList.contains('full')) {
-                    sheet.classList.remove('full');
-                    sheet.classList.add('collapsed');
-                    setTimeout(() => {
-                        const content = document.getElementById('sheetContent');
-                        if (content) {
-                            content.style.overflowY = 'hidden';
-                            content.scrollTop = 0;
-                        }
-                    }, 100);
-                } else if (sheet) {
-                    sheet.classList.remove('half', 'full');
-                    sheet.classList.add('collapsed');
-                }
-            }
-            
-            if (markers[activity.id]) {
-                map.setView([activity.lat, activity.lng], 14);
-                markers[activity.id].openPopup();
-                
-                // Highlight route for hikes
-                const categories = getCategories(activity);
-                if (categories.includes('hikes') && routes[activity.id]) {
-                    routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
-                    setTimeout(() => {
-                        routes[activity.id].setStyle({ color: '#10b981', weight: 3, opacity: 0.7 });
-                    }, 2000);
-                }
-            }
         }
         
         // Render activity list
@@ -1511,47 +1771,53 @@
                     cardContent = `
                         ${badgesHTML}
                         <div class="activity-header">
-                            <div class="activity-name">${activity.name}</div>
+                            <button type="button" class="activity-name" aria-expanded="${window.innerWidth < 768}" aria-controls="activity-details-${activity.id}">${escapeHTML(activity.name)}</button>
                         </div>
-                        ${activity.summary ? `<p style="font-size: 0.9375rem; color: #4a5568; margin: 0.75rem 0 1rem 0; line-height: 1.5;">${activity.summary}</p>` : ''}
+                        ${activity.summary ? `<p class="activity-summary">${escapeHTML(activity.summary)}</p>` : ''}
                         <div class="activity-meta">
                             <span>📍 ${activity.distance}</span>
                             ${activity.duration ? `<span>⏱️ ${activity.duration}</span>` : ''}
                             ${activity.difficulty ? `<span>💪 ${activity.difficulty}</span>` : ''}
                         </div>
-                        <div class="activity-notes">
-                            ${activity.parkingAddress ? `<strong>Parking:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.parkingAddress}</a><br>` : ''}
-                            ${activity.notes ? activity.notes + '<br>' : ''}
-                            ${activity.routeSource ? `<em style="font-size: 0.875rem; color: #64748b;">Route: ${activity.routeSource}</em><br>` : ''}
+                        <div class="activity-details" id="activity-details-${activity.id}">
+                            <div class="activity-notes">
+                                ${activity.parkingAddress ? `<strong>Parking:</strong> <a href="${mapsUrl}" target="_blank" rel="noopener" style="color: #667eea; font-weight: 600;">${activity.parkingAddress}</a><br>` : ''}
+                                ${activity.notes ? activity.notes + '<br>' : ''}
+                                ${activity.routeSource ? `<em style="font-size: 0.875rem; color: #64748b;">Route: ${activity.routeSource}</em><br>` : ''}
+                            </div>
+                            ${activity.url ? `<a href="${activity.url}" target="_blank" rel="noopener" class="activity-link">Bekijk wandelpagina →</a>` : ''}
                         </div>
-                        ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Bekijk wandelpagina →</a>` : ''}
+                        <span class="desktop-card-hint" aria-hidden="true">Bekijk details op de kaart →</span>
                     `;
                 } else {
                     // Regular activities
                     cardContent = `
                         ${badgesHTML}
                         <div class="activity-header">
-                            <div class="activity-name">${activity.name}</div>
+                            <button type="button" class="activity-name" aria-expanded="${window.innerWidth < 768}" aria-controls="activity-details-${activity.id}">${escapeHTML(activity.name)}</button>
                             ${ratingHTML}
                         </div>
-                        ${activity.summary ? `<p style="font-size: 0.9375rem; color: #4a5568; margin: 0.75rem 0 1rem 0; line-height: 1.5;">${activity.summary}</p>` : ''}
+                        ${activity.summary ? `<p class="activity-summary">${escapeHTML(activity.summary)}</p>` : ''}
                         <div class="activity-meta">
                             <span>📍 ${activity.distance}</span>
-                            ${activity.price ? `<span>💰 ${activity.price}</span>` : ''}
+                            ${activity.price ? `<span class="activity-price">💰 ${activity.price}</span>` : ''}
                         </div>
-                        <div class="activity-notes">
-                            ${activity.address ? `<strong>Adres:</strong> <a href="${mapsUrl}" target="_blank" style="color: #667eea; font-weight: 600;">${activity.address}</a><br>` : ''}
-                            ${activity.hours ? `<strong>Openingstijden:</strong> ${activity.hours}<br>` : ''}
-                            ${activity.notes ? activity.notes + '<br>' : ''}
+                        <div class="activity-details" id="activity-details-${activity.id}">
+                            <div class="activity-notes">
+                                ${activity.address ? `<strong>Adres:</strong> <a href="${mapsUrl}" target="_blank" rel="noopener" style="color: #667eea; font-weight: 600;">${activity.address}</a><br>` : ''}
+                                ${activity.hours ? `<strong>Openingstijden:</strong> ${activity.hours}<br>` : ''}
+                                ${activity.notes ? activity.notes + '<br>' : ''}
+                            </div>
+                            ${activity.url ? `<a href="${activity.url}" target="_blank" rel="noopener" class="activity-link">Bezoek website →</a>` : ''}
                         </div>
-                        ${activity.url ? `<a href="${activity.url}" target="_blank" class="activity-link">Bezoek website →</a>` : ''}
+                        <span class="desktop-card-hint" aria-hidden="true">Bekijk details op de kaart →</span>
                     `;
                 }
                 
                 card.innerHTML = cardContent;
                 
                 card.addEventListener('click', function(e) {
-                    if (!e.target.matches('a')) {
+                    if (!e.target.closest('a')) {
                         window.location.hash = `activity-${activity.id}`;
                         handleActivityClick(activity);
                     }
@@ -1577,18 +1843,24 @@
         
         function applyFilters() {
             const cards = document.querySelectorAll('.activity-card');
+            const visibleActivityIds = new Set();
             
             cards.forEach(card => {
                 const activityId = parseInt(card.dataset.id);
                 const activity = activities.find(a => a.id === activityId);
                 if (!activity) return;
                 
-                const text = card.textContent.toLowerCase();
+                const text = [activity.name, activity.summary, activity.notes, activity.distance, activity.price,
+                    activity.duration, activity.difficulty, activity.address, activity.parkingAddress, activity.hours,
+                    activity.rating, activity.ratingCount, activity.ratingSource, activity.routeSource,
+                    ...getCategories(activity).map(category => getCategoryDetails(category).label)
+                ].filter(Boolean).join(' ').toLowerCase();
                 const categoryMatch = matchesAnyCategory(activity, activeCategories);
                 const searchMatch = currentSearch === '' || text.includes(currentSearch.toLowerCase());
                 
                 if (categoryMatch && searchMatch) {
                     card.classList.remove('hidden');
+                    visibleActivityIds.add(activityId);
                 } else {
                     card.classList.add('hidden');
                 }
@@ -1600,11 +1872,7 @@
                 const marker = markers[activity.id];
                 const route = routes[activity.id];
                 if (marker) {
-                    const activityText = `${activity.name} ${activity.notes || ''} ${activity.distance} ${activity.price || activity.difficulty || ''}`.toLowerCase();
-                    const categoryMatch = matchesAnyCategory(activity, activeCategories);
-                    const searchMatch = currentSearch === '' || activityText.includes(currentSearch.toLowerCase());
-                    
-                    if (categoryMatch && searchMatch) {
+                    if (visibleActivityIds.has(activity.id)) {
                         map.addLayer(marker);
                         visibleMarkers.push(marker);
                         // Show route for hikes
@@ -1622,13 +1890,20 @@
             
             if (visibleMarkers.length > 1) {
                 const group = L.featureGroup(visibleMarkers);
-                map.fitBounds(group.getBounds(), { padding: [80, 80] });
+                map.fitBounds(group.getBounds(), { padding: desktopLayout.matches ? [40, 40] : [80, 80], maxZoom: 14, animate: false });
             } else if (visibleMarkers.length === 1) {
                 const marker = visibleMarkers[0];
                 const latLng = marker.getLatLng();
-                map.setView(latLng, 13);
+                map.setView(latLng, 13, { animate: false });
             }
             
+            if (selectedActivityId !== null && !visibleActivityIds.has(selectedActivityId)) {
+                selectActivityCard(null);
+                map.closePopup();
+            } else {
+                selectActivityCard(selectedActivityId);
+            }
+            document.getElementById('sheetContent').scrollTop = 0;
             updateSheetTitle();
         }
         
@@ -1748,8 +2023,10 @@
             updateSheetTitle();
         });
         
-        // Bottom sheet gesture handling (mobile only)
-        if (window.innerWidth < 768) {
+        // Initialize mobile gestures when entering the mobile layout.
+        function initializeMobileSheet() {
+            if (mobileSheetReady || desktopLayout.matches) return;
+            mobileSheetReady = true;
             const sheet = document.getElementById('bottomSheet');
             const handle = document.getElementById('sheetHandle');
             const content = document.getElementById('sheetContent');
@@ -1781,6 +2058,7 @@
                     sheet.classList.add('animating');
                 }
                 sheet.classList.add(state);
+                document.getElementById('mapButtonLabel').textContent = state === 'collapsed' ? 'Lijst' : 'Kaart';
                 
                 // Manage content scrolling and pointer events
                 if (state === 'collapsed') {
@@ -1844,6 +2122,8 @@
             
             // Touch/mouse handlers for dragging - only on handle
             function handleStart(e) {
+                if (desktopLayout.matches) return;
+                sheetState = sheet.classList.contains('collapsed') ? 'collapsed' : sheet.classList.contains('full') ? 'full' : 'half';
                 const touch = e.touches ? e.touches[0] : e;
                 startY = touch.clientY;
                 currentY = startY;
@@ -1983,15 +2263,16 @@
             handle.addEventListener('mousedown', handleStart);
             
             handle.addEventListener('touchmove', handleMove, { passive: false });
-            handle.addEventListener('mousemove', handleMove);
+            window.addEventListener('mousemove', handleMove);
             
             handle.addEventListener('touchend', handleEnd, { passive: true });
-            handle.addEventListener('mouseup', handleEnd);
+            window.addEventListener('mouseup', handleEnd);
             
             // Allow drag from content area only when scrolled to top and dragging down
             let contentTouchStart = null;
             
             content.addEventListener('touchstart', (e) => {
+                if (desktopLayout.matches) return;
                 contentTouchStart = {
                     y: e.touches[0].clientY,
                     scrollTop: content.scrollTop,
@@ -2033,13 +2314,13 @@
             
             // Map button click
             mapButton.addEventListener('click', () => {
-                setSheetState(sheetState === 'collapsed' ? 'half' : 'collapsed', true);
-                document.getElementById('mapButtonLabel').textContent = sheetState === 'collapsed' ? 'Lijst' : 'Kaart';
+                setSheetState(sheet.classList.contains('collapsed') ? 'half' : 'collapsed', true);
             });
             
             // Initialize
             setSheetState('half', false);
         }
+        initializeMobileSheet();
         
         // Update sheet title with activity count
         function updateSheetTitle() {
@@ -2049,10 +2330,12 @@
             if (sheetTitle) {
                 sheetTitle.textContent = `${count} ${count === 1 ? 'activiteit' : 'activiteiten'}`;
             }
+            document.getElementById('activityEmpty').hidden = count > 0;
         }
         
         // When clicking an activity card on mobile, collapse sheet to show map
         function handleActivityClick(activity) {
+            selectActivityCard(activity.id);
             if (window.innerWidth < 768) {
                 const sheet = document.getElementById('bottomSheet');
                 if (sheet && sheet.classList.contains('full')) {
@@ -2088,6 +2371,7 @@
         // Initial render
         renderActivities();
         updateSheetTitle();
+        syncMapLayout();
         
         // Handle URL hash for sharing specific activities
         function handleHash() {
@@ -2101,6 +2385,7 @@
                     const card = document.querySelector(`[data-id="${activityId}"]`);
                     if (card && !card.classList.contains('hidden')) {
                         setTimeout(() => {
+                            selectActivityCard(activityId);
                             // On mobile, expand sheet to show list
                             if (window.innerWidth < 768) {
                                 const sheet = document.getElementById('bottomSheet');
