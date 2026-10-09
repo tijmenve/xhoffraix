@@ -600,64 +600,117 @@
             transform: translateX(2px);
         }
         
-        .category-badge {
-            display: inline-block;
-            padding: 0.375rem 0.875rem;
-            border-radius: 20px;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .category-badge.family {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .category-badge.ww2 {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-        
-        .category-badge.bakeries {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
-        .category-badge.hikes {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .category-badge.groceries {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .category-badge.museums {
-            background: #ede9fe;
-            color: #6b21a8;
-        }
-        
-        .category-badge.indoor {
-            background: #cffafe;
-            color: #155e75;
-        }
-        
-        .category-badge.wellness {
-            background: #fce7f3;
-            color: #9f1239;
+        /* One shared symbol and color for each category, everywhere. */
+        .category-symbol {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            color: var(--category-color);
+            background: var(--category-bg);
         }
 
-        .category-badge.animals { background: #dcfce7; color: #166534; }
-        .category-badge.play,
-        .category-badge.playgrounds { background: #ffedd5; color: #9a3412; }
-        .category-badge.water { background: #cffafe; color: #155e75; }
-        .category-badge.cycling { background: #ccfbf1; color: #115e59; }
-        .category-badge.treasure-hunts { background: #e0e7ff; color: #3730a3; }
-        .category-badge.motorsport { background: #fee2e2; color: #991b1b; }
+        .category-symbol svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .activity-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.25rem 0.625rem 0.25rem 0.3rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--category-color);
+            background: var(--category-bg);
+        }
+
+        .filter-btn,
+        .filter-sheet-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+        }
+
+        .category-guide {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .category-guide-symbols {
+            display: inline-flex;
+            gap: 2px;
+            padding: 3px;
+            border: 1px solid #e2e8f0;
+            border-radius: 9px;
+            background: white;
+        }
+
+        .activity-marker {
+            background: transparent;
+            border: 0;
+        }
+
+        .category-pin {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(var(--pin-columns), 22px);
+            gap: 3px;
+            width: max-content;
+            padding: 4px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 2px 7px rgba(15, 23, 42, 0.25);
+        }
+
+        .category-pin::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: calc(50% - 4px);
+            width: 8px;
+            height: 8px;
+            transform: rotate(45deg);
+            border-right: 1px solid #cbd5e1;
+            border-bottom: 1px solid #cbd5e1;
+            background: white;
+        }
+
+        .activity-marker:hover .category-pin,
+        .activity-marker:focus-visible .category-pin {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25), 0 3px 9px rgba(15, 23, 42, 0.25);
+        }
+
+        .activity-marker:focus-visible {
+            outline: none;
+        }
+
+        .activity-category-tooltip {
+            max-width: min(280px, calc(100vw - 2rem));
+            white-space: normal;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.5;
+        }
         
         @media (min-width: 768px) {
             /* Desktop: map-first layout unchanged */
@@ -867,6 +920,7 @@
             </button>
         </div>
         <div class="filter-groups" id="desktopFilters" hidden>
+            <p class="category-guide"><span class="category-guide-symbols" aria-hidden="true"></span>Meerdere icoontjes op één pin = meerdere categorieën.</p>
             <div class="filter-group">
                 <span class="filter-group-label">Activiteiten</span>
                 <div class="filters" id="filters">
@@ -880,6 +934,7 @@
                     <button class="filter-btn" data-filter="cycling">Fietsen</button>
                     <button class="filter-btn" data-filter="treasure-hunts">Speurtocht</button>
                     <button class="filter-btn" data-filter="motorsport">Motorsport</button>
+                    <button class="filter-btn" data-filter="breweries">Brouwerij</button>
                     <button class="filter-btn" data-filter="indoor">Binnen / regen</button>
                     <button class="filter-btn" data-filter="wellness">Wellness</button>
                 </div>
@@ -889,6 +944,7 @@
                 <div class="filters">
                     <button class="filter-btn" data-filter="bakeries">Bakkerij</button>
                     <button class="filter-btn" data-filter="groceries">Supermarkt</button>
+                    <button class="filter-btn" data-filter="local-products">Streekwinkel</button>
                 </div>
             </div>
         </div>
@@ -923,6 +979,85 @@
         let userLocationMarker = null;
         let watchId = null;
 
+        const categoryDetails = {
+            family: { label: 'Gezinsvriendelijk', color: '#4338ca', background: '#e0e7ff', shape: '<circle cx="8" cy="7" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M2 21v-3a6 6 0 0 1 12 0v3m0-5a5 5 0 0 1 8 4v1"/>' },
+            hikes: { label: 'Wandeling', color: '#047857', background: '#d1fae5', shape: '<path d="M3 20 10 5l4 8 2-4 5 11H3Z"/><path d="m8 9 2 2 2-2"/>' },
+            museums: { label: 'Museum', color: '#7e22ce', background: '#f3e8ff', shape: '<path d="m3 8 9-5 9 5H3Zm2 3v7m5-7v7m4-7v7m5-7v7M3 21h18M4 18h16"/>' },
+            ww2: { label: 'WOII', color: '#b91c1c', background: '#fee2e2', shape: '<path d="M5 3h14v8c0 5-7 10-7 10S5 16 5 11V3Z"/><path d="m12 6 1.2 2.5 2.8.4-2 2 .5 2.8-2.5-1.3-2.5 1.3.5-2.8-2-2 2.8-.4L12 6Z"/>' },
+            animals: { label: 'Dieren', color: '#15803d', background: '#dcfce7', shape: '<ellipse cx="5" cy="9" rx="2" ry="3"/><ellipse cx="10" cy="6" rx="2" ry="3"/><ellipse cx="16" cy="6" rx="2" ry="3"/><ellipse cx="21" cy="10" rx="2" ry="3"/><path d="M6 19c0-3 4-8 7-8s6 5 6 8c0 4-4 1-6 1s-7 3-7-1Z"/>' },
+            play: { label: 'Spelen & avontuur', color: '#c2410c', background: '#ffedd5', shape: '<circle cx="12" cy="10" r="7"/><circle cx="12" cy="10" r="2"/><path d="M12 3v5m0 4v5M5 10h5m4 0h5M7 5l4 4m2 2 4 4M7 15l4-4m2-2 4-4M8 22l4-10 4 10M6 22h12"/>' },
+            playgrounds: { label: 'Speeltuin', color: '#a16207', background: '#fef9c3', shape: '<path d="m3 21 4-18h10l4 18M7 3h10M9 3v12m6-12v12M7 15h10v3H7v-3Z"/>' },
+            water: { label: 'Water', color: '#0369a1', background: '#e0f2fe', shape: '<path d="M12 3s-5 5-5 9a5 5 0 0 0 10 0c0-4-5-9-5-9ZM2 21c2-2 4 2 6 0s4 2 6 0 4 2 8 0"/>' },
+            cycling: { label: 'Fietsen', color: '#0f766e', background: '#ccfbf1', shape: '<circle cx="5" cy="16" r="4"/><circle cx="19" cy="16" r="4"/><path d="m5 16 5-9 5 9H5Zm10 0 3-12h3M8 7h5"/>' },
+            'treasure-hunts': { label: 'Speurtocht', color: '#a21caf', background: '#fae8ff', shape: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>' },
+            motorsport: { label: 'Motorsport', color: '#be123c', background: '#ffe4e6', shape: '<path d="M5 21V3h14v12H5M5 7h14M5 11h14M10 3v12m4-12v12"/><path d="M5 3h5v4H5Zm9 0h5v4h-5Zm-4 4h4v4h-4Zm-5 4h5v4H5Zm9 0h5v4h-5Z" fill="currentColor" stroke="none"/>' },
+            breweries: { label: 'Brouwerij', color: '#92400e', background: '#ffedd5', shape: '<path d="M4 8h12v12H4V8Zm12 2h3a3 3 0 0 1 0 6h-3M8 11v6m4-6v6M4 8a3 3 0 0 1 1-6 3 3 0 0 1 5-1 3 3 0 0 1 5 3 2 2 0 0 1 1 4"/>' },
+            indoor: { label: 'Binnen / regen', color: '#0e7490', background: '#cffafe', shape: '<path d="M3 12a9 9 0 0 1 18 0H3Zm9 0v6a3 3 0 0 0 6 0M12 2v1"/>' },
+            wellness: { label: 'Wellness', color: '#be185d', background: '#fce7f3', shape: '<path d="M12 19c-5 0-9-4-9-9 5 0 9 4 9 9Zm0 0c5 0 9-4 9-9-5 0-9 4-9 9Zm0-5c-4-4-4-7 0-11 4 4 4 7 0 11ZM5 22h14"/>' },
+            bakeries: { label: 'Bakkerij', color: '#b45309', background: '#fef3c7', shape: '<path d="M4 20c-3-3-2-5 1-8l7-7c3-3 5-4 8-1s2 5-1 8l-7 7c-3 3-5 4-8 1Z"/><path d="m7 13 4 4m0-8 4 4m0-8 4 4"/>' },
+            'local-products': { label: 'Streekwinkel', color: '#9d174d', background: '#fce7f3', shape: '<path d="m3 10 15-7 3 7v11H3V10Zm0 0h18"/><circle cx="8" cy="15" r="1"/><circle cx="15" cy="17" r="2"/><path d="m11 6 4 4"/>' },
+            groceries: { label: 'Supermarkt', color: '#1d4ed8', background: '#dbeafe', shape: '<path d="M2 3h3l3 13h11l3-10H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/>' }
+        };
+
+        function escapeHTML(value) {
+            return String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+        }
+
+        function getCategoryDetails(category) {
+            return Object.hasOwn(categoryDetails, category) ? categoryDetails[category] : {
+                label: category || 'Activiteit', color: '#475569', background: '#f1f5f9',
+                shape: '<circle cx="12" cy="12" r="8"/><path d="M12 8v8m-4-4h8"/>'
+            };
+        }
+
+        function categoryStyle(category) {
+            const details = getCategoryDetails(category);
+            return `--category-color: ${details.color}; --category-bg: ${details.background};`;
+        }
+
+        function renderCategorySymbol(category) {
+            const details = getCategoryDetails(category);
+            return `<span class="category-symbol" data-category="${escapeHTML(category)}" style="${categoryStyle(category)}" title="${escapeHTML(details.label)}" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">${details.shape}</svg></span>`;
+        }
+
+        function renderCategoryBadges(categories) {
+            return `<div class="activity-categories" aria-label="Categorieën">${categories.map(category =>
+                `<span class="category-badge" style="${categoryStyle(category)}">${renderCategorySymbol(category)}${escapeHTML(getCategoryDetails(category).label)}</span>`
+            ).join('')}</div>`;
+        }
+
+        // Use the same categories for markers, labels and filters.
+        function getCategories(activity) {
+            const categories = Array.isArray(activity.categories) ? activity.categories : [activity.category];
+            return [...new Set(categories.filter(category => typeof category === 'string' && category.trim()))];
+        }
+
+        function getActivityIcon(activity) {
+            const categories = getCategories(activity);
+            const symbols = categories.length ? categories : [''];
+            const columns = symbols.length <= 2 ? symbols.length : symbols.length <= 4 ? 2 : 3;
+            const rows = Math.ceil(symbols.length / columns);
+            const width = columns * 22 + (columns - 1) * 3 + 10;
+            const height = rows * 22 + (rows - 1) * 3 + 10;
+            return L.divIcon({
+                html: `<div class="category-pin" style="--pin-columns: ${columns};">${symbols.map(renderCategorySymbol).join('')}</div>`,
+                className: 'activity-marker',
+                iconSize: [width, height + 6],
+                iconAnchor: [width / 2, height + 5],
+                popupAnchor: [0, -height - 5],
+                tooltipAnchor: [width / 2, -height / 2]
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.filter-btn, .filter-sheet-chip').forEach(button => {
+                button.insertAdjacentHTML('afterbegin', renderCategorySymbol(button.dataset.filter));
+            });
+            document.querySelectorAll('.category-guide-symbols').forEach(guide => {
+                guide.innerHTML = ['family', 'museums', 'indoor'].map(renderCategorySymbol).join('');
+            });
+        });
+
         // Keep desktop disclosure available even before activity data loads.
         const desktopFilterToggleBtn = document.getElementById('desktopFilterToggleBtn');
         const desktopFilters = document.getElementById('desktopFilters');
@@ -951,71 +1086,6 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
         
-        // Define custom icons for different categories
-        const familyIcon = L.divIcon({
-            html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">👨‍👩‍👧</div></div>',
-            className: '',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-        
-        const ww2Icon = L.divIcon({
-            html: '<div style="background: #dc2626; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🎖️</div></div>',
-            className: '',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-        
-        const bakeryIcon = L.divIcon({
-            html: '<div style="background: #f59e0b; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🥖</div></div>',
-            className: '',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-        
-        const hikeIcon = L.divIcon({
-            html: '<div style="background: #10b981; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🥾</div></div>',
-            className: '',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-        
-        const groceryIcon = L.divIcon({
-            html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🛒</div></div>',
-            className: '',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-        
-        const museumIcon = L.divIcon({
-            html: '<div style="background: #8b5cf6; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🏛️</div></div>',
-            className: '',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-        
-        const indoorIcon = L.divIcon({
-            html: '<div style="background: #06b6d4; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">🏠</div></div>',
-            className: '',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-        
-        const wellnessIcon = L.divIcon({
-            html: '<div style="background: #ec4899; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="transform: rotate(45deg); color: white; font-size: 16px; line-height: 1;">💆</div></div>',
-            className: '',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-        
         // Add home marker for Xhoffraix (always visible)
         const homeIcon = L.divIcon({
             html: '<div style="background: #10b981; width: 36px; height: 36px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><span style="font-size: 20px;">🏠</span></div>',
@@ -1029,51 +1099,21 @@
             .addTo(map)
             .bindPopup('<div class="popup-name">Xhoffraix Thuis</div><div class="popup-meta">Rue du Herdier<br>Je uitvalsbasis voor deze reis</div>');
         
-        // Helper: get primary category for icon selection
-        // Choose a marker icon by activity type; family is a suitability tag.
-        function getPrimaryCategory(activity) {
-            const categories = activity.categories || [activity.category]; // Legacy fallback
-            const priority = ['ww2', 'hikes', 'bakeries', 'groceries', 'museums', 'animals', 'play', 'playgrounds', 'water', 'cycling', 'treasure-hunts', 'motorsport', 'indoor', 'wellness', 'family'];
-            for (const cat of priority) {
-                if (categories.includes(cat)) return cat;
-            }
-            return categories[0]; // Fallback to first
-        }
-        
-        // Helper: get icon for category
-        function getIconForCategory(category) {
-            const iconMap = {
-                'family': familyIcon,
-                'ww2': ww2Icon,
-                'bakeries': bakeryIcon,
-                'hikes': hikeIcon,
-                'groceries': groceryIcon,
-                'museums': museumIcon,
-                'indoor': indoorIcon,
-                'wellness': wellnessIcon,
-                'animals': familyIcon,
-                'play': familyIcon,
-                'playgrounds': familyIcon,
-                'water': indoorIcon,
-                'cycling': hikeIcon,
-                'treasure-hunts': hikeIcon,
-                'motorsport': ww2Icon
-            };
-            return iconMap[category] || familyIcon;
-        }
-        
         // Add markers for activities with coordinates
         const markers = {};
         const routes = {};
         activities.forEach(activity => {
             if (activity.lat && activity.lng) {
-                const primaryCategory = getPrimaryCategory(activity);
-                const icon = getIconForCategory(primaryCategory);
-                
-                const marker = L.marker([activity.lat, activity.lng], { icon: icon }).addTo(map);
+                const categories = getCategories(activity);
+                const categoryLabels = categories.map(category => getCategoryDetails(category).label).join(', ');
+                const markerLabel = `${activity.name}${categoryLabels ? ` · ${categoryLabels}` : ''}`;
+                const marker = L.marker([activity.lat, activity.lng], {
+                    icon: getActivityIcon(activity), title: markerLabel, alt: markerLabel, riseOnHover: true
+                }).addTo(map);
                 
                 const popupContent = `
                     <div class="popup-name">${activity.name}</div>
+                    ${renderCategoryBadges(categories)}
                     <div class="popup-meta">
                         <strong>Afstand:</strong> ${activity.distance}<br>
                         ${activity.price ? `<strong>Prijs:</strong> ${activity.price}<br>` : ''}
@@ -1082,11 +1122,17 @@
                     </div>
                 `;
                 
-                marker.bindPopup(popupContent);
+                marker.bindPopup(popupContent, {
+                    maxWidth: 320,
+                    keepInView: true,
+                    autoPanPaddingTopLeft: [16, window.innerWidth < 768 ? 104 : 180]
+                });
+                marker.bindTooltip(`${escapeHTML(activity.name)}<br>${escapeHTML(categoryLabels)}`, {
+                    className: 'activity-category-tooltip'
+                });
                 markers[activity.id] = marker;
                 
                 // Add route line for hikes
-                const categories = activity.categories || [activity.category];
                 if (categories.includes('hikes') && activity.route && activity.route.length > 0) {
                     const routeLine = L.polyline(activity.route, {
                         color: '#10b981',
@@ -1119,7 +1165,6 @@
                         }
                     }
                     // Highlight route if it's a hike
-                    const categories = activity.categories || [activity.category];
                     if (categories.includes('hikes') && routes[activity.id]) {
                         routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
                         setTimeout(() => {
@@ -1203,25 +1248,6 @@
             const listContainer = document.getElementById('activityList');
             listContainer.innerHTML = '';
             
-            // Category display names
-            const categoryNames = {
-                'family': 'Gezinsvriendelijk',
-                'ww2': 'WOII',
-                'bakeries': 'Bakkerij',
-                'hikes': 'Wandeling',
-                'groceries': 'Supermarkt',
-                'museums': 'Museum',
-                'indoor': 'Binnen / regen',
-                'wellness': 'Wellness',
-                'animals': 'Dieren',
-                'play': 'Spelen & avontuur',
-                'playgrounds': 'Speeltuin',
-                'water': 'Water',
-                'cycling': 'Fietsen',
-                'treasure-hunts': 'Speurtocht',
-                'motorsport': 'Motorsport'
-            };
-            
             activities.forEach(activity => {
                 const card = document.createElement('div');
                 card.className = 'activity-card';
@@ -1236,10 +1262,7 @@
                     ? `https://www.google.com/maps/dir/?api=1&destination=${activity.lat},${activity.lng}`
                     : `https://www.google.com/maps/search/${encodeURIComponent(activity.address)}`;
                 
-                // Render category badges
-                const badgesHTML = categories.map(cat => 
-                    `<span class="category-badge ${cat}">${categoryNames[cat] || cat}</span>`
-                ).join(' ');
+                const badgesHTML = renderCategoryBadges(categories);
                 
                 // Create rating display
                 let ratingHTML = '';
@@ -1257,7 +1280,7 @@
                 if (categories.includes('hikes') && activity.parkingAddress) {
                     // Hikes have different fields
                     cardContent = `
-                        <div style="margin-bottom: 0.75rem;">${badgesHTML}</div>
+                        ${badgesHTML}
                         <div class="activity-header">
                             <div class="activity-name">${activity.name}</div>
                         </div>
@@ -1277,7 +1300,7 @@
                 } else {
                     // Regular activities
                     cardContent = `
-                        <div style="margin-bottom: 0.75rem;">${badgesHTML}</div>
+                        ${badgesHTML}
                         <div class="activity-header">
                             <div class="activity-name">${activity.name}</div>
                             ${ratingHTML}
@@ -1312,13 +1335,6 @@
         // Filter functionality - empty selection means "show all"
         let activeCategories = new Set(); // Start with empty = show all
         let currentSearch = '';
-        
-        // Helper: get categories array (supports legacy single category)
-        function getCategories(activity) {
-            if (activity.categories) return activity.categories;
-            if (activity.category) return [activity.category];
-            return [];
-        }
         
         // Helper: check if activity matches any selected category (OR logic)
         function matchesAnyCategory(activity, activeCategories) {
@@ -1907,6 +1923,7 @@
             </div>
             <div class="filter-sheet-body">
                 <div class="filter-sheet-groups" id="filterSheetOptions">
+                    <p class="category-guide"><span class="category-guide-symbols" aria-hidden="true"></span>Meerdere icoontjes op één pin = meerdere categorieën.</p>
                     <div class="filter-group">
                         <span class="filter-group-label">Activiteiten</span>
                         <div class="filter-sheet-options">
@@ -1920,6 +1937,7 @@
                             <button class="filter-sheet-chip" data-filter="cycling">Fietsen</button>
                             <button class="filter-sheet-chip" data-filter="treasure-hunts">Speurtocht</button>
                             <button class="filter-sheet-chip" data-filter="motorsport">Motorsport</button>
+                            <button class="filter-sheet-chip" data-filter="breweries">Brouwerij</button>
                             <button class="filter-sheet-chip" data-filter="indoor">Binnen / regen</button>
                             <button class="filter-sheet-chip" data-filter="wellness">Wellness</button>
                         </div>
@@ -1929,6 +1947,7 @@
                         <div class="filter-sheet-options">
                             <button class="filter-sheet-chip" data-filter="bakeries">Bakkerij</button>
                             <button class="filter-sheet-chip" data-filter="groceries">Supermarkt</button>
+                            <button class="filter-sheet-chip" data-filter="local-products">Streekwinkel</button>
                         </div>
                     </div>
                 </div>

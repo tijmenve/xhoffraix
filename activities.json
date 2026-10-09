@@ -1455,19 +1455,20 @@
   },
   {
     "id": 61,
-    "name": "Peak Beer Botrange",
+    "name": "Belgium Peak Beer brewery & brasserie",
     "categories": [
-      "family"
+      "family",
+      "breweries"
     ],
-    "lat": 50.50285,
-    "lng": 6.09167,
+    "lat": 50.486546,
+    "lng": 6.109294,
     "address": "Rue de Botrange 123, 4950 Sourbrodt, Belgium",
-    "distance": "About 10 min",
-    "price": "Restaurant pricing",
-    "hours": "Hours vary, kitchen open during school holidays",
-    "notes": "Restaurant and café near Signal de Botrange. Kitchen availability varies by season.",
-    "url": "https://www.peakbeer.be/",
-    "summary": "Restaurant en café bij Signal de Botrange, keuken open tijdens schoolvakanties."
+    "distance": "About 12 min",
+    "price": "Brewery tour €14/person, minimum 10 people or €140 per group; tasting and souvenir glass included.",
+    "hours": "Wed–Thu 11:00–20:00, Fri–Sat 11:00–22:00, Sun 11:00–20:00; closed Mon–Tue except Belgian school holidays and public holidays. Tours Wed–Sun 11:00–17:00 by reservation.",
+    "notes": "Brewery and restaurant near Signal de Botrange, with a terrace and nearby family walks. The guided tour takes 30–45 minutes; reserve in advance and confirm availability for a smaller group. Soft drinks and coffee are offered as alternatives to beer.",
+    "url": "https://peakbeer.be/fr/visites",
+    "summary": "Brouwerij en restaurant op de Hoge Venen met rondleiding, proeverij en wandelingen."
   },
   {
     "id": 62,
@@ -1574,6 +1575,88 @@
     "categories": [
       "family",
       "motorsport"
+    ]
+  },
+  {
+    "id": 68,
+    "name": "Brasserie de Bellevaux",
+    "lat": 50.391852,
+    "lng": 6.007523,
+    "address": "Rue de la Foncenale 1, 4960 Bellevaux (Malmedy), Belgium",
+    "distance": "About 15 min",
+    "price": "Guided tour €12.50/person including a beer or soft drink; children under 12 free.",
+    "hours": "October 2026 tasting room: Saturdays 12:00–17:00; closed Sundays 18 and 25 Oct. Closed November–December. Weekend tours by reservation; weekday groups by arrangement.",
+    "notes": "Family-run microbrewery with a terrace, local lunch, walks and an outdoor play area. Tours last about 45 minutes plus tasting and are recommended from age 12. Reserve at least one day ahead and confirm October availability; younger children may prefer the terrace and grounds.",
+    "url": "https://www.brasseriedebellevaux.be/brasserie-visite-guidee/",
+    "summary": "Familiebrouwerij bij Malmedy met terras, wandelingen en rondleidingen op reservatie.",
+    "categories": [
+      "family",
+      "breweries"
+    ]
+  },
+  {
+    "id": 69,
+    "name": "Brasserie de la Lienne (Brumes de la Lienne)",
+    "lat": 50.27242,
+    "lng": 5.81097,
+    "address": "Verleumont 45B, 4990 Lierneux, Belgium",
+    "distance": "About 50 min",
+    "price": "Shop and bar prices vary; contact the brewery for tasting options.",
+    "hours": "Friday 16:00–18:00, Saturday 14:00–18:00, Sunday 11:00–16:00. Confirm before travelling.",
+    "notes": "Beer shop and bar run by the brewery's new owners. Brewing is temporarily handled by another local brewery, with on-site production planned to resume in 2027. Treat this as a shop/bar stop; ask about tastings before travelling.",
+    "url": "https://www.brasseriedelalienne.com/home",
+    "summary": "Brouwerijwinkel en bar in Verleumont voor lokale bieren; vraag vooraf naar proefmogelijkheden.",
+    "categories": [
+      "breweries"
+    ]
+  },
+  {
+    "id": 70,
+    "name": "Abbaye du Val-Dieu & brewery tour",
+    "lat": 50.69848,
+    "lng": 5.80428,
+    "address": "Val-Dieu 227, 4880 Aubel, Belgium",
+    "distance": "About 45 min",
+    "price": "Combined abbey and brewery tour €14/adult; confirm child pricing when booking. Beer or apple juice and abbey cheese included.",
+    "hours": "Guided tours by reservation; check the booking calendar for dates, times and availability.",
+    "notes": "Combined abbey and brewery visit with tasting. Allow about 2–2¼ hours. Park and basilica are freely accessible, and a children's activity booklet is available. The booking form lists €7 for ages 5–17 and free entry under 5; confirm because child prices differ between official pages.",
+    "url": "https://www.abbaye-du-val-dieu.be/fr/guided-visits/",
+    "summary": "Historische abdij met een speurboekje voor kinderen, wandelingen en een brouwerijrondleiding met proeverij.",
+    "categories": [
+      "family",
+      "breweries"
+    ]
+  },
+  {
+    "id": 71,
+    "name": "Brasserie Chouffe (La Chouffe)",
+    "lat": 50.15097,
+    "lng": 5.74585,
+    "address": "Achouffe 8, 6666 Wibrin, Belgium",
+    "distance": "About 1 hour; check the driving route",
+    "price": "Standard tour: €16 ages 16+, €8 ages 12–15; under 12 free. Confirm availability for children when booking.",
+    "hours": "Brewery tours by reservation; check the online calendar for available dates and times.",
+    "notes": "Guided brewery visit and tasting takes about 1h30. Children are welcome, but the brewery describes the tour as designed for adults. Arrive 15 minutes before the tour; meet at the Chouffe Shop on weekdays or Chouffe Chalet on weekends and holiday periods. Free visitor parking.",
+    "url": "https://chouffe.com/en-us/visit-the-brewery/plan-your-visit",
+    "summary": "Bekende Ardenner brouwerij met een rondleiding en proeverij in het dorp Achouffe; vooral gericht op volwassenen.",
+    "categories": [
+      "breweries"
+    ]
+  },
+  {
+    "id": 72,
+    "name": "Fromagerie du Troufleur (farm shop)",
+    "lat": 50.3892501,
+    "lng": 6.0864029,
+    "address": "Rue de la Gagire 20, 4950 Thirimont (Waimes), Belgium",
+    "distance": "About 20 min (estimate)",
+    "price": "Farm-shop prices; no published tour price",
+    "hours": "By appointment, or when the shop door is open. Call +32 472 21 98 94 before travelling.",
+    "notes": "Optional local-food shopping stop for farm-made raw-milk cheeses, including Troufleur aged in beer. Treat it as a possible shop visit rather than a scheduled activity; a guided production tour is not confirmed. Cash payment is listed by the local-producer directory.",
+    "url": "https://www.troufleur.be/",
+    "summary": "Optionele stop bij een boerderijwinkel met lokale kazen, waaronder de in bier gerijpte Troufleur; bel vooraf.",
+    "categories": [
+      "local-products"
     ]
   }
 ]
