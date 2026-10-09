@@ -367,6 +367,11 @@
         .bottom-sheet.collapsed {
             transform: translateY(calc(100% - 4rem));
         }
+
+        .bottom-sheet.collapsed ~ .map-button {
+            display: flex;
+            bottom: 5.5rem;
+        }
         
         .bottom-sheet.half {
             transform: translateY(50%);
@@ -869,7 +874,7 @@
     
     <button class="map-button" id="mapButton">
         <span>🗺️</span>
-        <span>Kaart</span>
+        <span id="mapButtonLabel">Kaart</span>
     </button>
     
     <div class="footer-note">
@@ -1741,7 +1746,8 @@
             
             // Map button click
             mapButton.addEventListener('click', () => {
-                setSheetState('collapsed', true);
+                setSheetState(sheetState === 'collapsed' ? 'half' : 'collapsed', true);
+                document.getElementById('mapButtonLabel').textContent = sheetState === 'collapsed' ? 'Lijst' : 'Kaart';
             });
             
             // Initialize
