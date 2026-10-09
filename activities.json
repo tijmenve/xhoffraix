@@ -12,7 +12,8 @@
     "url": "https://www.plopsa.com/en/plopsaland-ardennes",
     "summary": "Pretpark in de Ardennen met attracties en stoeltjeslift bij de Coo-watervallen.",
     "categories": [
-      "family"
+      "family",
+      "play"
     ]
   },
   {
@@ -62,7 +63,8 @@
     "summary": "Overdekt binnenspeelcentrum voor kinderen van 1 tot 12 jaar.",
     "categories": [
       "family",
-      "indoor"
+      "indoor",
+      "play"
     ]
   },
   {
@@ -79,7 +81,8 @@
     "summary": "Abdijcomplex met historische musea inclusief Spa-Francorchamps racebaanmuseum.",
     "categories": [
       "family",
-      "museums"
+      "museums",
+      "indoor"
     ]
   },
   {
@@ -97,7 +100,8 @@
     "categories": [
       "family",
       "museums",
-      "hikes"
+      "hikes",
+      "indoor"
     ]
   },
   {
@@ -131,7 +135,8 @@
     "summary": "Stuwmeer met wandelpad langs de oever en uitzicht op het kasteel.",
     "categories": [
       "family",
-      "hikes"
+      "hikes",
+      "water"
     ]
   },
   {
@@ -147,7 +152,8 @@
     "url": "https://www.malmedy-tourisme.be/fr/que-faire/ferme-libert-parc-animalier/",
     "summary": "Kleinschalig wildpark met herten en wilde zwijnen in Bévercé.",
     "categories": [
-      "family"
+      "family",
+      "animals"
     ]
   },
   {
@@ -196,40 +202,27 @@
     "url": "https://www.railbike.be/fr/railbike.html",
     "summary": "Draisinetrocht op voormalige spoorlijn, alleen weekend vertrek.",
     "categories": [
-      "family"
-    ]
-  },
-  {
-    "id": 13,
-    "name": "Xhoffraix family walk (MDY04)",
-    "lat": 50.4599849,
-    "lng": 6.0715296,
-    "address": "Xhoffraix, Belgium",
-    "distance": "In Xhoffraix",
-    "price": "Free",
-    "hours": "Open",
-    "notes": "Easy 3.4 km loop. Pin is the village parking lot beside Taverne Chez Remy, not the trail itself.",
-    "url": "https://www.malmedy-tourisme.be/fr/a-pied/mdy04-xhoffraix-en-famille/",
-    "summary": "Korte gezinswandeling van 3,4 km door het dorp Xhoffraix.",
-    "categories": [
       "family",
-      "hikes"
+      "cycling"
     ]
   },
   {
     "id": 14,
-    "name": "Parc des Tanneries playground",
+    "name": "Parc des Tanneries playground & mini-golf",
     "lat": 50.4246207,
     "lng": 6.025826,
     "address": "Parc des Tanneries, Malmedy, Belgium",
     "distance": "About 10 min",
-    "price": "Free",
-    "hours": "Open 9:00–19:00 in this season",
-    "notes": "Malmedy. Adults and children over 11 are not allowed to use the equipment. Pin is the car park (free, 2 hour max) on Rue de la Warchenne, about 130 m from the playground.",
+    "price": "Playground free; mini-golf €3 children under 12, €5 adults",
+    "hours": "Playground daily 09:00–20:00 (Sep–May). Mini-golf 10:00–18:00 during school holidays; closed in rain.",
+    "notes": "The playground and mini-golf are together in Parc des Tanneries. Playground is fenced with equipment for different ages. Mini-golf hours can vary outside school holidays.",
     "summary": "Openbare speeltuin in het stadspark van Malmedy.",
     "categories": [
-      "family"
-    ]
+      "family",
+      "playgrounds",
+      "play"
+    ],
+    "url": "https://www.malmedy-tourisme.be/en/que-faire/minigolf/"
   },
   {
     "id": 15,
@@ -277,7 +270,8 @@
     "summary": "Museum met King Tiger tank over de Ardennenslag van december 1944.",
     "categories": [
       "ww2",
-      "museums"
+      "museums",
+      "indoor"
     ]
   },
   {
@@ -310,7 +304,8 @@
     "summary": "Museum en gedenkplaats over de Slag om Bastenaken en Ardennenslag.",
     "categories": [
       "ww2",
-      "museums"
+      "museums",
+      "indoor"
     ]
   },
   {
@@ -392,7 +387,8 @@
     "summary": "Museum over de Slag in de Ardennen met voertuigen en uniformen.",
     "categories": [
       "ww2",
-      "museums"
+      "museums",
+      "indoor"
     ]
   },
   {
@@ -625,7 +621,7 @@
   },
   {
     "id": 37,
-    "name": "Xhoffraix en famille (MDY04)",
+    "name": "Xhoffraix Family Walk (MDY04)",
     "lat": 50.460062,
     "lng": 6.071625,
     "parkingAddress": "Ruelle Adam 1-9, 4960 Xhoffraix (Chez Remy tavern parking)",
@@ -703,7 +699,8 @@
     ],
     "summary": "Zeer gemakkelijke gezinswandeling van 3,4 km door Xhoffraix.",
     "categories": [
-      "hikes"
+      "hikes",
+      "family"
     ]
   },
   {
@@ -782,7 +779,8 @@
     ],
     "summary": "Gemakkelijke wandeling van 5,5 km door venen en Pouhon-vallei.",
     "categories": [
-      "hikes"
+      "hikes",
+      "family"
     ]
   },
   {
@@ -1324,7 +1322,8 @@
     "name": "S'pace Malmedy",
     "categories": [
       "family",
-      "indoor"
+      "indoor",
+      "play"
     ],
     "lat": 50.422204,
     "lng": 6.013464,
@@ -1390,7 +1389,8 @@
     "id": 57,
     "name": "Monde Sauvage Safari Park",
     "categories": [
-      "family"
+      "family",
+      "animals"
     ],
     "lat": 50.5001,
     "lng": 5.7476,
@@ -1468,5 +1468,112 @@
     "notes": "Restaurant and café near Signal de Botrange. Kitchen availability varies by season.",
     "url": "https://www.peakbeer.be/",
     "summary": "Restaurant en café bij Signal de Botrange, keuken open tijdens schoolvakanties."
+  },
+  {
+    "id": 62,
+    "name": "Xhoffraix Treasure Hunt",
+    "lat": 50.460062,
+    "lng": 6.071625,
+    "address": "Chez Remy, Rue Adam 1, 4960 Xhoffraix, Belgium",
+    "distance": "In Xhoffraix",
+    "price": "€7 per map for up to 4 people",
+    "hours": "3 Apr–9 Nov 2026; closed Mondays and Tuesdays except special weekends",
+    "notes": "Seasonal treasure hunt in French and Dutch. Children under 12 receive a small gift at the finish.",
+    "url": "https://www.tourisme-fagnes.be/event/chasse-au-tresor/",
+    "summary": "Speurtocht vanaf Chez Remy met raadsels en uitdagingen in en rond Xhoffraix.",
+    "categories": [
+      "family",
+      "treasure-hunts"
+    ]
+  },
+  {
+    "id": 63,
+    "name": "Totemus treasure hunt (Malmedy)",
+    "lat": 50.427638,
+    "lng": 6.027031,
+    "address": "Place du Châtelet, 4960 Malmedy, Belgium",
+    "distance": "About 10 min",
+    "price": "Free app",
+    "hours": "Available year-round, 24/7",
+    "notes": "Download the free Totemus app before starting. A discovery game combining clues, geocaching, local heritage, nature and culture.",
+    "url": "https://www.malmedy-tourisme.be/en/a-pied/totemus-treasure-hunt/",
+    "summary": "Gratis speurtocht met de Totemus-app om Malmedy en de omgeving spelenderwijs te ontdekken.",
+    "categories": [
+      "family",
+      "treasure-hunts"
+    ]
+  },
+  {
+    "id": 64,
+    "name": "Forestia Animal Park",
+    "lat": 50.51171,
+    "lng": 5.77288,
+    "address": "Rue du Parc 1, 4910 Theux, Belgium",
+    "distance": "About 40 min, 37 km",
+    "price": "Under 3 free; ages 3–7 €18; adults €24.50",
+    "hours": "Open daily in October from 10:00; check live calendar",
+    "notes": "Animal park is a 1.5–2.5 hour walk. Strollers are allowed, but the terrain is very hilly. Baby-changing tables and microwaves are available. Reserve in advance.",
+    "url": "https://forestia.be/parc-animalier/",
+    "summary": "Wandel door een groot bospark langs dieren uit onze streken, waaronder herten, beren en wolven.",
+    "categories": [
+      "family",
+      "animals"
+    ]
+  },
+  {
+    "id": 65,
+    "name": "Center Parcs Les Ardennes (day visit)",
+    "lat": 50.29371,
+    "lng": 5.91163,
+    "address": "Rue de la Grotte 12, 6690 Vielsalm, Belgium",
+    "distance": "About 40 min, 34 km",
+    "price": "Day-ticket prices vary by date; reserve online",
+    "hours": "Check day-ticket availability and opening hours for your date",
+    "notes": "Aqua Mundo has a wave pool and children's paddling pool. Indoor BALUBA play area is included in day-visit options; some Action Factory activities cost extra. Day visits require advance reservation.",
+    "url": "https://www.centerparcs.fr/fr-fr/belgique/fp_AR_vacances-les-ardennes/billets-journee",
+    "summary": "Overdekt zwem- en speeluitje met golfslagbad, peuterbad en indoor speelwereld.",
+    "categories": [
+      "family",
+      "indoor",
+      "play",
+      "water"
+    ]
+  },
+  {
+    "id": 66,
+    "name": "Le Tour du RAVeL (MDY05)",
+    "lat": 50.42261,
+    "lng": 6.03269,
+    "address": "22 Avenue de la Gare, 4960 Malmedy, Belgium",
+    "parkingAddress": "22 Avenue de la Gare, 4960 Malmedy, Belgium",
+    "distance": "4 km loop",
+    "difficulty": "Easy",
+    "duration": "About 1 hour",
+    "notes": "Short family route from the former Malmedy railway station along the RAVeL. Official route lists 65 m of ascent.",
+    "url": "https://www.malmedy-tourisme.be/en/a-pied/mdy05-le-tour-du-ravel/",
+    "routeSource": "Malmedy Tourism",
+    "summary": "Korte gezinswandeling over het RAVeL-pad vanaf het oude station van Malmedy.",
+    "categories": [
+      "family",
+      "hikes",
+      "cycling"
+    ]
+  },
+  {
+    "id": 67,
+    "name": "Spa-Francorchamps guided circuit tour",
+    "lat": 50.4377,
+    "lng": 5.97153,
+    "address": "Route du Circuit 55, 4970 Stavelot, Belgium",
+    "distance": "About 20 min",
+    "price": "Adults €16; children under 14 €9",
+    "hours": "Guided tour dates include 15–23 Oct 2026; book a time online",
+    "notes": "Family-friendly guided tour behind the scenes of the circuit. Tour availability may be adjusted during race weekends and other events.",
+    "url": "https://www.spa-francorchamps.be/fr/visite-guidee-des-coulisses",
+    "summary": "Rondleiding achter de schermen van het circuit met paddock, perszaal, podium en Race Control.",
+    "categories": [
+      "family",
+      "motorsport"
+    ]
   }
 ]

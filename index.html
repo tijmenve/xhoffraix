@@ -6,7 +6,7 @@
     <title>Xhoffraix Reisgids</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="description" content="Ontdek activiteiten, wandelingen, geschiedenis, bakkerijen en supermarkten bij Xhoffraix, België">
+    <meta name="description" content="Gezinsactiviteiten, wandelingen, regenplannen en handige adressen in en rond Xhoffraix, België">
     <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -125,10 +125,32 @@
         .filters::-webkit-scrollbar {
             display: none;
         }
+
+        .filter-groups,
+        .filter-sheet-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .filter-group-label {
+            color: #64748b;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
         
         /* Mobile: hide filter chips, show filter button */
         @media (max-width: 767px) {
-            .filters {
+            .filters,
+            .filter-groups {
                 display: none;
             }
         }
@@ -607,6 +629,14 @@
             background: #fce7f3;
             color: #9f1239;
         }
+
+        .category-badge.animals { background: #dcfce7; color: #166534; }
+        .category-badge.play,
+        .category-badge.playgrounds { background: #ffedd5; color: #9a3412; }
+        .category-badge.water { background: #cffafe; color: #155e75; }
+        .category-badge.cycling { background: #ccfbf1; color: #115e59; }
+        .category-badge.treasure-hunts { background: #e0e7ff; color: #3730a3; }
+        .category-badge.motorsport { background: #fee2e2; color: #991b1b; }
         
         @media (min-width: 768px) {
             /* Desktop: map-first layout unchanged */
@@ -786,7 +816,7 @@
 <body>
     <header>
         <h1>Xhoffraix Reisgids</h1>
-        <p>Ontdek activiteiten, geschiedenis & lokale bakkerijen</p>
+        <p>Activiteiten, regenplannen en handige adressen voor het hele gezin</p>
     </header>
     
     <div class="controls">
@@ -795,15 +825,31 @@
             <span>Filters</span>
             <span class="filter-badge" id="filterBadge">0</span>
         </button>
-        <div class="filters" id="filters">
-            <button class="filter-btn" data-filter="family">Gezinsvriendelijk</button>
-            <button class="filter-btn" data-filter="ww2">WOII</button>
-            <button class="filter-btn" data-filter="bakeries">Bakkerij</button>
-            <button class="filter-btn" data-filter="hikes">Wandeling</button>
-            <button class="filter-btn" data-filter="groceries">Supermarkt</button>
-            <button class="filter-btn" data-filter="museums">Museum</button>
-            <button class="filter-btn" data-filter="indoor">Regen</button>
-            <button class="filter-btn" data-filter="wellness">Wellness</button>
+        <div class="filter-groups">
+            <div class="filter-group">
+                <span class="filter-group-label">Activiteiten</span>
+                <div class="filters" id="filters">
+                    <button class="filter-btn" data-filter="family">Gezinsvriendelijk</button>
+                    <button class="filter-btn" data-filter="hikes">Wandeling</button>
+                    <button class="filter-btn" data-filter="museums">Museum</button>
+                    <button class="filter-btn" data-filter="ww2">WOII</button>
+                    <button class="filter-btn" data-filter="animals">Dieren</button>
+                    <button class="filter-btn" data-filter="play">Spelen & avontuur</button>
+                    <button class="filter-btn" data-filter="water">Water</button>
+                    <button class="filter-btn" data-filter="cycling">Fietsen</button>
+                    <button class="filter-btn" data-filter="treasure-hunts">Speurtocht</button>
+                    <button class="filter-btn" data-filter="motorsport">Motorsport</button>
+                    <button class="filter-btn" data-filter="indoor">Binnen / regen</button>
+                    <button class="filter-btn" data-filter="wellness">Wellness</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <span class="filter-group-label">Handige adressen</span>
+                <div class="filters">
+                    <button class="filter-btn" data-filter="bakeries">Bakkerij</button>
+                    <button class="filter-btn" data-filter="groceries">Supermarkt</button>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -814,7 +860,7 @@
     <div class="bottom-sheet half" id="bottomSheet">
         <div class="sheet-handle-area" id="sheetHandle">
             <div class="sheet-handle"></div>
-            <div class="sheet-title" id="sheetTitle">51 activiteiten</div>
+            <div class="sheet-title" id="sheetTitle">Activiteiten laden…</div>
         </div>
         <div class="sheet-content" id="sheetContent">
             <div class="list-container" id="activityList"></div>
@@ -935,10 +981,10 @@
             .bindPopup('<div class="popup-name">Xhoffraix Thuis</div><div class="popup-meta">Rue du Herdier<br>Je uitvalsbasis voor deze reis</div>');
         
         // Helper: get primary category for icon selection
-        // Priority: family > ww2 > hikes > bakeries > groceries > museums > indoor > wellness
+        // Choose a marker icon by activity type; family is a suitability tag.
         function getPrimaryCategory(activity) {
             const categories = activity.categories || [activity.category]; // Legacy fallback
-            const priority = ['family', 'ww2', 'hikes', 'bakeries', 'groceries', 'museums', 'indoor', 'wellness'];
+            const priority = ['ww2', 'hikes', 'bakeries', 'groceries', 'museums', 'animals', 'play', 'playgrounds', 'water', 'cycling', 'treasure-hunts', 'motorsport', 'indoor', 'wellness', 'family'];
             for (const cat of priority) {
                 if (categories.includes(cat)) return cat;
             }
@@ -955,7 +1001,14 @@
                 'groceries': groceryIcon,
                 'museums': museumIcon,
                 'indoor': indoorIcon,
-                'wellness': wellnessIcon
+                'wellness': wellnessIcon,
+                'animals': familyIcon,
+                'play': familyIcon,
+                'playgrounds': familyIcon,
+                'water': indoorIcon,
+                'cycling': hikeIcon,
+                'treasure-hunts': hikeIcon,
+                'motorsport': ww2Icon
             };
             return iconMap[category] || familyIcon;
         }
@@ -974,8 +1027,8 @@
                     <div class="popup-name">${activity.name}</div>
                     <div class="popup-meta">
                         <strong>Afstand:</strong> ${activity.distance}<br>
-                        <strong>Prijs:</strong> ${activity.price}<br>
-                        <strong>Openingstijden:</strong> ${activity.hours}
+                        ${activity.price ? `<strong>Prijs:</strong> ${activity.price}<br>` : ''}
+                        ${activity.hours ? `<strong>Openingstijden:</strong> ${activity.hours}` : ''}
                         ${activity.url ? `<br><br><a href="${activity.url}" target="_blank" style="color: #667eea; font-weight: 600;">Bezoek website →</a>` : ''}
                     </div>
                 `;
@@ -1109,8 +1162,15 @@
                 'hikes': 'Wandeling',
                 'groceries': 'Supermarkt',
                 'museums': 'Museum',
-                'indoor': 'Regen',
-                'wellness': 'Wellness'
+                'indoor': 'Binnen / regen',
+                'wellness': 'Wellness',
+                'animals': 'Dieren',
+                'play': 'Spelen & avontuur',
+                'playgrounds': 'Speeltuin',
+                'water': 'Water',
+                'cycling': 'Fietsen',
+                'treasure-hunts': 'Speurtocht',
+                'motorsport': 'Motorsport'
             };
             
             activities.forEach(activity => {
@@ -1723,7 +1783,7 @@
                 markers[activity.id].openPopup();
                 
                 // Highlight route for hikes
-                if (activity.category === 'hikes' && routes[activity.id]) {
+                if (getCategories(activity).includes('hikes') && routes[activity.id]) {
                     routes[activity.id].setStyle({ color: '#059669', weight: 4, opacity: 0.9 });
                     setTimeout(() => {
                         routes[activity.id].setStyle({ color: '#10b981', weight: 3, opacity: 0.7 });
@@ -1740,7 +1800,9 @@
         function handleHash() {
             const hash = window.location.hash;
             if (hash.startsWith('#activity-')) {
-                const activityId = parseInt(hash.replace('#activity-', ''));
+                const requestedId = parseInt(hash.replace('#activity-', ''));
+                // MDY04 was consolidated into entry 37; preserve previously shared links.
+                const activityId = requestedId === 13 ? 37 : requestedId;
                 const activity = activities.find(a => a.id === activityId);
                 if (activity) {
                     const card = document.querySelector(`[data-id="${activityId}"]`);
@@ -1796,15 +1858,31 @@
                 <button class="filter-sheet-close" id="filterSheetClose" aria-label="Sluiten">×</button>
             </div>
             <div class="filter-sheet-body">
-                <div class="filter-sheet-options" id="filterSheetOptions">
-                    <button class="filter-sheet-chip" data-filter="family">Gezinsvriendelijk</button>
-                    <button class="filter-sheet-chip" data-filter="ww2">WOII</button>
-                    <button class="filter-sheet-chip" data-filter="bakeries">Bakkerij</button>
-                    <button class="filter-sheet-chip" data-filter="hikes">Wandeling</button>
-                    <button class="filter-sheet-chip" data-filter="groceries">Supermarkt</button>
-                    <button class="filter-sheet-chip" data-filter="museums">Museum</button>
-                    <button class="filter-sheet-chip" data-filter="indoor">Regen</button>
-                    <button class="filter-sheet-chip" data-filter="wellness">Wellness</button>
+                <div class="filter-sheet-groups" id="filterSheetOptions">
+                    <div class="filter-group">
+                        <span class="filter-group-label">Activiteiten</span>
+                        <div class="filter-sheet-options">
+                            <button class="filter-sheet-chip" data-filter="family">Gezinsvriendelijk</button>
+                            <button class="filter-sheet-chip" data-filter="hikes">Wandeling</button>
+                            <button class="filter-sheet-chip" data-filter="museums">Museum</button>
+                            <button class="filter-sheet-chip" data-filter="ww2">WOII</button>
+                            <button class="filter-sheet-chip" data-filter="animals">Dieren</button>
+                            <button class="filter-sheet-chip" data-filter="play">Spelen & avontuur</button>
+                            <button class="filter-sheet-chip" data-filter="water">Water</button>
+                            <button class="filter-sheet-chip" data-filter="cycling">Fietsen</button>
+                            <button class="filter-sheet-chip" data-filter="treasure-hunts">Speurtocht</button>
+                            <button class="filter-sheet-chip" data-filter="motorsport">Motorsport</button>
+                            <button class="filter-sheet-chip" data-filter="indoor">Binnen / regen</button>
+                            <button class="filter-sheet-chip" data-filter="wellness">Wellness</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-group-label">Handige adressen</span>
+                        <div class="filter-sheet-options">
+                            <button class="filter-sheet-chip" data-filter="bakeries">Bakkerij</button>
+                            <button class="filter-sheet-chip" data-filter="groceries">Supermarkt</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
