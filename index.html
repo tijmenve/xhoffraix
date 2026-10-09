@@ -68,7 +68,7 @@
             display: none;
         }
         
-        /* Mobile: compact controls with horizontal scroll */
+        /* Search and filter controls */
         .controls {
             padding: 0.5rem 1rem;
             background: rgba(255, 255, 255, 0.95);
@@ -84,27 +84,21 @@
             gap: 0.5rem;
         }
         
-        @media (max-width: 767px) {
-            .controls {
-                flex-direction: row;
-                align-items: center;
-            }
+        .search-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .search-box {
             flex: 1;
+            min-width: 0;
             padding: 0.5rem 0.75rem;
             font-size: 0.8125rem;
             border: 1.5px solid #e2e8f0;
             border-radius: 8px;
             font-family: inherit;
             transition: all 0.2s;
-        }
-        
-        @media (min-width: 768px) {
-            .search-box {
-                margin-bottom: 0.5rem;
-            }
         }
         
         .search-box:focus {
@@ -146,6 +140,10 @@
             letter-spacing: 0.06em;
             text-transform: uppercase;
         }
+
+        .filter-groups[hidden] {
+            display: none;
+        }
         
         /* Mobile: hide filter chips, show filter button */
         @media (max-width: 767px) {
@@ -172,9 +170,27 @@
         }
         
         @media (max-width: 767px) {
-            .filter-toggle-btn {
+            .filter-toggle-btn:not(.desktop-filter-toggle-btn) {
                 display: flex;
             }
+        }
+
+        .desktop-filter-toggle-btn::after {
+            content: '';
+            width: 0.4rem;
+            height: 0.4rem;
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            transform: translateY(-2px) rotate(45deg);
+        }
+
+        .desktop-filter-toggle-btn[aria-expanded="true"]::after {
+            transform: translateY(2px) rotate(225deg);
+        }
+
+        .filter-toggle-btn:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
         }
         
         .filter-toggle-btn:active {
@@ -707,6 +723,20 @@
                 border-color: #667eea;
                 box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
             }
+
+            .desktop-filter-toggle-btn {
+                display: flex;
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+                color: #64748b;
+                background: #f7fafc;
+            }
+
+            .desktop-filter-toggle-btn:hover,
+            .desktop-filter-toggle-btn[aria-expanded="true"] {
+                color: #667eea;
+                border-color: #667eea;
+            }
             
             .filters {
                 overflow-x: visible;
@@ -825,12 +855,18 @@
     </header>
     
     <div class="controls">
-        <input type="text" class="search-box" placeholder="Zoek activiteiten..." id="searchBox">
-        <button class="filter-toggle-btn" id="filterToggleBtn">
-            <span>Filters</span>
-            <span class="filter-badge" id="filterBadge">0</span>
-        </button>
-        <div class="filter-groups">
+        <div class="search-controls">
+            <input type="text" class="search-box" placeholder="Zoek activiteiten..." id="searchBox">
+            <button type="button" class="filter-toggle-btn" id="filterToggleBtn">
+                <span>Filters</span>
+                <span class="filter-badge" id="filterBadge">0</span>
+            </button>
+            <button type="button" class="filter-toggle-btn desktop-filter-toggle-btn" id="desktopFilterToggleBtn" aria-expanded="false" aria-controls="desktopFilters">
+                <span>Filters</span>
+                <span class="filter-badge" id="desktopFilterBadge">0</span>
+            </button>
+        </div>
+        <div class="filter-groups" id="desktopFilters" hidden>
             <div class="filter-group">
                 <span class="filter-group-label">Activiteiten</span>
                 <div class="filters" id="filters">
@@ -886,6 +922,14 @@
         let activities = [];
         let userLocationMarker = null;
         let watchId = null;
+
+        // Keep desktop disclosure available even before activity data loads.
+        const desktopFilterToggleBtn = document.getElementById('desktopFilterToggleBtn');
+        const desktopFilters = document.getElementById('desktopFilters');
+        desktopFilterToggleBtn.addEventListener('click', () => {
+            desktopFilters.hidden = !desktopFilters.hidden;
+            desktopFilterToggleBtn.setAttribute('aria-expanded', String(!desktopFilters.hidden));
+        });
         
         // Load activities from JSON file
         fetch('activities.json')
@@ -1369,16 +1413,14 @@
         const filterToggleBtn = document.getElementById('filterToggleBtn');
         const filterSheet = document.getElementById('filterSheet');
         const filterSheetClose = document.getElementById('filterSheetClose');
-        const filterBadge = document.getElementById('filterBadge');
+        const filterBadges = document.querySelectorAll('.filter-badge');
         
         function updateFilterBadge() {
             const count = activeCategories.size;
-            if (count > 0) {
-                filterBadge.textContent = count;
-                filterBadge.classList.add('active');
-            } else {
-                filterBadge.classList.remove('active');
-            }
+            filterBadges.forEach(badge => {
+                badge.textContent = count;
+                badge.classList.toggle('active', count > 0);
+            });
         }
         
         function openFilterSheet() {
