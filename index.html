@@ -513,7 +513,7 @@
         }
 
         #map .leaflet-top {
-            top: 7rem;
+            top: 1rem;
         }
 
         #map .leaflet-right .leaflet-control {
@@ -1503,6 +1503,9 @@
             coordinates: [50.45152, 6.06777]
         };
         const desktopLayout = window.matchMedia('(min-width: 768px)');
+        const mapContainer = document.getElementById('map');
+        const activitySheet = document.getElementById('bottomSheet');
+        const searchControls = document.querySelector('.controls');
         let desktopListOpen = true;
         let selectedActivityId = null;
         let mobileSheetReady = false;
@@ -1510,10 +1513,10 @@
         function getPopupOptions() {
             const mobile = !desktopLayout.matches;
             return {
-                maxWidth: Math.min(320, Math.max(160, document.getElementById('map').clientWidth - 144)),
-                maxHeight: Math.max(140, mobile ? window.innerHeight * 0.5 - 140 : window.innerHeight - (desktopListOpen ? 80 : 220)),
+                maxWidth: Math.min(320, Math.max(160, mapContainer.clientWidth - 144)),
+                maxHeight: Math.max(40, mapContainer.clientHeight - (mobile || desktopListOpen ? 80 : 220)),
                 keepInView: true,
-                autoPanPaddingTopLeft: [16, mobile ? 144 : desktopListOpen ? 16 : 180],
+                autoPanPaddingTopLeft: [16, mobile || desktopListOpen ? 16 : 180],
                 autoPanPaddingBottomRight: [76, 16]
             };
         }
@@ -1643,6 +1646,65 @@
         const desktopListToggleBtn = document.getElementById('desktopListToggleBtn');
         const desktopListCloseBtn = document.getElementById('desktopListCloseBtn');
         let mapLayoutFrame;
+        let sheetTransitionActive = false;
+
+        function updateMapViewport() {
+            if (desktopLayout.matches) {
+                mapContainer.style.removeProperty('top');
+                mapContainer.style.removeProperty('height');
+            } else {
+                // Leaflet's viewport must match the space between the controls and sheet.
+                const top = Math.min(window.innerHeight - 1, Math.round(searchControls.getBoundingClientRect().bottom));
+                const bottom = Math.min(window.innerHeight, Math.round(activitySheet.getBoundingClientRect().top));
+                mapContainer.style.top = `${top}px`;
+                mapContainer.style.height = `${Math.max(1, bottom - top)}px`;
+            }
+
+            // Preserve the geographic center and zoom as the visible viewport changes.
+            map.invalidateSize({ animate: false, pan: true, debounceMoveend: true });
+            const attributionPosition = desktopLayout.matches ? 'bottomright' : 'topleft';
+            if (map.attributionControl.getPosition() !== attributionPosition) {
+                map.attributionControl.setPosition(attributionPosition);
+            }
+            const options = getPopupOptions();
+            [homeMarker, ...Object.values(markers)].forEach(marker => {
+                const popup = marker.getPopup();
+                const sizeChanged = popup.options.maxHeight !== options.maxHeight || popup.options.maxWidth !== options.maxWidth;
+                Object.assign(popup.options, options);
+                if (sizeChanged && marker.isPopupOpen()) popup.update();
+            });
+        }
+
+        function scheduleMapViewportUpdate() {
+            if (mapLayoutFrame) return;
+            mapLayoutFrame = requestAnimationFrame(function update() {
+                mapLayoutFrame = null;
+                updateMapViewport();
+                if (sheetTransitionActive && !desktopLayout.matches) {
+                    mapLayoutFrame = requestAnimationFrame(update);
+                }
+            });
+        }
+
+        new MutationObserver(scheduleMapViewportUpdate).observe(activitySheet, {
+            attributes: true, attributeFilter: ['class', 'style']
+        });
+        const layoutObserver = new ResizeObserver(scheduleMapViewportUpdate);
+        layoutObserver.observe(searchControls);
+        layoutObserver.observe(activitySheet);
+        activitySheet.addEventListener('transitionrun', event => {
+            if (event.target !== activitySheet || event.propertyName !== 'transform') return;
+            sheetTransitionActive = true;
+            scheduleMapViewportUpdate();
+        });
+        ['transitionend', 'transitioncancel'].forEach(eventName => {
+            activitySheet.addEventListener(eventName, event => {
+                if (event.target !== activitySheet || event.propertyName !== 'transform') return;
+                sheetTransitionActive = false;
+                activitySheet.classList.remove('animating');
+                scheduleMapViewportUpdate();
+            });
+        });
 
         function syncMapLayout() {
             document.body.classList.toggle('desktop-list-collapsed', !desktopListOpen);
@@ -1651,25 +1713,12 @@
             const label = desktopListOpen ? 'Activiteitenlijst verbergen' : 'Activiteitenlijst tonen';
             desktopListToggleBtn.setAttribute('aria-label', label);
             desktopListToggleBtn.title = label;
-            if (desktopLayout.matches) {
-                document.getElementById('map').style.paddingBottom = '';
-            } else {
+            if (!desktopLayout.matches) {
                 initializeMobileSheet();
             }
             selectActivityCard(selectedActivityId);
-            cancelAnimationFrame(mapLayoutFrame);
-            mapLayoutFrame = requestAnimationFrame(() => {
-                map.invalidateSize();
-                const attributionPosition = desktopLayout.matches ? 'bottomright' : 'topleft';
-                if (map.attributionControl.getPosition() !== attributionPosition) {
-                    map.attributionControl.setPosition(attributionPosition);
-                }
-                const options = getPopupOptions();
-                [homeMarker, ...Object.values(markers)].forEach(marker => {
-                    Object.assign(marker.getPopup().options, options);
-                    if (marker.isPopupOpen()) marker.getPopup().update();
-                });
-            });
+            updateMapViewport();
+            scheduleMapViewportUpdate();
         }
 
         desktopListToggleBtn.addEventListener('click', () => {
@@ -2049,7 +2098,6 @@
             });
             
             function setSheetState(state, animate = true) {
-                const prevState = sheetState;
                 sheetState = state;
                 
                 // Manage CSS classes for state
@@ -2070,54 +2118,7 @@
                     content.style.pointerEvents = 'auto';
                 }
                 
-                // Update map padding based on sheet state (mobile only)
-                if (window.innerWidth < 768) {
-                    updateMapPadding(state);
-                }
-                
-                // Defer map resize until after animation completes
-                if (animate && prevState !== state) {
-                    const handleTransitionEnd = () => {
-                        sheet.classList.remove('animating');
-                        requestAnimationFrame(() => {
-                            map.invalidateSize();
-                        });
-                        sheet.removeEventListener('transitionend', handleTransitionEnd);
-                    };
-                    sheet.addEventListener('transitionend', handleTransitionEnd, { once: true });
-                } else if (!animate) {
-                    requestAnimationFrame(() => {
-                        map.invalidateSize();
-                    });
-                }
-            }
-            
-            // Update map viewport padding based on bottom sheet state
-            function updateMapPadding(state) {
-                const mapContainer = document.getElementById('map');
-                if (!mapContainer) return;
-                
-                // Calculate bottom padding based on sheet state
-                let bottomPadding;
-                if (state === 'collapsed') {
-                    // Minimal padding when collapsed (~64px sheet handle)
-                    bottomPadding = 64;
-                } else if (state === 'half') {
-                    // Pad so visible center is in upper half (~50% of viewport)
-                    bottomPadding = Math.floor(window.innerHeight * 0.5);
-                } else {
-                    // Full state: keep light padding, don't fight animation
-                    bottomPadding = Math.floor(window.innerHeight * 0.85);
-                }
-                
-                // Apply padding by adjusting map container bottom
-                // This shifts the effective center up without needing to pan
-                mapContainer.style.paddingBottom = `${bottomPadding}px`;
-                
-                // Invalidate size to trigger recalculation
-                requestAnimationFrame(() => {
-                    map.invalidateSize({ pan: false });
-                });
+                scheduleMapViewportUpdate();
             }
             
             // Touch/mouse handlers for dragging - only on handle
