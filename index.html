@@ -370,6 +370,7 @@
             left: 0;
             right: 0;
             bottom: 0;
+            height: calc(100vh - 10rem + var(--sheet-handle-height, 3.4rem));
             background: white;
             border-radius: 16px 16px 0 0;
             box-shadow: 0 -2px 16px rgba(0,0,0,0.15);
@@ -434,7 +435,7 @@
         .sheet-content {
             overflow-y: auto;
             height: calc(100vh - 10rem);
-            padding: 0 1rem 2rem;
+            padding: 0 1rem calc(2rem + env(safe-area-inset-bottom, 0px));
             -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
         }
@@ -446,6 +447,10 @@
         
         .bottom-sheet.half .sheet-content {
             overflow-y: auto;
+        }
+
+        .bottom-sheet.full .sheet-content {
+            padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
         }
         
         /* Map button when sheet is full */
@@ -890,6 +895,7 @@
                 right: auto;
                 bottom: 1rem;
                 width: var(--desktop-sidebar-width);
+                height: auto;
                 border: 1px solid #e0e3f1;
                 border-radius: 16px;
                 overflow: hidden;
@@ -959,6 +965,10 @@
                 padding: 0.75rem;
                 scrollbar-width: thin;
                 scrollbar-color: #c8ccef transparent;
+            }
+
+            .bottom-sheet.full .sheet-content {
+                padding-bottom: 0.75rem;
             }
             
             .map-button {
@@ -1505,6 +1515,8 @@
         const desktopLayout = window.matchMedia('(min-width: 768px)');
         const mapContainer = document.getElementById('map');
         const activitySheet = document.getElementById('bottomSheet');
+        const sheetHandle = document.getElementById('sheetHandle');
+        const sheetContent = document.getElementById('sheetContent');
         const searchControls = document.querySelector('.controls');
         let desktopListOpen = true;
         let selectedActivityId = null;
@@ -1652,7 +1664,18 @@
             if (desktopLayout.matches) {
                 mapContainer.style.removeProperty('top');
                 mapContainer.style.removeProperty('height');
+                sheetContent.style.removeProperty('height');
             } else {
+                // Keep the sheet's animation geometry stable while sizing its visible scroll area.
+                const handleHeight = `${sheetHandle.getBoundingClientRect().height}px`;
+                if (activitySheet.style.getPropertyValue('--sheet-handle-height') !== handleHeight) {
+                    activitySheet.style.setProperty('--sheet-handle-height', handleHeight);
+                }
+                const viewport = window.visualViewport;
+                const viewportBottom = Math.min(window.innerHeight, viewport ? viewport.offsetTop + viewport.height : window.innerHeight);
+                const contentTop = sheetContent.getBoundingClientRect().top;
+                sheetContent.style.height = `${Math.max(0, viewportBottom - contentTop)}px`;
+
                 // Leaflet's viewport must match the space between the controls and sheet.
                 const top = Math.min(window.innerHeight - 1, Math.round(searchControls.getBoundingClientRect().bottom));
                 const bottom = Math.min(window.innerHeight, Math.round(activitySheet.getBoundingClientRect().top));
@@ -1692,6 +1715,9 @@
         const layoutObserver = new ResizeObserver(scheduleMapViewportUpdate);
         layoutObserver.observe(searchControls);
         layoutObserver.observe(activitySheet);
+        layoutObserver.observe(sheetHandle);
+        window.visualViewport?.addEventListener('resize', scheduleMapViewportUpdate);
+        window.visualViewport?.addEventListener('scroll', scheduleMapViewportUpdate);
         activitySheet.addEventListener('transitionrun', event => {
             if (event.target !== activitySheet || event.propertyName !== 'transform') return;
             sheetTransitionActive = true;
